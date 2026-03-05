@@ -267,45 +267,287 @@ function updateAllPrices() {
     document.getElementById('petPrice').value = prices.pet;
 }
 
-// ================ DATE SETUP ================
+// ================ DATE SETUP WITH VALIDATION ================
 function setupDates() {
     const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to midnight
+    
     const maxDate = new Date();
     maxDate.setMonth(maxDate.getMonth() + 4);
+    maxDate.setHours(0, 0, 0, 0);
     
     const todayStr = today.toISOString().split('T')[0];
     const maxDateStr = maxDate.toISOString().split('T')[0];
     
-    const dateInputs = ['quickCheckIn', 'quickCheckOut', 'modalCheckIn', 'modalCheckOut'];
-    dateInputs.forEach(id => {
-        const input = document.getElementById(id);
-        if (input) {
-            input.min = todayStr;
-            input.max = maxDateStr;
+    // Quick booking dates
+    const quickCheckIn = document.getElementById('quickCheckIn');
+    const quickCheckOut = document.getElementById('quickCheckOut');
+    
+    if (quickCheckIn) {
+        quickCheckIn.min = todayStr;
+        quickCheckIn.max = maxDateStr;
+        quickCheckIn.value = todayStr;
+        
+        quickCheckIn.addEventListener('change', function() {
+            const checkInDate = new Date(this.value);
+            checkInDate.setHours(0, 0, 0, 0);
+            
+            // Validate check-in is not in past
+            if (checkInDate < today) {
+                alert('Check-in date cannot be in the past!');
+                this.value = todayStr;
+            }
+            
+            // Update check-out minimum
+            if (quickCheckOut) {
+                const minCheckOut = new Date(checkInDate);
+                minCheckOut.setDate(minCheckOut.getDate() + 1);
+                quickCheckOut.min = minCheckOut.toISOString().split('T')[0];
+                
+                // If current check-out is less than new min, update it
+                const currentCheckOut = new Date(quickCheckOut.value);
+                currentCheckOut.setHours(0, 0, 0, 0);
+                
+                if (currentCheckOut <= checkInDate) {
+                    quickCheckOut.value = minCheckOut.toISOString().split('T')[0];
+                }
+            }
+        });
+    }
+    
+    if (quickCheckOut) {
+        quickCheckOut.min = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
+        quickCheckOut.max = maxDateStr;
+        
+        quickCheckOut.addEventListener('change', function() {
+            const checkOutDate = new Date(this.value);
+            checkOutDate.setHours(0, 0, 0, 0);
+            const checkInDate = new Date(quickCheckIn.value);
+            checkInDate.setHours(0, 0, 0, 0);
+            
+            // Validate check-out is after check-in
+            if (checkOutDate <= checkInDate) {
+                alert('Check-out date must be after check-in date!');
+                const nextDay = new Date(checkInDate);
+                nextDay.setDate(nextDay.getDate() + 1);
+                this.value = nextDay.toISOString().split('T')[0];
+            }
+        });
+    }
+    
+    // Modal booking dates
+    const modalCheckIn = document.getElementById('modalCheckIn');
+    const modalCheckOut = document.getElementById('modalCheckOut');
+    
+    if (modalCheckIn) {
+        modalCheckIn.min = todayStr;
+        modalCheckIn.max = maxDateStr;
+        modalCheckIn.value = todayStr;
+        
+        modalCheckIn.addEventListener('change', function() {
+            const checkInDate = new Date(this.value);
+            checkInDate.setHours(0, 0, 0, 0);
+            
+            // Validate check-in is not in past
+            if (checkInDate < today) {
+                showValidationError('modalCheckIn', 'Check-in date cannot be in the past!');
+                this.value = todayStr;
+            } else {
+                clearValidationError('modalCheckIn');
+            }
+            
+            // Update check-out minimum
+            if (modalCheckOut) {
+                const minCheckOut = new Date(checkInDate);
+                minCheckOut.setDate(minCheckOut.getDate() + 1);
+                modalCheckOut.min = minCheckOut.toISOString().split('T')[0];
+                
+                // If current check-out is less than new min, update it
+                const currentCheckOut = new Date(modalCheckOut.value);
+                currentCheckOut.setHours(0, 0, 0, 0);
+                
+                if (currentCheckOut <= checkInDate) {
+                    modalCheckOut.value = minCheckOut.toISOString().split('T')[0];
+                }
+            }
+            
+            updateBookingSummary();
+        });
+    }
+    
+    if (modalCheckOut) {
+        modalCheckOut.min = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
+        modalCheckOut.max = maxDateStr;
+        
+        modalCheckOut.addEventListener('change', function() {
+            const checkOutDate = new Date(this.value);
+            checkOutDate.setHours(0, 0, 0, 0);
+            const checkInDate = new Date(modalCheckIn.value);
+            checkInDate.setHours(0, 0, 0, 0);
+            
+            // Validate check-out is after check-in
+            if (checkOutDate <= checkInDate) {
+                showValidationError('modalCheckOut', 'Check-out date must be after check-in date!');
+                const nextDay = new Date(checkInDate);
+                nextDay.setDate(nextDay.getDate() + 1);
+                this.value = nextDay.toISOString().split('T')[0];
+            } else {
+                clearValidationError('modalCheckOut');
+            }
+            
+            updateBookingSummary();
+        });
+    }
+}
+
+// ================ VALIDATION FUNCTIONS ================
+function validateName(name) {
+    if (!name || name.trim() === '') {
+        return { isValid: false, message: 'Name is required' };
+    }
+    if (name.trim().length < 3) {
+        return { isValid: false, message: 'Name must be at least 3 characters' };
+    }
+    if (name.trim().length > 50) {
+        return { isValid: false, message: 'Name cannot exceed 50 characters' };
+    }
+    if (!/^[a-zA-Z\s.'-]+$/.test(name.trim())) {
+        return { isValid: false, message: 'Name can only contain letters, spaces, dots, and hyphens' };
+    }
+    return { isValid: true, message: '' };
+}
+
+function validatePhone(phone) {
+    if (!phone || phone.trim() === '') {
+        return { isValid: false, message: 'Phone number is required' };
+    }
+    
+    // Remove all non-digits
+    const cleaned = phone.replace(/\D/g, '');
+    
+    // Check if it's a valid Indian mobile number (10 digits starting with 6-9)
+    if (!/^[6-9]\d{9}$/.test(cleaned)) {
+        return { isValid: false, message: 'Enter a valid 10-digit Indian mobile number starting with 6-9' };
+    }
+    
+    return { isValid: true, message: '', formatted: cleaned };
+}
+
+function validateEmail(email) {
+    if (!email || email.trim() === '') {
+        return { isValid: true, message: '' }; // Email is optional
+    }
+    
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(email.trim())) {
+        return { isValid: false, message: 'Enter a valid email address (e.g., name@example.com)' };
+    }
+    
+    return { isValid: true, message: '' };
+}
+
+function validateGuests(guests) {
+    const guestsNum = parseInt(guests);
+    if (isNaN(guestsNum) || guestsNum < 1 || guestsNum > 4) {
+        return { isValid: false, message: 'Number of guests must be between 1 and 4' };
+    }
+    return { isValid: true, message: '' };
+}
+
+function validateDates(checkIn, checkOut) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const checkInDate = new Date(checkIn);
+    checkInDate.setHours(0, 0, 0, 0);
+    
+    const checkOutDate = new Date(checkOut);
+    checkOutDate.setHours(0, 0, 0, 0);
+    
+    if (!checkIn || !checkOut) {
+        return { isValid: false, message: 'Please select both check-in and check-out dates' };
+    }
+    
+    if (checkInDate < today) {
+        return { isValid: false, message: 'Check-in date cannot be in the past' };
+    }
+    
+    if (checkOutDate <= checkInDate) {
+        return { isValid: false, message: 'Check-out date must be after check-in date' };
+    }
+    
+    // Check if booking exceeds 30 days
+    const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+    if (nights > 30) {
+        return { isValid: false, message: 'Booking cannot exceed 30 nights' };
+    }
+    
+    return { isValid: true, message: '', nights };
+}
+
+function showValidationError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+    
+    // Remove any existing error message
+    const existingError = field.parentNode.querySelector('.validation-error');
+    if (existingError) {
+        existingError.remove();
+    }
+    
+    // Add error class to field
+    field.classList.add('invalid');
+    
+    // Create and insert error message
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'validation-error';
+    errorDiv.style.color = 'var(--error)';
+    errorDiv.style.fontSize = '0.85rem';
+    errorDiv.style.marginTop = '0.25rem';
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    
+    field.parentNode.appendChild(errorDiv);
+}
+
+function clearValidationError(fieldId) {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+    
+    field.classList.remove('invalid');
+    field.classList.add('valid');
+    
+    const existingError = field.parentNode.querySelector('.validation-error');
+    if (existingError) {
+        existingError.remove();
+    }
+}
+
+function clearAllValidationErrors() {
+    const errorFields = ['guestName', 'guestPhone', 'guestEmail', 'modalCheckIn', 'modalCheckOut', 'modalGuests'];
+    errorFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.classList.remove('invalid', 'valid');
+            const existingError = field.parentNode.querySelector('.validation-error');
+            if (existingError) {
+                existingError.remove();
+            }
         }
     });
-    
-    const checkIn = document.getElementById('quickCheckIn');
-    const checkOut = document.getElementById('quickCheckOut');
-    
-    if (checkIn) checkIn.value = todayStr;
-    if (checkOut) {
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        checkOut.value = tomorrow.toISOString().split('T')[0];
-    }
 }
 
 // ================ BOOKING FUNCTIONS ================
 function openBookingModal(roomType = 'ac') {
     document.getElementById('bookingModal').classList.add('active');
     document.getElementById('modalRoomType').value = roomType;
+    clearAllValidationErrors();
     setupDates();
     updateBookingSummary();
 }
 
 function closeModal() {
     document.getElementById('bookingModal').classList.remove('active');
+    clearAllValidationErrors();
 }
 
 function closeConfirmationModal() {
@@ -361,8 +603,10 @@ function quickBook() {
     const guests = document.getElementById('quickGuests').value;
     const room = document.getElementById('quickRoom').value;
     
-    if (!checkIn || !checkOut) {
-        alert('Please select dates');
+    // Validate dates
+    const dateValidation = validateDates(checkIn, checkOut);
+    if (!dateValidation.isValid) {
+        alert(dateValidation.message);
         return;
     }
     
@@ -377,24 +621,89 @@ function quickBook() {
 function processBooking(e) {
     e.preventDefault();
     
+    // Clear previous validation errors
+    clearAllValidationErrors();
+    
+    // Get form values
+    const guestName = document.getElementById('guestName').value;
+    const guestPhone = document.getElementById('guestPhone').value;
+    const guestEmail = document.getElementById('guestEmail').value;
+    const guests = document.getElementById('modalGuests').value;
+    const checkIn = document.getElementById('modalCheckIn').value;
+    const checkOut = document.getElementById('modalCheckOut').value;
+    
+    let isValid = true;
+    
+    // Validate name
+    const nameValidation = validateName(guestName);
+    if (!nameValidation.isValid) {
+        showValidationError('guestName', nameValidation.message);
+        isValid = false;
+    } else {
+        clearValidationError('guestName');
+    }
+    
+    // Validate phone
+    const phoneValidation = validatePhone(guestPhone);
+    if (!phoneValidation.isValid) {
+        showValidationError('guestPhone', phoneValidation.message);
+        isValid = false;
+    } else {
+        clearValidationError('guestPhone');
+    }
+    
+    // Validate email (optional)
+    const emailValidation = validateEmail(guestEmail);
+    if (!emailValidation.isValid) {
+        showValidationError('guestEmail', emailValidation.message);
+        isValid = false;
+    } else {
+        clearValidationError('guestEmail');
+    }
+    
+    // Validate guests
+    const guestsValidation = validateGuests(guests);
+    if (!guestsValidation.isValid) {
+        showValidationError('modalGuests', guestsValidation.message);
+        isValid = false;
+    } else {
+        clearValidationError('modalGuests');
+    }
+    
+    // Validate dates
+    const dateValidation = validateDates(checkIn, checkOut);
+    if (!dateValidation.isValid) {
+        showValidationError('modalCheckIn', dateValidation.message);
+        showValidationError('modalCheckOut', dateValidation.message);
+        isValid = false;
+    } else {
+        clearValidationError('modalCheckIn');
+        clearValidationError('modalCheckOut');
+    }
+    
+    if (!isValid) {
+        // Scroll to first error
+        const firstError = document.querySelector('.invalid');
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+    }
+    
+    // All validations passed - proceed with booking
     const bookingData = {
         id: 'BKG' + Date.now().toString().slice(-8),
         roomType: document.getElementById('modalRoomType').value,
-        guests: parseInt(document.getElementById('modalGuests').value),
-        checkIn: document.getElementById('modalCheckIn').value,
-        checkOut: document.getElementById('modalCheckOut').value,
-        guestName: document.getElementById('guestName').value,
-        guestPhone: document.getElementById('guestPhone').value,
-        guestEmail: document.getElementById('guestEmail').value,
+        guests: parseInt(guests),
+        checkIn: checkIn,
+        checkOut: checkOut,
+        guestName: guestName.trim(),
+        guestPhone: phoneValidation.formatted || guestPhone.replace(/\D/g, ''),
+        guestEmail: guestEmail.trim(),
         pet: document.getElementById('guestPet').value,
         specialRequests: document.getElementById('specialRequests').value,
         createdAt: new Date().toISOString()
     };
-    
-    if (!bookingData.guestName || !bookingData.guestPhone) {
-        alert('Please fill required fields');
-        return;
-    }
     
     // Calculate total
     const prices = storage.getPrices();
@@ -425,6 +734,8 @@ function processBooking(e) {
         <p><strong>Booking ID:</strong> ${bookingData.id}</p>
         <p><strong>Check-in:</strong> ${new Date(bookingData.checkIn).toLocaleDateString()}</p>
         <p><strong>Check-out:</strong> ${new Date(bookingData.checkOut).toLocaleDateString()}</p>
+        <p><strong>Guests:</strong> ${bookingData.guests}</p>
+        <p><strong>Nights:</strong> ${bookingData.nights}</p>
         <p><strong>Total:</strong> ₹${bookingData.total}</p>
     `;
     
@@ -636,6 +947,34 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('modalCheckOut')?.addEventListener('change', updateBookingSummary);
     document.getElementById('modalGuests')?.addEventListener('change', updateBookingSummary);
     document.getElementById('modalRoomType')?.addEventListener('change', updateBookingSummary);
+    
+    // Add real-time validation for form fields
+    document.getElementById('guestName')?.addEventListener('blur', function() {
+        const validation = validateName(this.value);
+        if (!validation.isValid) {
+            showValidationError('guestName', validation.message);
+        } else {
+            clearValidationError('guestName');
+        }
+    });
+    
+    document.getElementById('guestPhone')?.addEventListener('blur', function() {
+        const validation = validatePhone(this.value);
+        if (!validation.isValid) {
+            showValidationError('guestPhone', validation.message);
+        } else {
+            clearValidationError('guestPhone');
+        }
+    });
+    
+    document.getElementById('guestEmail')?.addEventListener('blur', function() {
+        const validation = validateEmail(this.value);
+        if (!validation.isValid) {
+            showValidationError('guestEmail', validation.message);
+        } else {
+            clearValidationError('guestEmail');
+        }
+    });
     
     // Show home section by default
     showSection('home');

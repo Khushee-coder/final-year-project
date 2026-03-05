@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearby Attractions - Swami Holiday Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .attraction-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border: 1px solid #f5e6d3;
+            transition: all 0.3s;
+        }
+        
+        .attraction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border-color: #ff8a7a;
+        }
+        
+        .attraction-image {
+            height: 220px;
+            background-size: cover;
+            background-position: center;
+            background-color: #f5f1ea;
+        }
+        
+        .attraction-content {
+            padding: 20px;
+        }
+        
+        .attraction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .attraction-header h3 {
+            margin: 0;
+            color: #0a4d4c;
+            font-size: 1.3rem;
+        }
+        
+        .distance-badge {
+            background: rgba(255, 138, 122, 0.1);
+            color: #ff8a7a;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .attraction-desc {
+            color: #4a4a48;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .attraction-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #f5f1ea;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #4a4a48;
+        }
+        
+        .transport-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .transport-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .transport-card {
+            background: #f5f1ea;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .transport-card i {
+            font-size: 2rem;
+            color: #ff8a7a;
+            margin-bottom: 10px;
+        }
+        
+        .transport-card h4 {
+            margin: 0 0 5px;
+            color: #0a4d4c;
+        }
+        
+        .transport-card .price {
+            color: #ff8a7a;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+        
+        .map-section {
+            margin: 40px 0;
+        }
+        
+        .map-container {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .address-box {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .address-box h3 {
+            color: #0a4d4c;
+            margin-bottom: 10px;
+        }
+        
+        .address-box i {
+            color: #ff8a7a;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .transport-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .transport-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <div class="logo-icon"><i class="fas fa-umbrella-beach"></i></div>
+                <div class="logo-text"><h1>Swami Holiday Home</h1><p>Sasawane Beach, Alibag</p></div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="rooms.html" class="nav-link">Rooms</a></li>
+                <li><a href="facilities.html" class="nav-link">Facilities</a></li>
+                <li><a href="nearby.html" class="nav-link active">Nearby</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                
+            </ul>
+            <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">Nearby Attractions</h1>
+            <p class="page-subtitle">Explore the beauty of Alibag from our villa</p>
+        </div>
+
+        <!-- Attractions Grid -->
+        <div class="attractions-grid">
+            <!-- Sasawane Beach -->
+            <div class="attraction-card">
+                <div class="attraction-image" style="background-image: url(images/Visit-the-Beautiful-Sasawane-Beach-Travelguide-2022-mhexplorer_in.jpg);"></div>
+                <div class="attraction-content">
+                    <div class="attraction-header">
+                        <h3>Sasawane Beach</h3>
+                        <span class="distance-badge"><i class="fas fa-walking"></i> 2 min walk</span>
+                    </div>
+                    <p class="attraction-desc">Beautiful beach just 150 meters from the villa. Perfect for morning walks and sunset views.</p>
+                    <div class="attraction-tags">
+                        <span class="tag">Beach</span>
+                        <span class="tag">Walking Distance</span>
+                        <span class="tag">Sunset</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Karmarkar Museum -->
+            <div class="attraction-card">
+                <div class="attraction-image" style="background-image: url(images/alibag-karmarkar-museum.jpg);"></div>
+                <div class="attraction-content">
+                    <div class="attraction-header">
+                        <h3>Karmarkar Museum</h3>
+                        <span class="distance-badge"><i class="fas fa-walking"></i> 2 min walk</span>
+                    </div>
+                    <p class="attraction-desc">Famous art and sculpture museum showcasing local artists and historical pieces.</p>
+                    <div class="attraction-tags">
+                        <span class="tag">Museum</span>
+                        <span class="tag">Art</span>
+                        <span class="tag">Culture</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mandwa Beach -->
+            <div class="attraction-card">
+                <div class="attraction-image" style="background-image: url(images/beach.jpg);"></div>
+                <div class="attraction-content">
+                    <div class="attraction-header">
+                        <h3>Mandwa Beach</h3>
+                        <span class="distance-badge"><i class="fas fa-taxi"></i> 10 min cab</span>
+                    </div>
+                    <p class="attraction-desc">Ferry terminal to Mumbai. Popular for water sports and beach activities.</p>
+                    <div class="attraction-tags">
+                        <span class="tag">Beach</span>
+                        <span class="tag">Ferry</span>
+                        <span class="tag">Water Sports</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kihim Beach -->
+            <div class="attraction-card">
+                <div class="attraction-image" style="background-image: url(images/kihim.jpg);"></div>
+                <div class="attraction-content">
+                    <div class="attraction-header">
+                        <h3>Kihim Beach</h3>
+                        <span class="distance-badge"><i class="fas fa-taxi"></i> 15 min cab</span>
+                    </div>
+                    <p class="attraction-desc">Scenic beach with forest backdrop. Known for its butterfly population.</p>
+                    <div class="attraction-tags">
+                        <span class="tag">Beach</span>
+                        <span class="tag">Scenic</span>
+                        <span class="tag">Nature</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Varsoli Beach -->
+            <div class="attraction-card">
+                <div class="attraction-image" style="background-image: url(images/varsoli.jpg);"></div>
+                <div class="attraction-content">
+                    <div class="attraction-header">
+                        <h3>Varsoli Beach</h3>
+                        <span class="distance-badge"><i class="fas fa-taxi"></i> 25 min cab</span>
+                    </div>
+                    <p class="attraction-desc">Peaceful and less crowded beach. Perfect for relaxation.</p>
+                    <div class="attraction-tags">
+                        <span class="tag">Beach</span>
+                        <span class="tag">Peaceful</span>
+                        <span class="tag">Clean</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alibaug Fort -->
+            <div class="attraction-card">
+                <div class="attraction-image" style="background-image: url(images/Murud-Janjira-Fort.jpg);"></div>
+                <div class="attraction-content">
+                    <div class="attraction-header">
+                        <h3>Alibaug Fort & Beach</h3>
+                        <span class="distance-badge"><i class="fas fa-taxi"></i> 25 min cab</span>
+                    </div>
+                    <p class="attraction-desc">Historic sea fort and main beach area with shopping and dining.</p>
+                    <div class="attraction-tags">
+                        <span class="tag">Fort</span>
+                        <span class="tag">Beach</span>
+                        <span class="tag">History</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kankeshwar Temple -->
+            <div class="attraction-card">
+                <div class="attraction-image" style="background-image: url(images/Kankeshwar-Temple.jpg);"></div>
+                <div class="attraction-content">
+                    <div class="attraction-header">
+                        <h3>Kankeshwar Temple</h3>
+                        <span class="distance-badge"><i class="fas fa-hiking"></i> 15 min climb</span>
+                    </div>
+                    <p class="attraction-desc">Ancient hilltop temple with panoramic views of the coastline.</p>
+                    <div class="attraction-tags">
+                        <span class="tag">Temple</span>
+                        <span class="tag">Scenic View</span>
+                        <span class="tag">Spiritual</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+            <h2 style="color: #0a4d4c; margin-bottom: 20px;"><i class="fas fa-map-marked-alt" style="color: #ff8a7a;"></i> Our Location</h2>
+            <div class="map-container">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3779.87654321!2d72.876543!3d18.654321!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be88f123456789%3A0x123456789abcdef!2sSasawane%20Beach!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin" 
+                    width="100%" 
+                    height="400" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+            <div class="address-box">
+                <h3><i class="fas fa-map-pin"></i> Swami Holiday Home</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Puro Aali, Sasawane Beach Road, Alibag, Raigad - 402201</p>
+                <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simplified Footer -->
+        <!-- Rest of your page content above -->
+    
+    <!-- Simplified Footer with Hidden Admin Access -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Swami Holiday Home</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Puro Aali, Sasawane Beach Road, Alibag - 402201</p>
+                <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
+                <p><i class="fas fa-envelope"></i> reenamaniyar99@gmail.com</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
+                    <li><a href="facilities.html"><i class="fas fa-chevron-right"></i> Facilities</a></li>
+                    <li><a href="nearby.html"><i class="fas fa-chevron-right"></i> Nearby</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2024 Swami Holiday Home. All rights reserved.</p>
+                <p>Developed with <i class="fas fa-heart" style="color: #ff8a7a;"></i> by Sanskari Rebels</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Book Now Button -->
+    <button class="floating-book" onclick="openBookingModal()">
+        <i class="fas fa-calendar-check"></i>
+    </button>
+
+    <!-- Secret Admin Access - Press A+D+M+I+N in sequence -->
+    <script>
+        // Secret code to open admin panel
+        let pressedKeys = '';
+        const secretCode = 'admin';
+        
+        document.addEventListener('keydown', function(e) {
+            // Convert to lowercase to make it case-insensitive
+            pressedKeys += e.key.toLowerCase();
+            
+            // Keep only last 10 characters
+            if (pressedKeys.length > 10) {
+                pressedKeys = pressedKeys.slice(-10);
+            }
+            
+            // Check if the secret code is in the pressed keys
+            if (pressedKeys.includes(secretCode)) {
+                window.location.href = 'admin.html';
+                pressedKeys = ''; // Reset after triggering
+            }
+        });
+    </script>
+
+    <!-- Booking Modal will be added by JavaScript -->
+<!-- Floating Book Now Button -->
+<button class="floating-book" onclick="openBookingModal()">
+    <i class="fas fa-calendar-check"></i>
+</button>
+
+<script src="js/script.js"></script>
+</body>
+</html>

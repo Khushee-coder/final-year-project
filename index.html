@@ -3,469 +3,448 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swami Holiday Home - Beach Resort Alibag | Online Booking</title>
-    
-    <!-- Fonts -->
+    <title>Swami Holiday Home - Beach Resort Alibag</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Your External CSS Files -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f5e6d3;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #ff8a7a;
+        }
+        
+        .feature-card i {
+            font-size: 2.5rem;
+            color: #ff8a7a;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            color: #0a4d4c;
+            margin-bottom: 10px;
+        }
+        
+        .quick-booking {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin: -30px 0 40px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .booking-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .booking-field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .booking-field label {
+            font-weight: 600;
+            color: #0a4d4c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .booking-field label i {
+            color: #ff8a7a;
+        }
+        
+        .booking-input {
+            padding: 12px;
+            border: 2px solid #f5e6d3;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .btn-book {
+            background: #ff8a7a;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            transition: all 0.3s;
+        }
+        
+        .btn-book:hover {
+            background: #ffb6aa;
+            transform: translateY(-2px);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f5e6d3;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #4a4a48;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #ff8a7a;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .testimonial-info h4 {
+            margin: 0 0 5px;
+            color: #0a4d4c;
+        }
+        
+        .testimonial-rating {
+            color: #ff8a7a;
+        }
+        
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo" onclick="showSection('home')">
-                <div class="logo-icon">
-                    <i class="fas fa-umbrella-beach"></i>
-                </div>
-                <div class="logo-text">
-                    <h1>Swami Holiday Home</h1>
-                    <p>Sasawane Beach, Alibag</p>
-                </div>
+            <div class="logo" onclick="window.location.href='index.html'">
+                <div class="logo-icon"><i class="fas fa-umbrella-beach"></i></div>
+                <div class="logo-text"><h1>Swami Holiday Home</h1><p>Sasawane Beach, Alibag</p></div>
             </div>
-            
             <ul class="nav-menu">
-                <li><a class="nav-link" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
-                <li><a class="nav-link" onclick="showSection('rooms')"><i class="fas fa-bed"></i> Rooms</a></li>
-                <li><a class="nav-link" onclick="showSection('facilities')"><i class="fas fa-concierge-bell"></i> Facilities</a></li>
-                <li><a class="nav-link" onclick="showSection('nearby')"><i class="fas fa-map-marked-alt"></i> Nearby</a></li>
-                <li><a class="nav-link" onclick="showSection('contact')"><i class="fas fa-phone-alt"></i> Contact</a></li>
-                <li><a class="nav-link" onclick="showAdminLogin()"><i class="fas fa-user-shield"></i> Admin</a></li>
-                <li><a class="nav-link book-now" onclick="openBookingModal()"><i class="fas fa-calendar-check"></i> Book Now</a></li>
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="rooms.html" class="nav-link">Rooms</a></li>
+                <li><a href="facilities.html" class="nav-link">Facilities</a></li>
+                <li><a href="nearby.html" class="nav-link">Nearby</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+                
             </ul>
-            
-            <button class="hamburger" onclick="toggleMenu()">
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
+                <span></span><span></span><span></span>
             </button>
         </div>
     </nav>
 
-    <main>
-        <!-- HOME SECTION -->
-        <section id="home" class="section active">
-            <div class="hero">
-                <div class="hero-content">
-                    <h2>Swami Holiday Home</h2>
-                    <div class="hero-location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Puro Aali, Sasawane Beach Road, Alibag - 402201
-                    </div>
-                    <div class="hero-badges">
-                        <span class="hero-badge"><i class="fas fa-snowflake"></i> 4 AC Rooms</span>
-                        <span class="hero-badge"><i class="fas fa-paw"></i> Pet Friendly</span>
-                        <span class="hero-badge"><i class="fas fa-umbrella-beach"></i> 150m to Beach</span>
-                        <span class="hero-badge"><i class="fas fa-utensils"></i> Kokani/Aagri Food</span>
-                    </div>
-                    <div class="hero-contact">
-                        <span><i class="fas fa-clock"></i> Check-in: 12 PM | Check-out: 11 AM</span>
-                        <span><i class="fas fa-tag"></i> <span id="heroPrice">₹2,500</span> per person</span>
-                        <span><i class="fas fa-phone-alt"></i> +91 91460 54013</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container">
-                <div class="quick-booking">
-                    <h3><i class="fas fa-calendar-alt"></i> Book Your Stay Online</h3>
-                    <div class="booking-grid">
-                        <div class="booking-field">
-                            <label><i class="fas fa-calendar-plus"></i> Check-in</label>
-                            <input type="date" id="quickCheckIn" class="booking-input">
-                        </div>
-                        <div class="booking-field">
-                            <label><i class="fas fa-calendar-minus"></i> Check-out</label>
-                            <input type="date" id="quickCheckOut" class="booking-input">
-                        </div>
-                        <div class="booking-field">
-                            <label><i class="fas fa-user-friends"></i> Guests</label>
-                            <select id="quickGuests" class="booking-input">
-                                <option value="1">1 Person</option>
-                                <option value="2" selected>2 Persons</option>
-                                <option value="3">3 Persons</option>
-                                <option value="4">4 Persons</option>
-                            </select>
-                        </div>
-                        <div class="booking-field">
-                            <label><i class="fas fa-bed"></i> Room</label>
-                            <select id="quickRoom" class="booking-input">
-                                <option value="ac">AC Room</option>
-                                <option value="pet">AC Room (Pet Friendly)</option>
-                            </select>
-                        </div>
-                        <div class="booking-field">
-                            <button class="btn-book-now" onclick="quickBook()">
-                                <i class="fas fa-bolt"></i> Check Availability & Book
-                            </button>
-                        </div>
-                    </div>
-                    <div class="date-note">
-                        <i class="fas fa-info-circle"></i> Bookings available for next 4 months only
-                    </div>
-                </div>
-
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <i class="fas fa-bed"></i>
-                        <h3>4</h3>
-                        <p>AC Rooms</p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-paw"></i>
-                        <h3>Pet</h3>
-                        <p>Friendly</p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-umbrella-beach"></i>
-                        <h3>150m</h3>
-                        <p>To Beach</p>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-rupee-sign"></i>
-                        <h3 id="statPrice">₹2.5k</h3>
-                        <p>Per Person</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ROOMS SECTION -->
-        <section id="rooms" class="section container">
-            <div class="section-header">
-                <h2 class="section-title">Our AC Rooms</h2>
-                <p class="section-subtitle">4 comfortable air-conditioned rooms • Pet friendly available</p>
-            </div>
-
-            <div class="rooms-grid" id="roomsGrid"></div>
-
-            <div class="availability-section">
-                <h3><i class="fas fa-calendar-check"></i> Room Availability</h3>
-                <div class="room-availability-grid" id="availabilityGrid"></div>
-            </div>
-        </section>
-
-        <!-- FACILITIES SECTION -->
-        <section id="facilities" class="section container">
-            <div class="section-header">
-                <h2 class="section-title">Facilities & Amenities</h2>
-                <p class="section-subtitle">Everything you need for a perfect beach vacation</p>
-            </div>
-
-            <div class="facilities-grid">
-                <div class="facility-card">
-                    <h3><i class="fas fa-building"></i> Property Amenities</h3>
-                    <div style="display: grid; gap: 1rem;">
-                        <div><i class="fas fa-swimming-pool" style="color: var(--success);"></i> Swimming Pool</div>
-                        <div><i class="fas fa-utensils" style="color: var(--success);"></i> In-house Restaurant</div>
-                        <div><i class="fas fa-parking" style="color: var(--success);"></i> Car Parking</div>
-                        <div><i class="fas fa-wifi" style="color: var(--success);"></i> Free WiFi</div>
-                        <div><i class="fas fa-bolt" style="color: var(--success);"></i> Inverter Backup</div>
-                        <div><i class="fas fa-snowflake" style="color: var(--success);"></i> Air Conditioning</div>
-                        <div><i class="fas fa-tv" style="color: var(--success);"></i> Flat Screen TV</div>
-                        <div><i class="fas fa-hot-tub" style="color: var(--success);"></i> 24/7 Hot Water</div>
-                    </div>
-                </div>
-
-                <div class="facility-card">
-                    <h3><i class="fas fa-utensils"></i> Food & Dining</h3>
-                    <div id="foodItemsDisplay"></div>
-                    <p style="margin-top: 1rem; color: var(--coral);"><i class="fas fa-heart"></i> Authentic Kokani & Aagri Cuisine</p>
-                </div>
-
-                <div class="facility-card">
-                    <h3><i class="fas fa-gamepad"></i> Indoor Games</h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                        <div class="game-item"><i class="fas fa-chess-board"></i><br>Carrom</div>
-                        <div class="game-item"><i class="fas fa-chess"></i><br>Chess</div>
-                        <div class="game-item"><i class="fas fa-baseball-ball"></i><br>Bat & Ball</div>
-                        <div class="game-item"><i class="fas fa-dice"></i><br>Ludo</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- NEARBY SECTION -->
-        <section id="nearby" class="section container">
-            <div class="section-header">
-                <h2 class="section-title">Nearby Attractions</h2>
-                <p class="section-subtitle">Explore the beauty of Alibag from our villa</p>
-            </div>
-
-            <div class="nearby-grid" id="nearbyGrid"></div>
-        </section>
-
-        <!-- CONTACT SECTION -->
-        <section id="contact" class="section container">
-            <div class="section-header">
-                <h2 class="section-title">Contact & Location</h2>
-                <p class="section-subtitle">Get in touch for any inquiries</p>
-            </div>
-
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <i class="fas fa-phone-alt"></i>
-                    <h4>Call Us</h4>
-                    <p>+91 91460 54013</p>
-                    <p style="color: var(--coral);">Available 24/7</p>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-envelope"></i>
-                    <h4>Email</h4>
-                    <p>reenamaniyar99@gmail.com</p>
-                    <p style="color: var(--coral);">Reply within 24h</p>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h4>Address</h4>
-                    <p>Puro Aali, Sasawane Beach Road</p>
-                    <p style="color: var(--coral);">Alibag, Raigad - 402201</p>
-                </div>
-                <div class="contact-card">
-                    <i class="fas fa-clock"></i>
-                    <h4>Check-in/out</h4>
-                    <p>Check-in: 12:00 PM</p>
-                    <p style="color: var(--coral);">Check-out: 11:00 AM</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- ADMIN LOGIN MODAL -->
-    <div class="admin-login-modal" id="adminLoginModal">
-        <div class="admin-login-box">
-            <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
-            <input type="password" id="adminPassword" placeholder="Enter Admin Password" onkeypress="if(event.key==='Enter') checkAdminLogin()">
-            <button class="btn btn-primary" onclick="checkAdminLogin()" style="width: 100%; padding: 1rem;">
-                <i class="fas fa-sign-in-alt"></i> Login
-            </button>
-            <p style="margin-top: 1rem; color: var(--medium-gray);">Demo Password: admin123</p>
-            <button class="btn" onclick="closeAdminLogin()" style="margin-top: 1rem;">Cancel</button>
+    <!-- Hero Section - NO CURSOR -->
+<section class="hero">
+    <div class="hero-content">
+        <h2>Swami Holiday Home</h2>
+        <div class="hero-location">
+            <i class="fas fa-map-marker-alt"></i> Puro Aali, Sasawane Beach Road, Alibag - 402201
+        </div>
+        <div class="hero-badges">
+            <span class="hero-badge"><i class="fas fa-snowflake"></i> 4 AC Rooms</span>
+            <span class="hero-badge"><i class="fas fa-paw"></i> Pet Friendly</span>
+            <span class="hero-badge"><i class="fas fa-umbrella-beach"></i> 150m to Beach</span>
+            <span class="hero-badge"><i class="fas fa-utensils"></i> Meals Included</span>
+        </div>
+        <div class="hero-contact">
+            <span><i class="fas fa-clock"></i> Check-in: 12 PM | Check-out: 11 AM</span>
+            <span><i class="fas fa-tag"></i> ₹2,500 per person</span>
+            <span><i class="fas fa-phone-alt"></i> +91 91460 54013</span>
         </div>
     </div>
+</section>
 
-    <!-- ADMIN PANEL -->
+
     <div class="container">
-        <div class="admin-panel" id="adminPanel">
-            <div class="admin-header">
-                <h3>
-                    <i class="fas fa-user-shield"></i>
-                    Admin Dashboard
-                </h3>
-                <button class="btn btn-danger" onclick="logoutAdmin()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-
-            <div class="admin-stats">
-                <div class="stat-card">
-                    <h4 id="totalBookings">0</h4>
-                    <p>Total Bookings</p>
-                </div>
-                <div class="stat-card">
-                    <h4 id="totalRevenue">₹0</h4>
-                    <p>Total Revenue</p>
-                </div>
-                <div class="stat-card">
-                    <h4 id="availableRooms">4</h4>
-                    <p>Available Rooms</p>
-                </div>
-                <div class="stat-card">
-                    <h4 id="occupiedRooms">0</h4>
-                    <p>Occupied Rooms</p>
-                </div>
-            </div>
-
-            <div class="admin-tabs">
-                <button class="admin-tab active" onclick="switchAdminTab('bookings')">📋 Bookings</button>
-                <button class="admin-tab" onclick="switchAdminTab('rooms')">🛏️ Room Status</button>
-                <button class="admin-tab" onclick="switchAdminTab('pricing')">💰 Pricing & Food</button>
-            </div>
-
-            <div class="tab-content active" id="bookingsTab">
-                <h4>All Bookings</h4>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>Guest Name</th>
-                            <th>Phone</th>
-                            <th>Room</th>
-                            <th>Check-in</th>
-                            <th>Check-out</th>
-                            <th>Guests</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bookingsTableBody"></tbody>
-                </table>
-            </div>
-
-            <div class="tab-content" id="roomsTab">
-                <h4>Room Availability Status</h4>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Room</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th>Status</th>
-                            <th>Current Guest</th>
-                            <th>Check-in</th>
-                            <th>Check-out</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="roomsTableBody"></tbody>
-                </table>
-            </div>
-
-            <div class="tab-content" id="pricingTab">
-                <h4>Manage Prices & Food Items</h4>
-                <div class="pricing-grid">
-                    <div>
-                        <h5>Room Prices</h5>
-                        <div class="price-input-group">
-                            <label>AC Room:</label>
-                            <input type="number" id="acPrice" value="2500" min="500" max="10000">
-                            <span>/person</span>
-                        </div>
-                        <div class="price-input-group">
-                            <label>Pet Room:</label>
-                            <input type="number" id="petPrice" value="2500" min="500" max="10000">
-                            <span>/person</span>
-                        </div>
+        <!-- Gallery Carousel -->
+<section class="gallery-section">
+    <div class="container">
+        <h2 class="section-heading" style="text-align:center; margin-bottom:30px;">
+            <i class="fas fa-images" style="color: #ff8a7a;"></i> Our Gallery
+        </h2>
+        
+        <div class="carousel-wrapper">
+            <div class="carousel-container">
+                <div class="carousel-slide" id="carouselSlide">
+                    <div class="carousel-item">
+                        <img src="images/v1.jpeg" alt="Swimming Pool" loading="lazy">
                     </div>
-                    
-                    <div>
-                        <h5>Food Items <span style="font-size: 0.8rem; color: var(--coral);">(Kokani/Aagri Cuisine)</span></h5>
-                        <button class="btn-add-food" onclick="addNewFoodItem()">
-                            <i class="fas fa-plus"></i> Add New Food Item
-                        </button>
-                        <div class="food-items-list" id="foodItemsAdmin"></div>
+                    <div class="carousel-item">
+                        <img src="images/v2.jpeg" alt="AC Room" loading="lazy">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/v3.jpeg" alt="Restaurant" loading="lazy">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/v4.jpeg" alt="Sasawane Beach" loading="lazy">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/sp.jpeg" alt="Hotel Exterior" loading="lazy">
                     </div>
                 </div>
                 
-                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                    <button class="btn btn-edit" onclick="resetToDefault()">
-                        <i class="fas fa-undo"></i> Reset
+                <!-- NO onclick ATTRIBUTES -->
+                <button class="carousel-btn prev-btn">❮</button>
+                <button class="carousel-btn next-btn">❯</button>
+                
+                <div class="carousel-dots">
+                    <span class="dot active-dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+            
+            <!-- Navigation Buttons -->
+            <button class="carousel-btn prev-btn" onclick="moveSlide(-1)">❮</button>
+            <button class="carousel-btn next-btn" onclick="moveSlide(1)">❯</button>
+            
+            <!-- Dots Indicator -->
+            <div class="carousel-dots" id="carouselDots">
+                <span class="dot active-dot" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
+            </div>
+        </div>
+    </div>
+</section>
+        <!-- Quick Booking -->
+        <div class="quick-booking">
+            <h3 style="color: #0a4d4c;"><i class="fas fa-calendar-alt" style="color: #ff8a7a;"></i> Book Your Stay Online</h3>
+            <div class="booking-grid">
+                <div class="booking-field">
+                    <label><i class="fas fa-calendar-plus"></i> Check-in</label>
+                    <input type="date" id="homeCheckIn" class="booking-input">
+                </div>
+                <div class="booking-field">
+                    <label><i class="fas fa-calendar-minus"></i> Check-out</label>
+                    <input type="date" id="homeCheckOut" class="booking-input">
+                </div>
+                <div class="booking-field">
+                    <label><i class="fas fa-user-friends"></i> Guests</label>
+                    <select id="homeGuests" class="booking-input">
+                        <option value="1">1 Person</option>
+                        <option value="2" selected>2 Persons</option>
+                        <option value="3">3 Persons</option>
+                        <option value="4">4 Persons</option>
+                    </select>
+                </div>
+                <div class="booking-field">
+                    <label><i class="fas fa-bed"></i> Room</label>
+                    <select id="homeRoom" class="booking-input">
+                        <option value="ac">AC Room</option>
+                        <option value="pet">Pet Friendly Room</option>
+                    </select>
+                </div>
+                <div class="booking-field">
+                    <button class="btn-book" onclick="quickBookFromHome()">
+                        <i class="fas fa-bolt"></i> Check Availability
                     </button>
-                    <button class="btn btn-save" onclick="saveAdminChanges()">
-                        <i class="fas fa-save"></i> Save Changes
-                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-bed"></i>
+                <h3>4</h3>
+                <p>AC Rooms</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-paw"></i>
+                <h3>Pet</h3>
+                <p>Friendly</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-umbrella-beach"></i>
+                <h3>150m</h3>
+                <p>To Beach</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-rupee-sign"></i>
+                <h3>₹2.5k</h3>
+                <p>Per Person</p>
+            </div>
+        </div>
+
+        <!-- Why Choose Us -->
+        <h2 class="section-heading" style="margin-top: 40px;">Why Choose Us</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-swimming-pool"></i>
+                <h3>Swimming Pool</h3>
+                <p>Clean and maintained pool for guests</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-utensils"></i>
+                <h3>Free Meals</h3>
+                <p>Breakfast, lunch & dinner included</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-umbrella-beach"></i>
+                <h3>Beach Access</h3>
+                <p>Just 150 meters from Sasawane Beach</p>
+            </div>
+        </div>
+
+        <!-- Featured Rooms -->
+        <h2 class="section-heading">Our Rooms</h2>
+        <div class="rooms-grid">
+            <div class="room-card">
+                <div class="room-image" style="background: linear-gradient(135deg, #0a4d4c, #1e7a76); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-snowflake"></i>
+                </div>
+                <div class="room-content">
+                    <h3 class="room-title">AC Room</h3>
+                    <div class="room-price">₹2,500 <span>/person</span></div>
+                    <ul class="room-features">
+                        <li><i class="fas fa-check"></i> Air Conditioned</li>
+                        <li><i class="fas fa-check"></i> Flat Screen TV</li>
+                        <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
+                        <li><i class="fas fa-check"></i> Free WiFi</li>
+                    </ul>
+                    <div class="room-footer">
+                        <span class="room-status available"><i class="fas fa-circle"></i> Available</span>
+                        <a href="rooms.html" class="btn btn-accent">View Details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="room-card">
+                <div class="room-image" style="background: linear-gradient(135deg, #0a4d4c, #1e7a76); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <div class="room-content">
+                    <h3 class="room-title">Pet Friendly Room</h3>
+                    <div class="room-price">₹2,500 <span>/person</span></div>
+                    <ul class="room-features">
+                        <li><i class="fas fa-check"></i> Air Conditioned</li>
+                        <li><i class="fas fa-check"></i> Flat Screen TV</li>
+                        <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
+                        <li><i class="fas fa-paw"></i> Pets Allowed</li>
+                    </ul>
+                    <div class="room-footer">
+                        <span class="room-status available"><i class="fas fa-circle"></i> Available</span>
+                        <a href="rooms.html" class="btn btn-accent">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <h2 class="section-heading">Guest Reviews</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Amazing beachside property! Very clean rooms and delicious food. The host was very friendly and helpful."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">RK</div>
+                    <div class="testimonial-info">
+                        <h4>Rajesh Kumar</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Perfect getaway! Just 2 mins from the beach. Pet friendly too! Our dog loved the beach walk."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">PS</div>
+                    <div class="testimonial-info">
+                        <h4>Priya Sharma</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Great location, value for money. All meals included in the price. Will visit again!"</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">AP</div>
+                    <div class="testimonial-info">
+                        <h4>Amit Patel</h4>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- BOOKING MODAL -->
-    <div class="modal" id="bookingModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-calendar-check"></i> Complete Your Booking</h3>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="bookingForm" onsubmit="processBooking(event)">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-bed"></i> Room Type</label>
-                            <select id="modalRoomType" class="form-select" required>
-                                <option value="ac">AC Room - <span id="acPriceDisplay">₹2,500</span>/person</option>
-                                <option value="pet">AC Room (Pet Friendly) - <span id="petPriceDisplay">₹2,500</span>/person</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-user-friends"></i> Guests</label>
-                            <select id="modalGuests" class="form-select" required>
-                                <option value="1">1 Guest</option>
-                                <option value="2" selected>2 Guests</option>
-                                <option value="3">3 Guests</option>
-                                <option value="4">4 Guests</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-calendar-plus"></i> Check-in Date</label>
-                            <input type="date" id="modalCheckIn" class="form-input" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-calendar-minus"></i> Check-out Date</label>
-                            <input type="date" id="modalCheckOut" class="form-input" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-user"></i> Full Name</label>
-                            <input type="text" id="guestName" class="form-input" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-phone"></i> Phone Number</label>
-                            <input type="tel" id="guestPhone" class="form-input" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
-                            <input type="email" id="guestEmail" class="form-input">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label"><i class="fas fa-paw"></i> Pet</label>
-                            <select id="guestPet" class="form-select">
-                                <option value="no">No pet</option>
-                                <option value="yes">Yes, bringing pet</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"><i class="fas fa-comment"></i> Special Requests</label>
-                        <textarea id="specialRequests" class="form-textarea" rows="3" placeholder="Any dietary preferences, pet details, or special requirements..."></textarea>
-                    </div>
-
-                    <div class="booking-summary" id="bookingSummary"></div>
-
-                    <button type="submit" class="btn btn-accent" style="width: 100%; padding: 1.25rem;">
-                        <i class="fas fa-lock"></i> Confirm Booking
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- CONFIRMATION MODAL -->
-    <div class="modal" id="confirmationModal">
-        <div class="modal-content" style="max-width: 500px; text-align: center;">
-            <div class="modal-header" style="background: var(--success);">
-                <h3><i class="fas fa-check-circle"></i> Booking Confirmed!</h3>
-                <button class="modal-close" onclick="closeConfirmationModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div style="font-size: 4rem; color: var(--success); margin: 2rem 0;">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <h4>Thank You, <span id="confirmGuestName"></span>!</h4>
-                <div id="confirmationDetails" style="background: var(--cream); padding: 1.5rem; border-radius: var(--radius-md); margin: 2rem 0; text-align: left; border-left: 4px solid var(--coral);"></div>
-                <button class="btn btn-primary" onclick="closeConfirmationModal(); showSection('home')">Return to Home</button>
-            </div>
-        </div>
-    </div>
-
+    <!-- Simplified Footer -->
+        <!-- Rest of your page content above -->
+    
+    <!-- Simplified Footer with Hidden Admin Access -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -473,35 +452,128 @@
                 <p><i class="fas fa-map-marker-alt"></i> Puro Aali, Sasawane Beach Road, Alibag - 402201</p>
                 <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
                 <p><i class="fas fa-envelope"></i> reenamaniyar99@gmail.com</p>
-            </div>
-            <div class="footer-section">
-                <h4>Check-in/out</h4>
-                <p><i class="fas fa-clock"></i> Check-in: 12:00 PM</p>
-                <p><i class="fas fa-clock"></i> Check-out: 11:00 AM</p>
-                <p><i class="fas fa-tag"></i> <span id="footerPrice">₹2,500</span> per person</p>
-                <p><i class="fas fa-paw"></i> Pet Friendly</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                </div>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
-                <p><a onclick="showSection('rooms')"><i class="fas fa-chevron-right"></i> Rooms</a></p>
-                <p><a onclick="showSection('facilities')"><i class="fas fa-chevron-right"></i> Facilities</a></p>
-                <p><a onclick="showSection('nearby')"><i class="fas fa-chevron-right"></i> Nearby</a></p>
-                <p><a onclick="showSection('contact')"><i class="fas fa-chevron-right"></i> Contact</a></p>
-            </div>
-            <div class="footer-section">
-                <h4>Follow Us</h4>
-                <p><i class="fab fa-instagram"></i> @swamiholidayhome</p>
-                <p><i class="fab fa-facebook"></i> Swami Holiday Home</p>
-                <p><i class="fab fa-tripadvisor"></i> Swami Holiday Home</p>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
+                    <li><a href="facilities.html"><i class="fas fa-chevron-right"></i> Facilities</a></li>
+                    <li><a href="nearby.html"><i class="fas fa-chevron-right"></i> Nearby</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 Swami Holiday Home | Beach Resort Alibag</p>
-            <p>Made with <i class="fas fa-heart" style="color: var(--coral);"></i> by the beach</p>
+            <div class="footer-bottom-content">
+                <p>&copy; 2024 Swami Holiday Home. All rights reserved.</p>
+                <p>Developed with <i class="fas fa-heart" style="color: #ff8a7a;"></i> by Sanskari Rebels</p>
+            </div>
         </div>
     </footer>
 
-    <!-- Your External JavaScript Files -->
-    <script src="script.js"></script>
+    <!-- Floating Book Now Button -->
+    <button class="floating-book" onclick="openBookingModal()">
+        <i class="fas fa-calendar-check"></i>
+    </button>
+
+    <!-- Secret Admin Access - Press A+D+M+I+N in sequence -->
+    <script>
+        // Secret code to open admin panel
+        let pressedKeys = '';
+        const secretCode = 'admin';
+        
+        document.addEventListener('keydown', function(e) {
+            // Convert to lowercase to make it case-insensitive
+            pressedKeys += e.key.toLowerCase();
+            
+            // Keep only last 10 characters
+            if (pressedKeys.length > 10) {
+                pressedKeys = pressedKeys.slice(-10);
+            }
+            
+            // Check if the secret code is in the pressed keys
+            if (pressedKeys.includes(secretCode)) {
+                window.location.href = 'admin.html';
+                pressedKeys = ''; // Reset after triggering
+            }
+        });
+    </script>
+
+    <!-- Floating Book Now Button -->
+    <button class="floating-book" onclick="openBookingModal()">
+        <i class="fas fa-calendar-check"></i>
+    </button>
+
+    <!-- Booking Modal (include from previous files) -->
+    <!-- ... -->
+
+    <script src="js/script.js"></script>
+    <script>
+        function quickBookFromHome() {
+            const checkIn = document.getElementById('homeCheckIn').value;
+            const checkOut = document.getElementById('homeCheckOut').value;
+            const guests = document.getElementById('homeGuests').value;
+            const room = document.getElementById('homeRoom').value;
+            
+            if (!checkIn || !checkOut) {
+                alert('Please select check-in and check-out dates');
+                return;
+            }
+            
+            openBookingModal();
+            
+            // Small delay to ensure modal is open
+            setTimeout(() => {
+                if (document.getElementById('modalCheckIn')) {
+                    document.getElementById('modalCheckIn').value = checkIn;
+                }
+                if (document.getElementById('modalCheckOut')) {
+                    document.getElementById('modalCheckOut').value = checkOut;
+                }
+                if (document.getElementById('modalGuests')) {
+                    document.getElementById('modalGuests').value = guests;
+                }
+                if (document.getElementById('modalRoomType')) {
+                    document.getElementById('modalRoomType').value = room;
+                }
+                if (typeof updateBookingSummary === 'function') {
+                    updateBookingSummary();
+                }
+            }, 100);
+        }
+        
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const checkIn = document.getElementById('homeCheckIn');
+            const checkOut = document.getElementById('homeCheckOut');
+            
+            if (checkIn) {
+                checkIn.value = today.toISOString().split('T')[0];
+                checkIn.min = today.toISOString().split('T')[0];
+            }
+            if (checkOut) {
+                checkOut.value = tomorrow.toISOString().split('T')[0];
+                checkOut.min = tomorrow.toISOString().split('T')[0];
+            }
+        });
+    </script>
+    <!-- Booking Modal will be added by JavaScript -->
+<!-- Floating Book Now Button -->
+<button class="floating-book" onclick="openBookingModal()">
+    <i class="fas fa-calendar-check"></i>
+</button>
+
+<script src="js/script.js"></script>
 </body>
 </html>

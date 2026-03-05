@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Swami Holiday Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .admin-login-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-login-box {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .cancel-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f5f1ea;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a4a48;
+            transition: all 0.3s;
+        }
+        
+        .cancel-btn:hover {
+            background: #f44336;
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        .admin-login-box h2 {
+            color: #0a4d4c;
+            margin-bottom: 30px;
+        }
+        
+        .admin-login-box input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: 2px solid #f5e6d3;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .admin-login-box input:focus {
+            border-color: #ff8a7a;
+            outline: none;
+        }
+        
+        .admin-panel {
+            display: none;
+            padding: 20px;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .admin-header h2 {
+            color: #0a4d4c;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-header h2 i {
+            color: #ff8a7a;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .stat-card i {
+            font-size: 2rem;
+            color: #ff8a7a;
+        }
+        
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #0a4d4c;
+            margin: 10px 0 5px;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #f5e6d3;
+            padding-bottom: 10px;
+        }
+        
+        .admin-tab {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #8b8a88;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab:hover {
+            color: #ff8a7a;
+        }
+        
+        .admin-tab.active {
+            background: #ff8a7a;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th {
+            background: #0a4d4c;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f5e6d3;
+        }
+        
+        .data-table tr:hover {
+            background: #f5f1ea;
+        }
+        
+        .admin-item-group {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f5f1ea;
+            border-radius: 8px;
+            align-items: center;
+        }
+        
+        .food-veg-group {
+            grid-template-columns: 2fr 1fr 1fr auto;
+        }
+        
+        .nearby-group {
+            grid-template-columns: 2fr 1fr 2fr 1fr 2fr auto;
+        }
+        
+        .admin-item-group input,
+        .admin-item-group textarea,
+        .admin-item-group select {
+            padding: 8px;
+            border: 1px solid #f5e6d3;
+            border-radius: 4px;
+            width: 100%;
+        }
+        
+        .admin-item-group input:focus,
+        .admin-item-group select:focus {
+            border-color: #ff8a7a;
+            outline: none;
+        }
+        
+        .btn-add {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .btn-add:hover {
+            background: #45a049;
+        }
+        
+        .btn-save {
+            background: #ff8a7a;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        
+        .btn-save:hover {
+            background: #ffb6aa;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+        
+        .section-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .veg-badge {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .nonveg-badge {
+            background: #f44336;
+            color: white;
+        }
+        
+        .back-to-site {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .back-to-site a {
+            color: #8b8a88;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .back-to-site a:hover {
+            color: #ff8a7a;
+        }
+        
+        @media (max-width: 768px) {
+            .admin-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .admin-item-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .admin-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+    <div class="nav-container">
+        <div class="logo" onclick="window.location.href='index.html'">
+            <div class="logo-icon"><i class="fas fa-umbrella-beach"></i></div>
+            <div class="logo-text"><h1>Swami Holiday Home</h1><p>Admin Panel</p></div>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <!-- Admin link removed - only accessible via secret code -->
+        </ul>
+        <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+    <div class="container">
+        <!-- Login Modal with Cancel Button -->
+        <div class="admin-login-modal" id="adminLoginModal">
+            <div class="admin-login-box">
+                <button class="cancel-btn" onclick="goBackToSite()"><i class="fas fa-times"></i></button>
+                <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
+                <input type="password" id="adminPassword" placeholder="Enter Password">
+                <button class="btn btn-primary" onclick="checkAdminLogin()" style="width:100%; padding:12px; background:#0a4d4c; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer;">Login</button>
+                <p style="margin-top: 15px; color: #8b8a88;">Demo Password: admin123</p>
+                <div class="back-to-site">
+                    <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div class="admin-panel" id="adminDashboard">
+            <div class="admin-header">
+                <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                <div>
+                    <button class="btn" onclick="window.location.href='index.html'" style="background:#8b8a88; color:white; margin-right:10px;">View Site</button>
+                    <button class="btn btn-danger" onclick="logoutAdmin()" style="background:#f44336; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Logout</button>
+                </div>
+            </div>
+
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3 id="totalBookings">0</h3>
+                    <p>Total Bookings</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-rupee-sign"></i>
+                    <h3 id="totalRevenue">₹0</h3>
+                    <p>Total Revenue</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-bed"></i>
+                    <h3 id="availableRooms">4</h3>
+                    <p>Available Rooms</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users"></i>
+                    <h3 id="totalGuests">0</h3>
+                    <p>Total Guests</p>
+                </div>
+            </div>
+
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('bookings')">📋 Bookings</button>
+                <button class="admin-tab" onclick="switchAdminTab('rooms')">🛏️ Rooms</button>
+                <button class="admin-tab" onclick="switchAdminTab('prices')">💰 Prices</button>
+                <button class="admin-tab" onclick="switchAdminTab('vegfood')">🥬 Veg Food</button>
+                <button class="admin-tab" onclick="switchAdminTab('nonvegfood')">🍗 Non-Veg Food</button>
+                <button class="admin-tab" onclick="switchAdminTab('facilities')">🏊 Facilities</button>
+                <button class="admin-tab" onclick="switchAdminTab('nearby')">📍 Nearby</button>
+                <button class="admin-tab" onclick="switchAdminTab('games')">🎮 Games</button>
+            </div>
+
+            <!-- Bookings Tab -->
+            <div class="tab-content active" id="bookingsTab">
+                <h3>All Bookings</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Guest Name</th>
+                            <th>Phone</th>
+                            <th>Room</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTable">
+                        <tr><td colspan="7" style="text-align:center;">No bookings yet</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Rooms Tab -->
+            <div class="tab-content" id="roomsTab">
+                <h3>Room Status</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Room</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Current Guest</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="roomsTable"></tbody>
+                </table>
+            </div>
+
+            <!-- Prices Tab -->
+            <div class="tab-content" id="pricesTab">
+                <h3>Manage Prices</h3>
+                <div style="max-width: 400px;">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600; color:#0a4d4c;">AC Room Price (per person)</label>
+                        <input type="number" id="acPrice" style="width:100%; padding:10px; border:2px solid #f5e6d3; border-radius:8px;" value="2500">
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <label style="display:block; margin-bottom:5px; font-weight:600; color:#0a4d4c;">Pet Room Price (per person)</label>
+                        <input type="number" id="petPrice" style="width:100%; padding:10px; border:2px solid #f5e6d3; border-radius:8px;" value="2500">
+                    </div>
+                    <button onclick="savePrices()" style="background:#ff8a7a; color:white; border:none; padding:12px 30px; border-radius:8px; font-weight:600; cursor:pointer;">Save Prices</button>
+                </div>
+            </div>
+
+            <!-- Veg Food Tab -->
+            <div class="tab-content" id="vegfoodTab">
+                <h3>Manage Vegetarian Food Items <span class="section-badge veg-badge">Pure Veg</span></h3>
+                <button class="btn-add" onclick="addVegFoodItem()"><i class="fas fa-plus"></i> Add Veg Item</button>
+                <div id="vegFoodItemsList"></div>
+                <button class="btn-save" onclick="saveVegFoodItems()">Save Changes</button>
+            </div>
+
+            <!-- Non-Veg Food Tab -->
+            <div class="tab-content" id="nonvegfoodTab">
+                <h3>Manage Non-Veg Food Items <span class="section-badge nonveg-badge">Contains Meat</span></h3>
+                <button class="btn-add" onclick="addNonVegFoodItem()"><i class="fas fa-plus"></i> Add Non-Veg Item</button>
+                <div id="nonVegFoodItemsList"></div>
+                <button class="btn-save" onclick="saveNonVegFoodItems()">Save Changes</button>
+            </div>
+
+            <!-- Facilities Tab -->
+            <div class="tab-content" id="facilitiesTab">
+                <h3>Manage Facilities</h3>
+                <button class="btn-add" onclick="addFacility()"><i class="fas fa-plus"></i> Add Facility</button>
+                <div id="facilitiesList"></div>
+                <button class="btn-save" onclick="saveFacilities()">Save Changes</button>
+            </div>
+
+            <!-- Nearby Tab -->
+            <div class="tab-content" id="nearbyTab">
+                <h3>Manage Nearby Places</h3>
+                <button class="btn-add" onclick="addNearbyPlace()"><i class="fas fa-plus"></i> Add Place</button>
+                <div id="nearbyList"></div>
+                <button class="btn-save" onclick="saveNearbyPlaces()">Save Changes</button>
+            </div>
+
+            <!-- Games Tab -->
+            <div class="tab-content" id="gamesTab">
+                <h3>Manage Indoor Games</h3>
+                <button class="btn-add" onclick="addGame()"><i class="fas fa-plus"></i> Add Game</button>
+                <div id="gamesList"></div>
+                <button class="btn-save" onclick="saveGames()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simplified Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Swami Holiday Home</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Puro Aali, Sasawane Beach Road, Alibag - 402201</p>
+                <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
+                <p><i class="fas fa-envelope"></i> reenamaniyar99@gmail.com</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
+                    <li><a href="facilities.html"><i class="fas fa-chevron-right"></i> Facilities</a></li>
+                    <li><a href="nearby.html"><i class="fas fa-chevron-right"></i> Nearby</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    <!-- Hidden admin link - only visible in code, not on page -->
+<a href="admin.html" style="display:none;">Admin</a>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2024 Swami Holiday Home. All rights reserved.</p>
+                <p>Developed with <i class="fas fa-heart" style="color: #ff8a7a;"></i> by Sanskari Rebels</p>
+            </div>
+        </div>
+        <script>
+    // Press 'A' + 'D' + 'M' + 'I' + 'N' to open admin
+    let secretCode = '';
+    document.addEventListener('keyup', function(e) {
+        secretCode += e.key;
+        if (secretCode.includes('ADMIN')) {
+            window.location.href = 'admin.html';
+            secretCode = '';
+        }
+        if (secretCode.length > 10) secretCode = '';
+    });
+</script>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Function to go back to site from login modal
+        function goBackToSite() {
+            window.location.href = 'index.html';
+        }
+        
+        // Check if user is already logged in (from session)
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+            if (isLoggedIn) {
+                document.getElementById('adminLoginModal').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                if (typeof loadAdminData === 'function') loadAdminData();
+            }
+        });
+    </script>
+</body>
+</html>

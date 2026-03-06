@@ -163,6 +163,7 @@
             border-radius: 12px;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
         }
         
         .tab-content.active {
@@ -207,6 +208,11 @@
         
         .nearby-group {
             grid-template-columns: 2fr 1fr 2fr 1fr 2fr auto;
+        }
+        
+        .enquiry-group {
+            grid-template-columns: 1fr 2fr 1fr auto;
+            align-items: start;
         }
         
         .admin-item-group input,
@@ -264,10 +270,45 @@
             padding: 6px 12px;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 0.9rem;
         }
         
         .btn-danger:hover {
             background: #d32f2f;
+        }
+        
+        .btn-success {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-success:hover {
+            background: #45a049;
+        }
+        
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
         }
         
         .section-badge {
@@ -286,6 +327,24 @@
         
         .nonveg-badge {
             background: #f44336;
+            color: white;
+        }
+        
+        .enquiry-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .status-replied {
+            background: #4caf50;
             color: white;
         }
         
@@ -308,6 +367,18 @@
             color: #ff8a7a;
         }
         
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #8b8a88;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: #f5e6d3;
+            margin-bottom: 15px;
+        }
+        
         @media (max-width: 768px) {
             .admin-stats {
                 grid-template-columns: repeat(2, 1fr);
@@ -326,20 +397,19 @@
 </head>
 <body>
     <nav class="navbar">
-    <div class="nav-container">
-        <div class="logo" onclick="window.location.href='index.html'">
-            <div class="logo-icon"><i class="fas fa-umbrella-beach"></i></div>
-            <div class="logo-text"><h1>Swami Holiday Home</h1><p>Admin Panel</p></div>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <div class="logo-icon"><i class="fas fa-umbrella-beach"></i></div>
+                <div class="logo-text"><h1>Swami Holiday Home</h1><p>Admin Panel</p></div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">← Back to Home</a></li>
+            </ul>
+            <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
+                <span></span><span></span><span></span>
+            </button>
         </div>
-        <ul class="nav-menu">
-            <li><a href="index.html" class="nav-link">Home</a></li>
-            <!-- Admin link removed - only accessible via secret code -->
-        </ul>
-        <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</nav>
+    </nav>
 
     <div class="container">
         <!-- Login Modal with Cancel Button -->
@@ -361,7 +431,7 @@
             <div class="admin-header">
                 <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
                 <div>
-                    <button class="btn" onclick="window.location.href='index.html'" style="background:#8b8a88; color:white; margin-right:10px;">View Site</button>
+                    <button class="btn" onclick="window.location.href='index.html'" style="background:#8b8a88; color:white; margin-right:10px; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">View Site</button>
                     <button class="btn btn-danger" onclick="logoutAdmin()" style="background:#f44336; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Logout</button>
                 </div>
             </div>
@@ -383,14 +453,15 @@
                     <p>Available Rooms</p>
                 </div>
                 <div class="stat-card">
-                    <i class="fas fa-users"></i>
-                    <h3 id="totalGuests">0</h3>
-                    <p>Total Guests</p>
+                    <i class="fas fa-envelope"></i>
+                    <h3 id="totalEnquiries">0</h3>
+                    <p>Contact Enquiries</p>
                 </div>
             </div>
 
             <div class="admin-tabs">
                 <button class="admin-tab active" onclick="switchAdminTab('bookings')">📋 Bookings</button>
+                <button class="admin-tab" onclick="switchAdminTab('enquiries')">📧 Enquiries</button>
                 <button class="admin-tab" onclick="switchAdminTab('rooms')">🛏️ Rooms</button>
                 <button class="admin-tab" onclick="switchAdminTab('prices')">💰 Prices</button>
                 <button class="admin-tab" onclick="switchAdminTab('vegfood')">🥬 Veg Food</button>
@@ -403,6 +474,7 @@
             <!-- Bookings Tab -->
             <div class="tab-content active" id="bookingsTab">
                 <h3>All Bookings</h3>
+                <button class="btn-add" onclick="addSampleBooking()"><i class="fas fa-plus"></i> Add Sample Booking</button>
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -413,13 +485,23 @@
                             <th>Check-in</th>
                             <th>Check-out</th>
                             <th>Amount</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="bookingsTable">
-                        <tr><td colspan="7" style="text-align:center;">No bookings yet</td></tr>
-                    </tbody>
+                    <tbody id="bookingsTable"></tbody>
                 </table>
             </div>
+
+            <!-- Enquiries Tab -->
+<div class="tab-content" id="enquiriesTab">
+    <h3>Contact Form Enquiries</h3>
+    <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <button onclick="refreshEnquiries()" style="background:#4caf50; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
+            <i class="fas fa-sync-alt"></i> Refresh Enquiries
+        </button>
+    </div>
+    <div id="enquiriesList"></div>
+</div>
 
             <!-- Rooms Tab -->
             <div class="tab-content" id="roomsTab">
@@ -496,7 +578,7 @@
         </div>
     </div>
 
-    <!-- Simplified Footer -->
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
@@ -505,22 +587,20 @@
                 <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
                 <p><i class="fas fa-envelope"></i> reenamaniyar99@gmail.com</p>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-tripadvisor"></i></a>
+                    <a href="https://www.instagram.com/swamiholidayhome" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#" id="facebookLink" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-tripadvisor"></i></a>
                 </div>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
                 <ul class="footer-links">
                     <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> About</a></li>
                     <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
                     <li><a href="facilities.html"><i class="fas fa-chevron-right"></i> Facilities</a></li>
                     <li><a href="nearby.html"><i class="fas fa-chevron-right"></i> Nearby</a></li>
                     <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
-                    <!-- Hidden admin link - only visible in code, not on page -->
-<a href="admin.html" style="display:none;">Admin</a>
                 </ul>
             </div>
         </div>
@@ -530,36 +610,8 @@
                 <p>Developed with <i class="fas fa-heart" style="color: #ff8a7a;"></i> by Sanskari Rebels</p>
             </div>
         </div>
-        <script>
-    // Press 'A' + 'D' + 'M' + 'I' + 'N' to open admin
-    let secretCode = '';
-    document.addEventListener('keyup', function(e) {
-        secretCode += e.key;
-        if (secretCode.includes('ADMIN')) {
-            window.location.href = 'admin.html';
-            secretCode = '';
-        }
-        if (secretCode.length > 10) secretCode = '';
-    });
-</script>
     </footer>
 
     <script src="js/script.js"></script>
-    <script>
-        // Function to go back to site from login modal
-        function goBackToSite() {
-            window.location.href = 'index.html';
-        }
-        
-        // Check if user is already logged in (from session)
-        document.addEventListener('DOMContentLoaded', function() {
-            const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
-            if (isLoggedIn) {
-                document.getElementById('adminLoginModal').style.display = 'none';
-                document.getElementById('adminDashboard').style.display = 'block';
-                if (typeof loadAdminData === 'function') loadAdminData();
-            }
-        });
-    </script>
 </body>
 </html>

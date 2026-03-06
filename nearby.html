@@ -353,21 +353,22 @@
                 <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
                 <p><i class="fas fa-envelope"></i> reenamaniyar99@gmail.com</p>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-tripadvisor"></i></a>
-                </div>
+    <a href="https://www.instagram.com/swamiholidayhome" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="#" id="facebookLink" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <!-- Twitter link removed -->
+    <a href="#" target="_blank"><i class="fab fa-tripadvisor"></i></a>
+</div>
             </div>
             <div class="footer-section">
                 <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
-                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
-                    <li><a href="facilities.html"><i class="fas fa-chevron-right"></i> Facilities</a></li>
-                    <li><a href="nearby.html"><i class="fas fa-chevron-right"></i> Nearby</a></li>
-                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
-                </ul>
+                <ul class="nav-menu">
+    <li><a href="index.html" class="nav-link">Home</a></li>
+    <li><a href="about.html" class="nav-link">About</a></li>
+    <li><a href="rooms.html" class="nav-link">Rooms</a></li>
+    <li><a href="facilities.html" class="nav-link">Facilities</a></li>
+    <li><a href="nearby.html" class="nav-link">Nearby</a></li>
+    <li><a href="contact.html" class="nav-link">Contact</a></li>
+</ul>
             </div>
         </div>
         <div class="footer-bottom">
@@ -378,10 +379,191 @@
         </div>
     </footer>
 
-    <!-- Floating Book Now Button -->
-    <button class="floating-book" onclick="openBookingModal()">
-        <i class="fas fa-calendar-check"></i>
-    </button>
+    <!-- Booking Modal -->
+<div class="booking-modal" id="bookingModal">
+    <div class="booking-modal-content">
+        <div class="booking-modal-header">
+            <h3><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
+            <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+        </div>
+        <div class="booking-modal-body">
+            <div class="booking-progress">
+                <div class="progress-step active" id="step1">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Select Dates</span>
+                </div>
+                <div class="progress-step" id="step2">
+                    <i class="fas fa-user"></i>
+                    <span>Guest Details</span>
+                </div>
+                <div class="progress-step" id="step3">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payment</span>
+                </div>
+            </div>
+            
+            <form id="bookingForm" onsubmit="processMultiRoomBooking(event)">
+                <!-- Step 1: Room Selection -->
+                <div class="step step1 active">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-bed"></i> Room Type</label>
+                            <select id="modalRoomType" onchange="updateMultiRoomSummary()">
+                                <option value="ac">AC Room - ₹2,500/person</option>
+                                <option value="pet">Pet Friendly Room - ₹2,500/person</option>
+                            </select>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> All meals included</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-door-open"></i> Number of Rooms</label>
+                            <select id="modalNumRooms" onchange="updateMultiRoomSummary()">
+                                <option value="1">1 Room</option>
+                                <option value="2">2 Rooms</option>
+                                <option value="3">3 Rooms</option>
+                                <option value="4">4 Rooms</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user-friends"></i> Guests per Room</label>
+                            <select id="modalGuests" onchange="updateMultiRoomSummary()">
+                                <option value="1">1 Guest</option>
+                                <option value="2" selected>2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-plus"></i> Check-in Date</label>
+                            <input type="date" id="modalCheckIn" onchange="updateMultiRoomSummary()">
+                            <div class="error-message" id="checkInError"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
+                        <input type="date" id="modalCheckOut" onchange="updateMultiRoomSummary()">
+                        <div class="error-message" id="checkOutError"></div>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Guest Details -->
+                <div class="step step2">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="guestName" placeholder="Enter your full name">
+                            <div class="error-message" id="guestNameError"></div>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> Only letters allowed</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone Number *</label>
+                            <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
+                            <div class="error-message" id="guestPhoneError"></div>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> Must start with 6,7,8 or 9</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email Address *</label>
+                            <input type="email" id="guestEmail" placeholder="your@email.com">
+                            <div class="error-message" id="guestEmailError"></div>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> e.g., name@domain.com</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-paw"></i> Bringing Pet?</label>
+                            <select id="guestPet">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-comment"></i> Special Requests</label>
+                        <textarea id="specialRequests" rows="3" placeholder="Any dietary preferences or special requirements..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Payment -->
+                <div class="step step3">
+                    <div class="booking-summary">
+                        <div class="summary-row">
+                            <span>Room Type:</span>
+                            <span id="summaryRoom">AC Room</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Number of Rooms:</span>
+                            <span id="summaryRooms">1</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Guests:</span>
+                            <span id="summaryGuests">2</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Check-in/out:</span>
+                            <span id="summaryDates">Not selected</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Nights:</span>
+                            <span id="summaryNights">1</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Amount:</span>
+                            <span>₹<span id="summaryTotal">5000</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-credit-card"></i> Payment Method</label>
+                        <select id="paymentMethod">
+                            <option value="card">Credit/Debit Card</option>
+                            <option value="upi">UPI / Google Pay</option>
+                            <option value="netbanking">Net Banking</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <button type="button" id="prevBtn" class="prev-btn" onclick="prevStep()" style="display: none; flex:1; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" id="nextBtn" class="next-btn" onclick="nextStep()" style="flex:1; padding:12px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="submit" id="submitBtn" class="submit-btn" style="display: none; flex:1; padding:12px; background:#4caf50; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+                        <i class="fas fa-lock"></i> Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="booking-modal" id="confirmModal">
+    <div class="booking-modal-content">
+        <div class="booking-modal-header">
+            <h3><i class="fas fa-check-circle"></i> Booking Confirmed!</h3>
+            <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
+        </div>
+        <div class="booking-modal-body">
+            <i class="fas fa-check-circle"></i>
+            <h4>Thank You, <span id="confirmGuestName">Guest</span>!</h4>
+            <div id="confirmDetails"></div>
+            <button onclick="closeConfirmModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Book Now Button -->
+<button class="floating-book" onclick="openBookingModal()">
+    <i class="fas fa-calendar-check"></i> Book Now
+</button>
 
     <!-- Secret Admin Access - Press A+D+M+I+N in sequence -->
     <script>
@@ -406,12 +588,29 @@
         });
     </script>
 
-    <!-- Booking Modal will be added by JavaScript -->
-<!-- Floating Book Now Button -->
-<button class="floating-book" onclick="openBookingModal()">
-    <i class="fas fa-calendar-check"></i>
-</button>
-
 <script src="js/script.js"></script>
+<script>
+    // Auto-detect and set Facebook link
+    document.addEventListener('DOMContentLoaded', function() {
+        const facebookLink = document.getElementById('facebookLink');
+        if (facebookLink) {
+            // Search for the Facebook page
+            fetch('https://graph.facebook.com/search?q=Swami+Holiday+Home&type=page&limit=1')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        facebookLink.href = `https://facebook.com/${data.data[0].id}`;
+                    } else {
+                        // Fallback to search page if not found
+                        facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
+                    }
+                })
+                .catch(() => {
+                    // Fallback if API fails
+                    facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
+                });
+        }
+    });
+</script>
 </body>
 </html>

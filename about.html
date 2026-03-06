@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Swami Holiday Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .about-hero {
+            background: linear-gradient(rgba(10, 77, 76, 0.8), rgba(30, 122, 118, 0.8)),
+                        url('images/about-banner.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 20px;
+            color: white;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .about-hero h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+        
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+        
+        .about-section.reverse {
+            direction: rtl;
+        }
+        
+        .about-section.reverse .about-content {
+            direction: ltr;
+        }
+        
+        .about-content h2 {
+            color: #0a4d4c;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .about-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: #ff8a7a;
+        }
+        
+        .about-content p {
+            color: #4a4a48;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .about-content .highlight {
+            color: #ff8a7a;
+            font-weight: 600;
+        }
+        
+        .about-image {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin: 60px 0;
+            text-align: center;
+        }
+        
+        .stat-item {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border: 1px solid #f5e6d3;
+        }
+        
+        .stat-item i {
+            font-size: 2.5rem;
+            color: #ff8a7a;
+            margin-bottom: 15px;
+        }
+        
+        .stat-item h3 {
+            font-size: 2rem;
+            color: #0a4d4c;
+            margin-bottom: 5px;
+        }
+        
+        .testimonial-small {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 16px;
+            margin: 40px 0;
+            border-left: 4px solid #ff8a7a;
+        }
+        
+        .testimonial-small p {
+            font-style: italic;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .testimonial-small .author {
+            font-weight: 600;
+            color: #0a4d4c;
+        }
+        
+        @media (max-width: 768px) {
+            .about-section {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <div class="logo-icon"><i class="fas fa-umbrella-beach"></i></div>
+                <div class="logo-text"><h1>Swami Holiday Home</h1><p>Sasawane Beach, Alibag</p></div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link active">About</a></li>
+                <li><a href="rooms.html" class="nav-link">Rooms</a></li>
+                <li><a href="facilities.html" class="nav-link">Facilities</a></li>
+                <li><a href="nearby.html" class="nav-link">Nearby</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="about-hero">
+        <h1>About Swami Holiday Home</h1>
+        <p>Your Gateway to Paradise at Sasawane Beach, Alibag</p>
+    </div>
+
+    <div class="about-container">
+        <!-- Our Story -->
+        <div class="about-section">
+            <div class="about-content">
+                <h2>Our Story</h2>
+                <p>Nestled along the pristine shores of <span class="highlight">Sasawane Beach</span> in Alibag, Swami Holiday Home began with a simple vision – to create a sanctuary where guests could experience the perfect blend of comfort, luxury, and authentic coastal hospitality.</p>
+                <p>Founded in 2015, our family-owned resort has grown from a small beach house to a beloved getaway destination. What started as a weekend retreat for friends and family soon became a dream to share the beauty of Alibag with travelers from around the world.</p>
+                <p>Today, we welcome guests with the same warmth and personal touch that has defined us from the beginning – treating every visitor like family.</p>
+            </div>
+            <div class="about-image">
+                <img src="images/about-1.jpg" alt="Swami Holiday Home Exterior" onerror="this.src='https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&auto=format'">
+            </div>
+        </div>
+
+        <!-- Our Philosophy -->
+        <div class="about-section reverse">
+            <div class="about-content">
+                <h2>Our Philosophy</h2>
+                <p>At Swami Holiday Home, we believe that the best vacations are those where you can truly relax and connect with nature. Our property is designed to offer <span class="highlight">comfort without pretense</span> – where the sound of waves replaces city noise and the stars shine brighter.</p>
+                <p>We're passionate about sharing the authentic flavors of the Konkan coast. Our in-house restaurant serves traditional <span class="highlight">Kokani and Aagri cuisine</span> prepared with love and locally-sourced ingredients – because we believe food is an essential part of the travel experience.</p>
+                <p>Being pet-friendly is our way of ensuring that no family member gets left behind. We know that your furry friends are part of your family, and they're always welcome here.</p>
+            </div>
+            <div class="about-image">
+                <img src="images/about-2.jpg" alt="Beach View" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&auto=format'">
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-container">
+            <div class="stat-item">
+                <i class="fas fa-calendar-check"></i>
+                <h3>9+</h3>
+                <p>Years of Hospitality</p>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-smile"></i>
+                <h3>1500+</h3>
+                <p>Happy Guests</p>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-star"></i>
+                <h3>4.8</h3>
+                <p>Guest Rating</p>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-umbrella-beach"></i>
+                <h3>150m</h3>
+                <p>To Sasawane Beach</p>
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="about-section">
+            <div class="about-content">
+                <h2>The Location</h2>
+                <p>Perched just <span class="highlight">150 meters from Sasawane Beach</span>, our resort offers the perfect base to explore the beauty of Alibag. Wake up to the sound of waves, enjoy morning walks on the beach, and witness spectacular sunsets every evening.</p>
+                <p>Our location puts you within easy reach of Alibag's most beloved attractions – from the historic Kolaba Fort to the serene Kihim Beach and the artistic Karmarkar Museum. Whether you're seeking adventure or relaxation, everything is just a short drive away.</p>
+                <p><i class="fas fa-map-marker-alt" style="color: #ff8a7a;"></i> Puro Aali, Sasawane Beach Road, Alibag - 402201</p>
+            </div>
+            <div class="about-image">
+                <img src="images/about-3.jpg" alt="Sasawane Beach" onerror="this.src='https://images.unsplash.com/photo-1519046904884-53103b34b689?w=600&auto=format'">
+            </div>
+        </div>
+
+        <!-- Testimonial -->
+        <div class="testimonial-small">
+            <p>"Swami Holiday Home feels like a home away from home. The hosts treat you like family, the food is authentic and delicious, and the location is perfect – just a 2-minute walk to the beach. We've been coming here for years and will continue to do so!"</p>
+            <p class="author">— Rajesh & Priya K., Regular Guests</p>
+        </div>
+
+        <!-- Why Choose Us -->
+        <div style="text-align: center; margin: 60px 0 30px;">
+            <h2 style="color: #0a4d4c; font-size: 2rem;">Why Guests Love Us</h2>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-bottom: 40px;">
+            <div style="text-align: center; padding: 20px;">
+                <i class="fas fa-home" style="font-size: 2.5rem; color: #ff8a7a; margin-bottom: 15px;"></i>
+                <h3 style="color: #0a4d4c;">4 Comfortable Rooms</h3>
+                <p style="color: #4a4a48;">All air-conditioned with modern amenities</p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <i class="fas fa-utensils" style="font-size: 2.5rem; color: #ff8a7a; margin-bottom: 15px;"></i>
+                <h3 style="color: #0a4d4c;">Free Meals Included</h3>
+                <p style="color: #4a4a48;">Breakfast, lunch & dinner – all included</p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <i class="fas fa-paw" style="font-size: 2.5rem; color: #ff8a7a; margin-bottom: 15px;"></i>
+                <h3 style="color: #0a4d4c;">Pet Friendly</h3>
+                <p style="color: #4a4a48;">Your furry friends are always welcome</p>
+            </div>
+        </div>
+
+        <!-- Gallery Carousel -->
+<section class="gallery-section">
+    <div class="container">
+        <h2 class="section-heading" style="text-align:center; margin-bottom:30px;">
+            <i class="fas fa-images" style="color: #ff8a7a;"></i> Our Gallery
+        </h2>
+        
+        <div class="carousel-wrapper">
+            <div class="carousel-container">
+                <div class="carousel-slide" id="carouselSlide">
+                    <div class="carousel-item">
+                        <img src="images/banner.jpeg" alt="Swimming Pool" loading="lazy">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/v2.jpeg" alt="AC Room" loading="lazy">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/v3.jpeg" alt="Restaurant" loading="lazy">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/v4.jpeg" alt="Sasawane Beach" loading="lazy">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images/sp.jpeg" alt="Hotel Exterior" loading="lazy">
+                    </div>
+                </div>
+                
+                <!-- NO onclick ATTRIBUTES -->
+                <button class="carousel-btn prev-btn">❮</button>
+                <button class="carousel-btn next-btn">❯</button>
+                
+                <div class="carousel-dots">
+                    <span class="dot active-dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+            
+            <!-- Navigation Buttons -->
+            <button class="carousel-btn prev-btn" onclick="moveSlide(-1)">❮</button>
+            <button class="carousel-btn next-btn" onclick="moveSlide(1)">❯</button>
+            
+            <!-- Dots Indicator -->
+            <div class="carousel-dots" id="carouselDots">
+                <span class="dot active-dot" onclick="currentSlide(0)"></span>
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+                <span class="dot" onclick="currentSlide(5)"></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Call to Action -->
+        <div style="text-align: center; background: #f5f1ea; padding: 50px; border-radius: 16px; margin: 40px 0;">
+            <h2 style="color: #0a4d4c; margin-bottom: 20px;">Ready to Experience Swami Holiday Home?</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1rem;">Book your stay now and create memories that will last a lifetime.</p>
+            <a href="#" onclick="openBookingModal(); return false;" style="background: #ff8a7a; color: white; padding: 15px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; display: inline-block;">Book Your Stay</a>
+        </div>
+    </div>
+
+    <!-- Footer (same as other pages) -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Swami Holiday Home</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Puro Aali, Sasawane Beach Road, Alibag - 402201</p>
+                <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
+                <p><i class="fas fa-envelope"></i> reenamaniyar99@gmail.com</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/swamiholidayhome" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="#" id="facebookLink" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-tripadvisor"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
+                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
+                    <li><a href="facilities.html"><i class="fas fa-chevron-right"></i> Facilities</a></li>
+                    <li><a href="nearby.html"><i class="fas fa-chevron-right"></i> Nearby</a></li>
+                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <p>&copy; 2024 Swami Holiday Home. All rights reserved.</p>
+                <p>Developed with <i class="fas fa-heart" style="color: #ff8a7a;"></i> by Sanskari Rebels</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal (include your existing booking modal here) -->
+    <!-- ... -->
+
+    <!-- Facebook Link Detection Script -->
+    <script>
+        // Auto-detect and set Facebook link
+        document.addEventListener('DOMContentLoaded', function() {
+            const facebookLink = document.getElementById('facebookLink');
+            if (facebookLink) {
+                // Since we can't reliably fetch from Facebook API client-side,
+                // we'll link to the Facebook search page for now
+                facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
+                
+                // You can manually update this if you find the actual page
+                // facebookLink.href = 'https://www.facebook.com/actual-page-id';
+            }
+        });
+    </script>
+
+    <script src="js/script.js"></script>
+    <!-- Booking Modal -->
+<div class="booking-modal" id="bookingModal">
+    <div class="booking-modal-content">
+        <div class="booking-modal-header">
+            <h3><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
+            <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+        </div>
+        <div class="booking-modal-body">
+            <div class="booking-progress">
+                <div class="progress-step active" id="step1">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Select Dates</span>
+                </div>
+                <div class="progress-step" id="step2">
+                    <i class="fas fa-user"></i>
+                    <span>Guest Details</span>
+                </div>
+                <div class="progress-step" id="step3">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payment</span>
+                </div>
+            </div>
+            
+            <form id="bookingForm" onsubmit="processMultiRoomBooking(event)">
+                <!-- Step 1: Room Selection -->
+                <div class="step step1 active">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-bed"></i> Room Type</label>
+                            <select id="modalRoomType" onchange="updateMultiRoomSummary()">
+                                <option value="ac">AC Room - ₹2,500/person</option>
+                                <option value="pet">Pet Friendly Room - ₹2,500/person</option>
+                            </select>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> All meals included</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-door-open"></i> Number of Rooms</label>
+                            <select id="modalNumRooms" onchange="updateMultiRoomSummary()">
+                                <option value="1">1 Room</option>
+                                <option value="2">2 Rooms</option>
+                                <option value="3">3 Rooms</option>
+                                <option value="4">4 Rooms</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user-friends"></i> Guests per Room</label>
+                            <select id="modalGuests" onchange="updateMultiRoomSummary()">
+                                <option value="1">1 Guest</option>
+                                <option value="2" selected>2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-plus"></i> Check-in Date</label>
+                            <input type="date" id="modalCheckIn" onchange="updateMultiRoomSummary()">
+                            <div class="error-message" id="checkInError"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
+                        <input type="date" id="modalCheckOut" onchange="updateMultiRoomSummary()">
+                        <div class="error-message" id="checkOutError"></div>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Guest Details -->
+                <div class="step step2">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i> Full Name *</label>
+                            <input type="text" id="guestName" placeholder="Enter your full name">
+                            <div class="error-message" id="guestNameError"></div>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> Only letters allowed</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone Number *</label>
+                            <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
+                            <div class="error-message" id="guestPhoneError"></div>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> Must start with 6,7,8 or 9</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email Address *</label>
+                            <input type="email" id="guestEmail" placeholder="your@email.com">
+                            <div class="error-message" id="guestEmailError"></div>
+                            <div class="help-text"><i class="fas fa-info-circle"></i> e.g., name@domain.com</div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-paw"></i> Bringing Pet?</label>
+                            <select id="guestPet">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-comment"></i> Special Requests</label>
+                        <textarea id="specialRequests" rows="3" placeholder="Any dietary preferences or special requirements..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Payment -->
+                <div class="step step3">
+                    <div class="booking-summary">
+                        <div class="summary-row">
+                            <span>Room Type:</span>
+                            <span id="summaryRoom">AC Room</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Number of Rooms:</span>
+                            <span id="summaryRooms">1</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Guests:</span>
+                            <span id="summaryGuests">2</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Check-in/out:</span>
+                            <span id="summaryDates">Not selected</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Nights:</span>
+                            <span id="summaryNights">1</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Amount:</span>
+                            <span>₹<span id="summaryTotal">5000</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-credit-card"></i> Payment Method</label>
+                        <select id="paymentMethod">
+                            <option value="card">Credit/Debit Card</option>
+                            <option value="upi">UPI / Google Pay</option>
+                            <option value="netbanking">Net Banking</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Navigation Buttons -->
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <button type="button" id="prevBtn" class="prev-btn" onclick="prevStep()" style="display: none; flex:1; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button type="button" id="nextBtn" class="next-btn" onclick="nextStep()" style="flex:1; padding:12px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button type="submit" id="submitBtn" class="submit-btn" style="display: none; flex:1; padding:12px; background:#4caf50; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+                        <i class="fas fa-lock"></i> Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<div class="booking-modal" id="confirmModal">
+    <div class="booking-modal-content">
+        <div class="booking-modal-header">
+            <h3><i class="fas fa-check-circle"></i> Booking Confirmed!</h3>
+            <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
+        </div>
+        <div class="booking-modal-body">
+            <i class="fas fa-check-circle"></i>
+            <h4>Thank You, <span id="confirmGuestName">Guest</span>!</h4>
+            <div id="confirmDetails"></div>
+            <button onclick="closeConfirmModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Book Now Button -->
+<button class="floating-book" onclick="openBookingModal()">
+    <i class="fas fa-calendar-check"></i> Book Now
+</button>
+</body>
+</html>

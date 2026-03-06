@@ -493,11 +493,15 @@
             </div>
 
             <!-- Enquiries Tab -->
+<!-- Enquiries Tab -->
 <div class="tab-content" id="enquiriesTab">
     <h3>Contact Form Enquiries</h3>
     <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
         <button onclick="refreshEnquiries()" style="background:#4caf50; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
             <i class="fas fa-sync-alt"></i> Refresh Enquiries
+        </button>
+        <button onclick="checkEnquiryStorage()" style="background:#ff8a7a; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
+            <i class="fas fa-database"></i> Check Storage
         </button>
     </div>
     <div id="enquiriesList"></div>

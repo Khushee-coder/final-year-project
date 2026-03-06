@@ -4,6 +4,137 @@
 
 let isAdminLoggedIn = false;
 
+
+// ================ INITIALIZE DATABASE WITH DEFAULT VALUES ================
+
+function initializeDatabase() {
+    console.log("Initializing database with default values...");
+    
+    // Initialize Food Items if not exists
+    if (!localStorage.getItem('vegFoodItems')) {
+        const defaultVegFood = [
+            { id: 1, name: 'Veg Thali', description: 'Rice, dal, sabzi, roti, salad, sweet', price: 0, category: 'veg' },
+            { id: 2, name: 'Dal Rice', description: 'Comfort food with ghee and papad', price: 0, category: 'veg' },
+            { id: 3, name: 'Matar Paneer', description: 'Cottage cheese in rich tomato gravy', price: 0, category: 'veg' },
+            { id: 4, name: 'Dry Sabzi', description: 'Seasonal vegetable stir-fry', price: 0, category: 'veg' },
+            { id: 5, name: 'Sweet Salad', description: 'Fresh fruits with honey and nuts', price: 0, category: 'veg' }
+        ];
+        localStorage.setItem('vegFoodItems', JSON.stringify(defaultVegFood));
+        console.log("✅ Veg food items initialized");
+    }
+    
+    // Initialize Non-Veg Food Items if not exists
+    if (!localStorage.getItem('nonVegFoodItems')) {
+        const defaultNonVegFood = [
+            { id: 1, name: 'Fish Curry Rice', description: 'Fresh catch with coastal spices', price: 0, category: 'nonveg' },
+            { id: 2, name: 'Chicken Thali', description: 'Chicken curry, rice, roti, salad', price: 0, category: 'nonveg' },
+            { id: 3, name: 'Prawns Masala', description: 'Spicy prawn gravy with rice', price: 0, category: 'nonveg' },
+            { id: 4, name: 'Sol Kadhi', description: 'Kokam and coconut drink', price: 0, category: 'nonveg' },
+            { id: 5, name: 'Kokani Special', description: 'Chef\'s special seafood delicacy', price: 0, category: 'nonveg' }
+        ];
+        localStorage.setItem('nonVegFoodItems', JSON.stringify(defaultNonVegFood));
+        console.log("✅ Non-veg food items initialized");
+    }
+    
+    // Initialize Facilities if not exists
+    if (!localStorage.getItem('facilities')) {
+        const defaultFacilities = [
+            { id: 1, name: 'Swimming Pool', icon: 'swimming-pool', description: 'Clean and maintained pool' },
+            { id: 2, name: 'In-house Restaurant', icon: 'utensils', description: 'Authentic local cuisine' },
+            { id: 3, name: 'Car Parking', icon: 'parking', description: 'Secure parking space' },
+            { id: 4, name: 'Free WiFi', icon: 'wifi', description: 'High-speed internet' },
+            { id: 5, name: 'Power Backup', icon: 'bolt', description: 'Uninterrupted power' },
+            { id: 6, name: 'Air Conditioning', icon: 'snowflake', description: 'All rooms AC' },
+            { id: 7, name: 'Flat Screen TV', icon: 'tv', description: 'In every room' },
+            { id: 8, name: '24/7 Hot Water', icon: 'hot-tub', description: 'Always available' }
+        ];
+        localStorage.setItem('facilities', JSON.stringify(defaultFacilities));
+        console.log("✅ Facilities initialized");
+    }
+    
+    // Initialize Nearby Places if not exists
+    if (!localStorage.getItem('nearbyPlaces')) {
+        const defaultNearby = [
+            { 
+                id: 1, 
+                name: 'Sasawane Beach', 
+                distance: '2 min walk', 
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&auto=format', 
+                icon: 'umbrella-beach', 
+                description: 'Beautiful beach just 150 meters from the villa',
+                tags: ['Beach', 'Walking Distance']
+            },
+            { 
+                id: 2, 
+                name: 'Karmarkar Museum', 
+                distance: '2 min walk', 
+                image: 'https://images.unsplash.com/photo-1566127992631-137a642a4f2e?w=500&auto=format', 
+                icon: 'university', 
+                description: 'Famous art and sculpture museum',
+                tags: ['Museum', 'Art']
+            },
+            { 
+                id: 3, 
+                name: 'Mandwa Beach', 
+                distance: '10 min cab', 
+                image: 'https://images.unsplash.com/photo-1519046904884-53103b34b689?w=500&auto=format', 
+                icon: 'water', 
+                description: 'Ferry terminal to Mumbai',
+                tags: ['Beach', 'Ferry']
+            },
+            { 
+                id: 4, 
+                name: 'Kihim Beach', 
+                distance: '15 min cab', 
+                image: 'https://images.unsplash.com/photo-1520942702018-0862200e6873?w=500&auto=format', 
+                icon: 'water', 
+                description: 'Scenic beach with forest backdrop',
+                tags: ['Beach', 'Scenic']
+            },
+            { 
+                id: 5, 
+                name: 'Varsoli Beach', 
+                distance: '25 min cab', 
+                image: 'https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?w=500&auto=format', 
+                icon: 'water', 
+                description: 'Peaceful and less crowded',
+                tags: ['Beach', 'Peaceful']
+            },
+            { 
+                id: 6, 
+                name: 'Alibaug Fort', 
+                distance: '25 min cab', 
+                image: 'https://images.unsplash.com/photo-1591274402297-3e1c4b6a8a5b?w=500&auto=format', 
+                icon: 'fort-awesome', 
+                description: 'Historic sea fort',
+                tags: ['Fort', 'History']
+            },
+            { 
+                id: 7, 
+                name: 'Kankeshwar Temple', 
+                distance: '15 min climb', 
+                image: 'https://images.unsplash.com/photo-1622115831926-0c1de1a04402?w=500&auto=format', 
+                icon: 'hindu', 
+                description: 'Hilltop temple with scenic views',
+                tags: ['Temple', 'Scenic']
+            }
+        ];
+        localStorage.setItem('nearbyPlaces', JSON.stringify(defaultNearby));
+        console.log("✅ Nearby places initialized");
+    }
+    
+    // Initialize Games if not exists
+    if (!localStorage.getItem('games')) {
+        const defaultGames = [
+            { id: 1, name: 'Carrom', icon: 'chess-board', players: '2-4 Players' },
+            { id: 2, name: 'Chess', icon: 'chess', players: '2 Players' },
+            { id: 3, name: 'Bat & Ball', icon: 'baseball-ball', players: 'Outdoor' }
+        ];
+        localStorage.setItem('games', JSON.stringify(defaultGames));
+        console.log("✅ Games initialized");
+    }
+}
+
 function checkAdminLogin() {
     const password = document.getElementById('adminPassword')?.value;
     const loginModal = document.getElementById('adminLoginModal');
@@ -62,12 +193,19 @@ function switchAdminTab(tab) {
 
 // ================ LOAD ALL ADMIN DATA ================
 
+// ================ LOAD ALL ADMIN DATA ================
+
+// ================ LOAD ALL ADMIN DATA ================
+
 function loadAllAdminData() {
+    console.log("📊 Loading all admin data...");
+    
+    // Load all data
     loadBookingsData();
     loadEnquiriesData();
     loadRoomsData();
     loadPricesData();
-    loadVegFoodItems();
+    loadVegFoodItems();      // ← This now loads 100+ items
     loadNonVegFoodItems();
     loadFacilities();
     loadNearbyPlaces();
@@ -393,66 +531,35 @@ function setupContactFormValidation() {
 }
 
 // ================ ENQUIRY STORAGE & SUBMISSION ================
+// ================ CHECK ENQUIRY STORAGE ================
+
+function checkEnquiryStorage() {
+    const enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
+    console.log("📋 Enquiries in storage:", enquiries);
+    alert(`Found ${enquiries.length} enquiries in storage. Check console for details.`);
+}
+
+// ================ FIXED CONTACT FORM SUBMISSION ================
 
 function submitContactForm(event) {
     event.preventDefault();
     
-    console.log("📝 Contact form submitted");
+    console.log("📝 Contact form submitted - Saving to database...");
     
-    const name = document.getElementById('contactName')?.value || '';
-    const email = document.getElementById('contactEmail')?.value || '';
-    const phone = document.getElementById('contactPhone')?.value || '';
-    const subject = document.getElementById('contactSubject')?.value || '';
-    const message = document.getElementById('contactMessage')?.value || '';
+    // Get form values
+    const name = document.getElementById('contactName')?.value;
+    const email = document.getElementById('contactEmail')?.value;
+    const phone = document.getElementById('contactPhone')?.value;
+    const subject = document.getElementById('contactSubject')?.value;
+    const message = document.getElementById('contactMessage')?.value;
     
-    let isValid = true;
-    
-    const nameValidation = validateContactName(name);
-    if (!nameValidation.isValid) {
-        showContactError('contactName', nameValidation.message);
-        isValid = false;
-    } else {
-        removeContactError('contactName');
-    }
-    
-    const emailValidation = validateContactEmail(email);
-    if (!emailValidation.isValid) {
-        showContactError('contactEmail', emailValidation.message);
-        isValid = false;
-    } else {
-        removeContactError('contactEmail');
-    }
-    
-    const phoneValidation = validateContactPhone(phone);
-    if (!phoneValidation.isValid) {
-        showContactError('contactPhone', phoneValidation.message);
-        isValid = false;
-    } else {
-        removeContactError('contactPhone');
-    }
-    
-    const subjectValidation = validateContactSubject(subject);
-    if (!subjectValidation.isValid) {
-        showContactError('contactSubject', subjectValidation.message);
-        isValid = false;
-    } else {
-        removeContactError('contactSubject');
-    }
-    
-    const messageValidation = validateContactMessage(message);
-    if (!messageValidation.isValid) {
-        showContactError('contactMessage', messageValidation.message);
-        isValid = false;
-    } else {
-        removeContactError('contactMessage');
-    }
-    
-    if (!isValid) {
-        const firstError = document.querySelector('[style*="border-color: #f44336"]');
-        if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Simple validation
+    if (!name || !email || !subject || !message) {
+        alert('Please fill all required fields');
         return false;
     }
     
+    // Create enquiry object with unique ID
     const enquiry = {
         id: 'ENQ' + Date.now().toString().slice(-8),
         name: name.trim(),
@@ -464,18 +571,36 @@ function submitContactForm(event) {
         status: 'pending'
     };
     
-    let enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
-    enquiries.push(enquiry);
-    localStorage.setItem('enquiries', JSON.stringify(enquiries));
+    console.log("💾 Saving enquiry:", enquiry);
     
+    // Get existing enquiries from localStorage
+    let enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
+    console.log("📋 Existing enquiries:", enquiries.length);
+    
+    // Add new enquiry
+    enquiries.push(enquiry);
+    
+    // Save back to localStorage
+    localStorage.setItem('enquiries', JSON.stringify(enquiries));
+    console.log("✅ Total enquiries now:", enquiries.length);
+    
+    // Show success message
     alert('Thank you! Your message has been sent successfully.');
+    
+    // Reset form
     document.getElementById('contactForm').reset();
     
-    removeContactError('contactName');
-    removeContactError('contactEmail');
-    removeContactError('contactPhone');
-    removeContactError('contactSubject');
-    removeContactError('contactMessage');
+    // Show success message
+    const form = document.getElementById('contactForm');
+    const successMsg = document.getElementById('contactSuccessMessage');
+    
+    if (form) form.style.display = 'none';
+    if (successMsg) successMsg.style.display = 'block';
+    
+    setTimeout(() => {
+        if (form) form.style.display = 'block';
+        if (successMsg) successMsg.style.display = 'none';
+    }, 3000);
     
     return false;
 }
@@ -650,39 +775,63 @@ function processMultiRoomBooking(event) {
 
 // ================ ENQUIRIES MANAGEMENT ================
 
+// ================ FIXED LOAD ENQUIRIES DATA ================
+
 function loadEnquiriesData() {
-    console.log("📊 Loading enquiries...");
+    console.log("📊 Loading enquiries from database...");
     
     const enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
-    console.log("Found:", enquiries.length);
+    console.log("📋 Enquiries found:", enquiries.length);
     
+    // Update stats
     const totalEnquiries = document.getElementById('totalEnquiries');
-    if (totalEnquiries) totalEnquiries.textContent = enquiries.length;
+    if (totalEnquiries) {
+        totalEnquiries.textContent = enquiries.length;
+    }
     
     const container = document.getElementById('enquiriesList');
-    if (!container) return;
-    
-    if (enquiries.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:40px;">No enquiries yet</div>`;
+    if (!container) {
+        console.log("❌ Enquiries container not found");
         return;
     }
     
+    if (enquiries.length === 0) {
+        container.innerHTML = `<div class="empty-state" style="text-align: center; padding: 40px; background: white; border-radius: 8px;">
+            <i class="fas fa-envelope-open" style="font-size: 3rem; color: #f5e6d3; margin-bottom: 15px;"></i>
+            <p style="color: #8b8a88;">No enquiries yet. Submit a message from the contact page to see it here.</p>
+        </div>`;
+        return;
+    }
+    
+    // Sort by date (newest first)
+    enquiries.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
     let html = '';
-    enquiries.forEach(enquiry => {
-        html += `<div style="background:white; padding:15px; margin-bottom:10px; border-radius:8px;">
-            <p><strong>${enquiry.name}</strong> - ${enquiry.email}</p>
-            <p>${enquiry.message}</p>
-            <button onclick="deleteEnquiry('${enquiry.id}')">Delete</button>
+    enquiries.forEach((enquiry, index) => {
+        html += `<div class="enquiry-card" style="background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; border-left: 4px solid #ff9800; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <div style="display: grid; grid-template-columns: 2fr 3fr 1fr; gap: 20px;">
+                <div>
+                    <h4 style="margin: 0 0 10px; color: #0a4d4c;">${enquiry.name}</h4>
+                    <p style="margin: 5px 0;"><i class="fas fa-envelope" style="color: #ff8a7a; width: 20px;"></i> ${enquiry.email}</p>
+                    <p style="margin: 5px 0;"><i class="fas fa-phone" style="color: #ff8a7a; width: 20px;"></i> ${enquiry.phone}</p>
+                    <p style="margin: 5px 0; font-size: 0.85rem; color: #8b8a88;">
+                        <i class="fas fa-clock" style="color: #ff8a7a; width: 20px;"></i> ${new Date(enquiry.date).toLocaleString()}
+                    </p>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 10px; color: #0a4d4c;">${enquiry.subject}</h4>
+                    <p style="margin: 0 0 10px; background: #f5f1ea; padding: 15px; border-radius: 8px;">${enquiry.message}</p>
+                </div>
+                <div style="text-align: right;">
+                    <button onclick="deleteEnquiry('${enquiry.id}')" style="padding: 8px 16px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
         </div>`;
     });
+    
     container.innerHTML = html;
-}
-
-function deleteEnquiry(id) {
-    let enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
-    enquiries = enquiries.filter(e => e.id != id);
-    localStorage.setItem('enquiries', JSON.stringify(enquiries));
-    loadEnquiriesData();
 }
 
 // ================ BOOKINGS MANAGEMENT ================
@@ -719,46 +868,134 @@ function deleteBooking(id) {
     localStorage.setItem('bookings', JSON.stringify(bookings));
     loadAllAdminData();
 }
+// ================ REFRESH ENQUIRIES ================
+
+function refreshEnquiries() {
+    console.log("🔄 Refreshing enquiries...");
+    loadEnquiriesData();
+}
 
 // ================ ROOMS MANAGEMENT ================
 
-function loadRoomsData() {
+// ================ LOAD ROOMS FOR FRONT END ================
+
+function loadRooms() {
+    const roomsGrid = document.getElementById('roomsGrid');
+    const availabilityGrid = document.getElementById('availabilityGrid');
+    
+    if (!roomsGrid && !availabilityGrid) return;
+    
     const rooms = JSON.parse(localStorage.getItem('rooms')) || [
-        { number: '101', type: 'ac', status: 'available' },
-        { number: '102', type: 'ac', status: 'available' },
-        { number: '103', type: 'ac', status: 'available' },
-        { number: '104', type: 'pet', status: 'available' }
+        { number: '101', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '102', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '103', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '104', type: 'pet', status: 'available', guest: null, checkIn: null, checkOut: null }
     ];
     
-    let available = 0;
-    let html = '';
+    const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500, pet: 2500 };
     
-    rooms.forEach(r => {
-        if (r.status === 'available') available++;
-        html += `<tr>
-            <td>${r.number}</td>
-            <td>${r.type}</td>
-            <td>${r.status}</td>
-            <td>${r.guest || '-'}</td>
-            <td><button onclick="checkOutRoom('${r.number}')">Check Out</button></td>
-        </tr>`;
-    });
+    if (roomsGrid) {
+        roomsGrid.innerHTML = rooms.map(room => `
+            <div class="room-card" data-type="${room.type}">
+                <div class="room-image" style="background: linear-gradient(135deg, #0a4d4c, #1e7a76); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-${room.type === 'pet' ? 'paw' : 'snowflake'}"></i>
+                </div>
+                <div class="room-content">
+                    <h3 class="room-title">${room.type === 'ac' ? 'AC Room' : 'Pet Friendly Room'} - ${room.number}</h3>
+                    <div class="room-price">₹${room.type === 'ac' ? prices.ac : prices.pet}<span>/person</span></div>
+                    <ul class="room-features">
+                        <li><i class="fas fa-check"></i> Air Conditioned</li>
+                        <li><i class="fas fa-check"></i> Flat Screen TV</li>
+                        <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
+                        <li><i class="fas fa-check"></i> Free WiFi</li>
+                        ${room.type === 'pet' ? '<li><i class="fas fa-paw"></i> Pets Allowed</li>' : ''}
+                        <li><i class="fas fa-utensils"></i> Meals Included</li>
+                    </ul>
+                    <div class="room-footer">
+                        <span class="room-status ${room.status}">
+                            <i class="fas fa-circle"></i> ${room.status === 'available' ? 'Available' : 'Occupied'}
+                        </span>
+                        <button class="btn btn-accent" onclick="openBookingModal('${room.type}')" ${room.status !== 'available' ? 'disabled' : ''}>
+                            <i class="fas fa-calendar-check"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
     
-    document.getElementById('roomsTable').innerHTML = html;
-    document.getElementById('availableRooms').textContent = available;
-}
-
-function checkOutRoom(number) {
-    let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
-    const room = rooms.find(r => r.number === number);
-    if (room) {
-        room.status = 'available';
-        room.guest = null;
-        localStorage.setItem('rooms', JSON.stringify(rooms));
-        loadAllAdminData();
+    if (availabilityGrid) {
+        availabilityGrid.innerHTML = rooms.map(room => `
+            <div class="room-availability-card">
+                <strong>Room ${room.number}</strong><br>
+                <small>${room.type === 'ac' ? 'AC' : 'Pet Friendly'}</small><br>
+                <span style="color: ${room.status === 'available' ? '#4caf50' : '#f44336'}; font-weight: 600;">
+                    <i class="fas fa-circle"></i> ${room.status}
+                </span>
+            </div>
+        `).join('');
     }
 }
 
+// Call loadRooms when the rooms page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM loaded - initializing...");
+    
+    // Initialize database with default values
+    initializeDatabase();
+    
+    // Setup booking form
+    setupDates();
+    setupRealTimeValidation();
+    
+    // Make sure steps are initially hidden except step 1
+    document.querySelectorAll('.step').forEach((step, index) => {
+        if (index === 0) {
+            step.style.display = 'block';
+        } else {
+            step.style.display = 'none';
+        }
+    });
+    
+    // Initialize progress steps
+    document.querySelectorAll('.progress-step').forEach((step, index) => {
+        step.classList.remove('active', 'completed');
+        if (index === 0) {
+            step.classList.add('active');
+        }
+    });
+    
+    // Set initial button states
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'block';
+    if (submitBtn) submitBtn.style.display = 'none';
+    
+    // Load rooms if on rooms page
+    if (document.getElementById('roomsGrid')) {
+        loadRooms();
+    }
+    
+    // Check login state
+    const wasLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+    const loginModal = document.getElementById('adminLoginModal');
+    const dashboard = document.getElementById('adminDashboard');
+    
+    if (wasLoggedIn && loginModal && dashboard) {
+        loginModal.style.display = 'none';
+        dashboard.style.display = 'block';
+        loadAllAdminData();
+    }
+    
+    // Set Facebook link
+    const facebookLink = document.getElementById('facebookLink');
+    if (facebookLink) {
+        facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
+    }
+});
 // ================ PRICES MANAGEMENT ================
 
 function loadPricesData() {
@@ -778,216 +1015,487 @@ function savePrices() {
 
 // ================ VEG FOOD MANAGEMENT ================
 
+// ================ VEG FOOD MANAGEMENT - COMPLETE MENU ================
+
 function loadVegFoodItems() {
-    const items = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
-    let html = '';
-    items.forEach((item, i) => {
-        html += `<div>
-            <input value="${item.name}" id="vegName${i}">
-            <input value="${item.price}" id="vegPrice${i}">
-            <button onclick="removeVegFoodItem(${i})">Delete</button>
+    console.log("Loading veg food items...");
+    
+    // Get items from localStorage
+    let items = JSON.parse(localStorage.getItem('vegFoodItems'));
+    
+    // If no items exist, initialize with COMPLETE menu
+    if (!items || items.length === 0) {
+        const defaultVegFood = [
+            // Main Course - Thalis
+            { id: 1, name: 'Special Veg Thali', description: 'Rice, dal, 2 sabzi, roti, salad, sweet, papad', price: 0, category: 'veg' },
+            { id: 2, name: 'Regular Veg Thali', description: 'Rice, dal, sabzi, roti, salad', price: 0, category: 'veg' },
+            
+            // Breads
+            { id: 3, name: 'Tawa Chapati', description: 'Soft whole wheat chapati', price: 0, category: 'veg' },
+            { id: 4, name: 'Butter Chapati', description: 'Chapati with butter', price: 0, category: 'veg' },
+            { id: 5, name: 'Plain Naan', description: 'Tandoori bread', price: 0, category: 'veg' },
+            { id: 6, name: 'Butter Naan', description: 'Naan with butter', price: 0, category: 'veg' },
+            { id: 7, name: 'Garlic Naan', description: 'Naan with garlic butter', price: 0, category: 'veg' },
+            { id: 8, name: 'Tandoori Roti', description: 'Whole wheat tandoori bread', price: 0, category: 'veg' },
+            { id: 9, name: 'Paratha', description: 'Layered flatbread', price: 0, category: 'veg' },
+            { id: 10, name: 'Laccha Paratha', description: 'Crispy layered paratha', price: 0, category: 'veg' },
+            { id: 11, name: 'Pudina Paratha', description: 'Mint flavored paratha', price: 0, category: 'veg' },
+            { id: 12, name: 'Aloo Paratha', description: 'Potato stuffed paratha', price: 0, category: 'veg' },
+            { id: 13, name: 'Gobi Paratha', description: 'Cauliflower stuffed paratha', price: 0, category: 'veg' },
+            { id: 14, name: 'Paneer Paratha', description: 'Paneer stuffed paratha', price: 0, category: 'veg' },
+            { id: 15, name: 'Kulcha', description: 'Soft leavened bread', price: 0, category: 'veg' },
+            { id: 16, name: 'Amritsari Kulcha', description: 'Stuffed kulcha', price: 0, category: 'veg' },
+            { id: 17, name: 'Puri', description: 'Deep-fried bread', price: 0, category: 'veg' },
+            { id: 18, name: 'Bhatura', description: 'Deep-fried leavened bread', price: 0, category: 'veg' },
+            
+            // Rice Dishes
+            { id: 19, name: 'Steamed Rice', description: 'Plain basmati rice', price: 0, category: 'veg' },
+            { id: 20, name: 'Jeera Rice', description: 'Rice tempered with cumin', price: 0, category: 'veg' },
+            { id: 21, name: 'Peas Pulao', description: 'Rice with peas and spices', price: 0, category: 'veg' },
+            { id: 22, name: 'Veg Pulao', description: 'Rice with mixed vegetables', price: 0, category: 'veg' },
+            { id: 23, name: 'Veg Biryani', description: 'Spiced rice with vegetables', price: 0, category: 'veg' },
+            { id: 24, name: 'Curd Rice', description: 'Rice with yogurt', price: 0, category: 'veg' },
+            { id: 25, name: 'Lemon Rice', description: 'Rice with lemon and peanuts', price: 0, category: 'veg' },
+            { id: 26, name: 'Tomato Rice', description: 'Rice with tomato flavor', price: 0, category: 'veg' },
+            { id: 27, name: 'Coconut Rice', description: 'Rice with coconut', price: 0, category: 'veg' },
+            { id: 28, name: 'Khichdi', description: 'Rice and lentil porridge', price: 0, category: 'veg' },
+            
+            // Dal (Lentils)
+            { id: 29, name: 'Plain Dal', description: 'Simple cooked lentils', price: 0, category: 'veg' },
+            { id: 30, name: 'Dal Fry', description: 'Tempered lentils', price: 0, category: 'veg' },
+            { id: 31, name: 'Dal Tadka', description: 'Lentils with garlic tempering', price: 0, category: 'veg' },
+            { id: 32, name: 'Dal Makhani', description: 'Creamy black lentils', price: 0, category: 'veg' },
+            { id: 33, name: 'Dal Bukhara', description: 'Slow-cooked black lentils', price: 0, category: 'veg' },
+            { id: 34, name: 'Panchmel Dal', description: 'Five lentil mix', price: 0, category: 'veg' },
+            { id: 35, name: 'Gujarati Dal', description: 'Sweet and sour lentils', price: 0, category: 'veg' },
+            { id: 36, name: 'Rajasthani Dal', description: 'Spiced lentils', price: 0, category: 'veg' },
+            { id: 37, name: 'Sambar', description: 'Lentil and vegetable stew', price: 0, category: 'veg' },
+            { id: 38, name: 'Rasam', description: 'Tangy pepper soup', price: 0, category: 'veg' },
+            
+            // Paneer Dishes
+            { id: 39, name: 'Paneer Bhaji', description: 'Cottage cheese in spiced gravy', price: 0, category: 'veg' },
+            { id: 40, name: 'Paneer Butter Masala', description: 'Paneer in rich tomato gravy', price: 0, category: 'veg' },
+            { id: 41, name: 'Shahi Paneer', description: 'Royal paneer in creamy gravy', price: 0, category: 'veg' },
+            { id: 42, name: 'Kadai Paneer', description: 'Paneer with bell peppers', price: 0, category: 'veg' },
+            { id: 43, name: 'Palak Paneer', description: 'Paneer in spinach gravy', price: 0, category: 'veg' },
+            { id: 44, name: 'Matar Paneer', description: 'Paneer with peas', price: 0, category: 'veg' },
+            { id: 45, name: 'Paneer Tikka Masala', description: 'Grilled paneer in gravy', price: 0, category: 'veg' },
+            { id: 46, name: 'Paneer Lababdar', description: 'Rich paneer gravy', price: 0, category: 'veg' },
+            { id: 47, name: 'Paneer Pasanda', description: 'Stuffed paneer in gravy', price: 0, category: 'veg' },
+            { id: 48, name: 'Paneer Kolhapuri', description: 'Spicy paneer curry', price: 0, category: 'veg' },
+            { id: 49, name: 'Paneer Handi', description: 'Paneer cooked in handi', price: 0, category: 'veg' },
+            { id: 50, name: 'Paneer Do Pyaza', description: 'Paneer with double onions', price: 0, category: 'veg' },
+            { id: 51, name: 'Paneer Jalfrezi', description: 'Paneer with mixed vegetables', price: 0, category: 'veg' },
+            { id: 52, name: 'Paneer Bhurji', description: 'Scrambled paneer', price: 0, category: 'veg' },
+            { id: 53, name: 'Paneer Chilli', description: 'Indo-Chinese style paneer', price: 0, category: 'veg' },
+            
+            // Vegetable Dishes
+            { id: 54, name: 'Aloo Gobi', description: 'Potato and cauliflower', price: 0, category: 'veg' },
+            { id: 55, name: 'Aloo Matar', description: 'Potato and peas', price: 0, category: 'veg' },
+            { id: 56, name: 'Aloo Jeera', description: 'Potato with cumin', price: 0, category: 'veg' },
+            { id: 57, name: 'Aloo Palak', description: 'Potato in spinach', price: 0, category: 'veg' },
+            { id: 58, name: 'Dum Aloo', description: 'Spiced baby potatoes', price: 0, category: 'veg' },
+            { id: 59, name: 'Aloo Methi', description: 'Potato with fenugreek', price: 0, category: 'veg' },
+            { id: 60, name: 'Baingan Bharta', description: 'Roasted eggplant mash', price: 0, category: 'veg' },
+            { id: 61, name: 'Baingan Masala', description: 'Eggplant curry', price: 0, category: 'veg' },
+            { id: 62, name: 'Bhindi Masala', description: 'Okra with spices', price: 0, category: 'veg' },
+            { id: 63, name: 'Bhindi Do Pyaza', description: 'Okra with onions', price: 0, category: 'veg' },
+            { id: 64, name: 'Gobi Masala', description: 'Cauliflower curry', price: 0, category: 'veg' },
+            { id: 65, name: 'Gobi Manchurian', description: 'Indo-Chinese cauliflower', price: 0, category: 'veg' },
+            { id: 66, name: 'Mix Veg Curry', description: 'Mixed vegetables in gravy', price: 0, category: 'veg' },
+            { id: 67, name: 'Veg Kolhapuri', description: 'Spicy vegetable curry', price: 0, category: 'veg' },
+            { id: 68, name: 'Veg Jaipuri', description: 'Vegetable curry Jaipur style', price: 0, category: 'veg' },
+            { id: 69, name: 'Veg Handi', description: 'Mixed vegetables handi', price: 0, category: 'veg' },
+            { id: 70, name: 'Veg Kadai', description: 'Vegetables in kadai masala', price: 0, category: 'veg' },
+            { id: 71, name: 'Malai Kofta', description: 'Vegetable dumplings in creamy gravy', price: 0, category: 'veg' },
+            { id: 72, name: 'Navratan Korma', description: 'Nine-gem vegetable curry', price: 0, category: 'veg' },
+            { id: 73, name: 'Kashmiri Dum Aloo', description: 'Kashmiri style potatoes', price: 0, category: 'veg' },
+            
+            // Raita & Sides
+            { id: 74, name: 'Plain Raita', description: 'Yogurt with spices', price: 0, category: 'veg' },
+            { id: 75, name: 'Boondi Raita', description: 'Yogurt with fried chickpea pearls', price: 0, category: 'veg' },
+            { id: 76, name: 'Pineapple Raita', description: 'Yogurt with pineapple', price: 0, category: 'veg' },
+            { id: 77, name: 'Mix Veg Raita', description: 'Yogurt with mixed vegetables', price: 0, category: 'veg' },
+            { id: 78, name: 'Tadka Raita', description: 'Tempered yogurt', price: 0, category: 'veg' },
+            { id: 79, name: 'Pudina Raita', description: 'Mint yogurt', price: 0, category: 'veg' },
+            { id: 80, name: 'Salad', description: 'Fresh onion, cucumber, tomato salad', price: 0, category: 'veg' },
+            { id: 81, name: 'Green Salad', description: 'Fresh green salad', price: 0, category: 'veg' },
+            { id: 82, name: 'Kachumber', description: 'Finely chopped salad', price: 0, category: 'veg' },
+            { id: 83, name: 'Papad', description: 'Crispy roasted papad', price: 0, category: 'veg' },
+            { id: 84, name: 'Masala Papad', description: 'Papad with toppings', price: 0, category: 'veg' },
+            { id: 85, name: 'Fry Papad', description: 'Fried papad', price: 0, category: 'veg' },
+            
+            // Appetizers & Snacks
+            { id: 86, name: 'Veg Pakora', description: 'Mixed vegetable fritters', price: 0, category: 'veg' },
+            { id: 87, name: 'Paneer Pakora', description: 'Paneer fritters', price: 0, category: 'veg' },
+            { id: 88, name: 'Onion Pakora', description: 'Onion fritters', price: 0, category: 'veg' },
+            { id: 89, name: 'Aloo Bonda', description: 'Potato balls in batter', price: 0, category: 'veg' },
+            { id: 90, name: 'Samosa', description: 'Stuffed pastry', price: 0, category: 'veg' },
+            { id: 91, name: 'Punjabi Samosa', description: 'Large stuffed samosa', price: 0, category: 'veg' },
+            { id: 92, name: 'Veg Cutlet', description: 'Vegetable cutlet', price: 0, category: 'veg' },
+            { id: 93, name: 'Hara Bhara Kebab', description: 'Spinach and vegetable kebab', price: 0, category: 'veg' },
+            { id: 94, name: 'Paneer Tikka', description: 'Grilled paneer cubes', price: 0, category: 'veg' },
+            { id: 95, name: 'Veg Seekh Kebab', description: 'Vegetable seekh kebab', price: 0, category: 'veg' },
+            { id: 96, name: 'Dahi Bhalla', description: 'Lentil dumplings in yogurt', price: 0, category: 'veg' },
+            { id: 97, name: 'Papdi Chaat', description: 'Crispy chaat', price: 0, category: 'veg' },
+            { id: 98, name: 'Aloo Tikki', description: 'Potato patties', price: 0, category: 'veg' },
+            
+            // Desserts
+            { id: 99, name: 'Gulab Jamun', description: 'Milk dumplings in syrup', price: 0, category: 'veg' },
+            { id: 100, name: 'Rasgulla', description: 'Bengali sweet', price: 0, category: 'veg' },
+            { id: 101, name: 'Jalebi', description: 'Crispy spiral sweet', price: 0, category: 'veg' },
+            { id: 102, name: 'Kheer', description: 'Rice pudding', price: 0, category: 'veg' },
+            { id: 103, name: 'Gajar Halwa', description: 'Carrot pudding', price: 0, category: 'veg' },
+            { id: 104, name: 'Moong Dal Halwa', description: 'Lentil pudding', price: 0, category: 'veg' },
+            { id: 105, name: 'Rasmalai', description: 'Paneer in sweet milk', price: 0, category: 'veg' },
+            { id: 106, name: 'Shrikhand', description: 'Sweetened yogurt', price: 0, category: 'veg' },
+            { id: 107, name: 'Basundi', description: 'Sweetened condensed milk', price: 0, category: 'veg' },
+            { id: 108, name: 'Ice Cream', description: 'Vanilla ice cream', price: 0, category: 'veg' },
+            { id: 109, name: 'Fruit Salad', description: 'Fresh fruit mix', price: 0, category: 'veg' }
+        ];
+        
+        localStorage.setItem('vegFoodItems', JSON.stringify(defaultVegFood));
+        items = defaultVegFood;
+        console.log("✅ Complete veg food menu created with 100+ items");
+    }
+    
+    const container = document.getElementById('vegFoodItemsList');
+    if (!container) {
+        console.log("❌ Veg food container not found");
+        return;
+    }
+    
+    // Build HTML for admin panel with scrollable container
+    let html = '<div style="max-height: 500px; overflow-y: auto; padding-right: 10px;">';
+    
+    items.forEach((item, index) => {
+        html += `<div class="admin-item-group" style="display: grid; grid-template-columns: 2fr 3fr 1fr auto; gap: 10px; margin-bottom: 10px; padding: 15px; background: #f5f1ea; border-radius: 8px; align-items: center;">
+            <input type="text" value="${item.name}" id="vegName${index}" placeholder="Food name" style="padding:8px; border:2px solid #f5e6d3; border-radius:4px; width:100%;">
+            <input type="text" value="${item.description || ''}" id="vegDesc${index}" placeholder="Description" style="padding:8px; border:2px solid #f5e6d3; border-radius:4px; width:100%;">
+            <input type="number" value="${item.price || 0}" id="vegPrice${index}" placeholder="Price" style="padding:8px; border:2px solid #f5e6d3; border-radius:4px; width:100px;">
+            <button onclick="removeVegFoodItem(${index})" style="padding:8px 12px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>`;
     });
-    document.getElementById('vegFoodItemsList').innerHTML = html;
+    
+    html += '</div>';
+    container.innerHTML = html;
+    console.log(`✅ Loaded ${items.length} veg food items in admin panel`);
 }
-
-function addVegFoodItem() {
-    const items = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
-    items.push({ name: 'New Item', price: 0 });
-    localStorage.setItem('vegFoodItems', JSON.stringify(items));
-    loadVegFoodItems();
-}
-
-function removeVegFoodItem(i) {
-    let items = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
-    items.splice(i, 1);
-    localStorage.setItem('vegFoodItems', JSON.stringify(items));
-    loadVegFoodItems();
-}
-
-function saveVegFoodItems() {
-    const items = [];
-    const inputs = document.querySelectorAll('#vegFoodItemsList input');
-    for (let i = 0; i < inputs.length; i += 2) {
-        items.push({
-            name: inputs[i].value,
-            price: parseInt(inputs[i+1].value) || 0
-        });
-    }
-    localStorage.setItem('vegFoodItems', JSON.stringify(items));
-    alert('Saved!');
-}
-
 // ================ NON-VEG FOOD MANAGEMENT ================
 
 function loadNonVegFoodItems() {
     const items = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
+    
+    const container = document.getElementById('nonVegFoodItemsList');
+    if (!container) return;
+    
+    if (items.length === 0) {
+        container.innerHTML = '<p>No non-veg food items. Click "Add Non-Veg Item" to create one.</p>';
+        return;
+    }
+    
     let html = '';
-    items.forEach((item, i) => {
-        html += `<div>
-            <input value="${item.name}" id="nonvegName${i}">
-            <input value="${item.price}" id="nonvegPrice${i}">
-            <button onclick="removeNonVegFoodItem(${i})">Delete</button>
+    items.forEach((item, index) => {
+        html += `<div class="admin-item-group" style="display: grid; grid-template-columns: 2fr 2fr 1fr auto; gap: 10px; margin-bottom: 10px; padding: 10px; background: #f5f1ea; border-radius: 8px; align-items: center;">
+            <input type="text" value="${item.name}" id="nonvegName${index}" placeholder="Food name" style="padding:8px;">
+            <input type="text" value="${item.description || ''}" id="nonvegDesc${index}" placeholder="Description" style="padding:8px;">
+            <input type="number" value="${item.price || 0}" id="nonvegPrice${index}" placeholder="Price" style="padding:8px;">
+            <button onclick="removeNonVegFoodItem(${index})" style="padding:8px 12px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>`;
     });
-    document.getElementById('nonVegFoodItemsList').innerHTML = html;
+    
+    container.innerHTML = html;
 }
 
 function addNonVegFoodItem() {
     const items = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
-    items.push({ name: 'New Item', price: 0 });
+    const newId = items.length > 0 ? Math.max(...items.map(i => i.id)) + 1 : 1;
+    
+    items.push({
+        id: newId,
+        name: 'New Non-Veg Item',
+        description: 'Description',
+        price: 0,
+        category: 'nonveg'
+    });
+    
     localStorage.setItem('nonVegFoodItems', JSON.stringify(items));
     loadNonVegFoodItems();
 }
 
-function removeNonVegFoodItem(i) {
+function removeNonVegFoodItem(index) {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    
     let items = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
-    items.splice(i, 1);
+    items.splice(index, 1);
     localStorage.setItem('nonVegFoodItems', JSON.stringify(items));
     loadNonVegFoodItems();
 }
 
 function saveNonVegFoodItems() {
     const items = [];
-    const inputs = document.querySelectorAll('#nonVegFoodItemsList input');
-    for (let i = 0; i < inputs.length; i += 2) {
-        items.push({
-            name: inputs[i].value,
-            price: parseInt(inputs[i+1].value) || 0
-        });
-    }
+    const itemElements = document.querySelectorAll('#nonVegFoodItemsList .admin-item-group');
+    
+    itemElements.forEach((el, i) => {
+        const nameInput = document.getElementById(`nonvegName${i}`);
+        const descInput = document.getElementById(`nonvegDesc${i}`);
+        const priceInput = document.getElementById(`nonvegPrice${i}`);
+        
+        if (nameInput && priceInput) {
+            items.push({
+                id: i + 1,
+                name: nameInput.value,
+                description: descInput ? descInput.value : '',
+                price: parseInt(priceInput.value) || 0,
+                category: 'nonveg'
+            });
+        }
+    });
+    
     localStorage.setItem('nonVegFoodItems', JSON.stringify(items));
-    alert('Saved!');
+    alert('Non-veg food items saved successfully!');
 }
+// ================ FACILITIES MANAGEMENT ================
 
 // ================ FACILITIES MANAGEMENT ================
 
 function loadFacilities() {
-    const items = JSON.parse(localStorage.getItem('facilities')) || [];
+    const facilities = JSON.parse(localStorage.getItem('facilities')) || [];
+    
+    const container = document.getElementById('facilitiesList');
+    if (!container) return;
+    
+    if (facilities.length === 0) {
+        container.innerHTML = '<p>No facilities. Click "Add Facility" to create one.</p>';
+        return;
+    }
+    
     let html = '';
-    items.forEach((item, i) => {
-        html += `<div>
-            <input value="${item.name}" id="facName${i}">
-            <input value="${item.icon}" id="facIcon${i}">
-            <button onclick="removeFacility(${i})">Delete</button>
+    facilities.forEach((facility, index) => {
+        html += `<div class="admin-item-group" style="display: grid; grid-template-columns: 2fr 1fr 2fr auto; gap: 10px; margin-bottom: 10px; padding: 10px; background: #f5f1ea; border-radius: 8px; align-items: center;">
+            <input type="text" value="${facility.name}" id="facName${index}" placeholder="Facility name" style="padding:8px;">
+            <input type="text" value="${facility.icon || 'plus-circle'}" id="facIcon${index}" placeholder="Icon name" style="padding:8px;">
+            <input type="text" value="${facility.description || ''}" id="facDesc${index}" placeholder="Description" style="padding:8px;">
+            <button onclick="removeFacility(${index})" style="padding:8px 12px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>`;
     });
-    document.getElementById('facilitiesList').innerHTML = html;
+    
+    container.innerHTML = html;
 }
 
 function addFacility() {
-    const items = JSON.parse(localStorage.getItem('facilities')) || [];
-    items.push({ name: 'New Facility', icon: 'plus' });
-    localStorage.setItem('facilities', JSON.stringify(items));
+    const facilities = JSON.parse(localStorage.getItem('facilities')) || [];
+    const newId = facilities.length > 0 ? Math.max(...facilities.map(f => f.id)) + 1 : 1;
+    
+    facilities.push({
+        id: newId,
+        name: 'New Facility',
+        icon: 'plus-circle',
+        description: 'Description'
+    });
+    
+    localStorage.setItem('facilities', JSON.stringify(facilities));
     loadFacilities();
 }
 
-function removeFacility(i) {
-    let items = JSON.parse(localStorage.getItem('facilities')) || [];
-    items.splice(i, 1);
-    localStorage.setItem('facilities', JSON.stringify(items));
+function removeFacility(index) {
+    if (!confirm('Are you sure you want to delete this facility?')) return;
+    
+    let facilities = JSON.parse(localStorage.getItem('facilities')) || [];
+    facilities.splice(index, 1);
+    localStorage.setItem('facilities', JSON.stringify(facilities));
     loadFacilities();
 }
 
 function saveFacilities() {
-    const items = [];
-    const inputs = document.querySelectorAll('#facilitiesList input');
-    for (let i = 0; i < inputs.length; i += 2) {
-        items.push({
-            name: inputs[i].value,
-            icon: inputs[i+1].value
-        });
-    }
-    localStorage.setItem('facilities', JSON.stringify(items));
-    alert('Saved!');
+    const facilities = [];
+    const itemElements = document.querySelectorAll('#facilitiesList .admin-item-group');
+    
+    itemElements.forEach((el, i) => {
+        const nameInput = document.getElementById(`facName${i}`);
+        const iconInput = document.getElementById(`facIcon${i}`);
+        const descInput = document.getElementById(`facDesc${i}`);
+        
+        if (nameInput && iconInput) {
+            facilities.push({
+                id: i + 1,
+                name: nameInput.value,
+                icon: iconInput.value,
+                description: descInput ? descInput.value : ''
+            });
+        }
+    });
+    
+    localStorage.setItem('facilities', JSON.stringify(facilities));
+    alert('Facilities saved successfully!');
 }
+// ================ NEARBY PLACES MANAGEMENT ================
 
 // ================ NEARBY PLACES MANAGEMENT ================
 
 function loadNearbyPlaces() {
-    const items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
+    const places = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
+    
+    const container = document.getElementById('nearbyList');
+    if (!container) return;
+    
+    if (places.length === 0) {
+        container.innerHTML = '<p>No nearby places. Click "Add Place" to create one.</p>';
+        return;
+    }
+    
     let html = '';
-    items.forEach((item, i) => {
-        html += `<div>
-            <input value="${item.name}" id="placeName${i}">
-            <input value="${item.distance}" id="placeDist${i}">
-            <input value="${item.image}" id="placeImg${i}">
-            <button onclick="removeNearbyPlace(${i})">Delete</button>
+    places.forEach((place, index) => {
+        html += `<div class="admin-item-group" style="display: grid; grid-template-columns: 2fr 1fr 2fr 1fr 2fr auto; gap: 10px; margin-bottom: 10px; padding: 10px; background: #f5f1ea; border-radius: 8px; align-items: center;">
+            <input type="text" value="${place.name}" id="placeName${index}" placeholder="Name" style="padding:8px;">
+            <input type="text" value="${place.distance}" id="placeDist${index}" placeholder="Distance" style="padding:8px;">
+            <input type="text" value="${place.image}" id="placeImg${index}" placeholder="Image URL" style="padding:8px;">
+            <input type="text" value="${place.icon}" id="placeIcon${index}" placeholder="Icon" style="padding:8px;">
+            <input type="text" value="${place.description || ''}" id="placeDesc${index}" placeholder="Description" style="padding:8px;">
+            <button onclick="removeNearbyPlace(${index})" style="padding:8px 12px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>`;
     });
-    document.getElementById('nearbyList').innerHTML = html;
+    
+    container.innerHTML = html;
 }
 
 function addNearbyPlace() {
-    const items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
-    items.push({ name: 'New Place', distance: '', image: '' });
-    localStorage.setItem('nearbyPlaces', JSON.stringify(items));
+    const places = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
+    const newId = places.length > 0 ? Math.max(...places.map(p => p.id)) + 1 : 1;
+    
+    places.push({
+        id: newId,
+        name: 'New Place',
+        distance: '10 min',
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&auto=format',
+        icon: 'map-marker-alt',
+        description: 'Description here',
+        tags: ['Place']
+    });
+    
+    localStorage.setItem('nearbyPlaces', JSON.stringify(places));
     loadNearbyPlaces();
 }
 
-function removeNearbyPlace(i) {
-    let items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
-    items.splice(i, 1);
-    localStorage.setItem('nearbyPlaces', JSON.stringify(items));
+function removeNearbyPlace(index) {
+    if (!confirm('Are you sure you want to delete this place?')) return;
+    
+    let places = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
+    places.splice(index, 1);
+    localStorage.setItem('nearbyPlaces', JSON.stringify(places));
     loadNearbyPlaces();
 }
 
 function saveNearbyPlaces() {
-    const items = [];
-    const inputs = document.querySelectorAll('#nearbyList input');
-    for (let i = 0; i < inputs.length; i += 3) {
-        items.push({
-            name: inputs[i].value,
-            distance: inputs[i+1].value,
-            image: inputs[i+2].value
-        });
-    }
-    localStorage.setItem('nearbyPlaces', JSON.stringify(items));
-    alert('Saved!');
+    const places = [];
+    const itemElements = document.querySelectorAll('#nearbyList .admin-item-group');
+    
+    itemElements.forEach((el, i) => {
+        const nameInput = document.getElementById(`placeName${i}`);
+        const distInput = document.getElementById(`placeDist${i}`);
+        const imgInput = document.getElementById(`placeImg${i}`);
+        const iconInput = document.getElementById(`placeIcon${i}`);
+        const descInput = document.getElementById(`placeDesc${i}`);
+        
+        if (nameInput && distInput && imgInput && iconInput) {
+            places.push({
+                id: i + 1,
+                name: nameInput.value,
+                distance: distInput.value,
+                image: imgInput.value,
+                icon: iconInput.value,
+                description: descInput ? descInput.value : '',
+                tags: ['Place']
+            });
+        }
+    });
+    
+    localStorage.setItem('nearbyPlaces', JSON.stringify(places));
+    alert('Nearby places saved successfully!');
 }
 
 // ================ GAMES MANAGEMENT ================
+// ================ GAMES MANAGEMENT ================
 
 function loadGames() {
-    const items = JSON.parse(localStorage.getItem('games')) || [];
+    const games = JSON.parse(localStorage.getItem('games')) || [];
+    
+    const container = document.getElementById('gamesList');
+    if (!container) return;
+    
+    if (games.length === 0) {
+        container.innerHTML = '<p>No games. Click "Add Game" to create one.</p>';
+        return;
+    }
+    
     let html = '';
-    items.forEach((item, i) => {
-        html += `<div>
-            <input value="${item.name}" id="gameName${i}">
-            <input value="${item.icon}" id="gameIcon${i}">
-            <input value="${item.players}" id="gamePlayers${i}">
-            <button onclick="removeGame(${i})">Delete</button>
+    games.forEach((game, index) => {
+        html += `<div class="admin-item-group" style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; margin-bottom: 10px; padding: 10px; background: #f5f1ea; border-radius: 8px; align-items: center;">
+            <input type="text" value="${game.name}" id="gameName${index}" placeholder="Game name" style="padding:8px;">
+            <input type="text" value="${game.icon}" id="gameIcon${index}" placeholder="Icon name" style="padding:8px;">
+            <input type="text" value="${game.players || '2 Players'}" id="gamePlayers${index}" placeholder="Players" style="padding:8px;">
+            <button onclick="removeGame(${index})" style="padding:8px 12px; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">
+                <i class="fas fa-trash"></i>
+            </button>
         </div>`;
     });
-    document.getElementById('gamesList').innerHTML = html;
+    
+    container.innerHTML = html;
 }
 
 function addGame() {
-    const items = JSON.parse(localStorage.getItem('games')) || [];
-    items.push({ name: 'New Game', icon: '', players: '' });
-    localStorage.setItem('games', JSON.stringify(items));
+    const games = JSON.parse(localStorage.getItem('games')) || [];
+    const newId = games.length > 0 ? Math.max(...games.map(g => g.id)) + 1 : 1;
+    
+    games.push({
+        id: newId,
+        name: 'New Game',
+        icon: 'gamepad',
+        players: '2 Players'
+    });
+    
+    localStorage.setItem('games', JSON.stringify(games));
     loadGames();
 }
 
-function removeGame(i) {
-    let items = JSON.parse(localStorage.getItem('games')) || [];
-    items.splice(i, 1);
-    localStorage.setItem('games', JSON.stringify(items));
+function removeGame(index) {
+    if (!confirm('Are you sure you want to delete this game?')) return;
+    
+    let games = JSON.parse(localStorage.getItem('games')) || [];
+    games.splice(index, 1);
+    localStorage.setItem('games', JSON.stringify(games));
     loadGames();
 }
 
 function saveGames() {
-    const items = [];
-    const inputs = document.querySelectorAll('#gamesList input');
-    for (let i = 0; i < inputs.length; i += 3) {
-        items.push({
-            name: inputs[i].value,
-            icon: inputs[i+1].value,
-            players: inputs[i+2].value
-        });
-    }
-    localStorage.setItem('games', JSON.stringify(items));
-    alert('Saved!');
+    const games = [];
+    const itemElements = document.querySelectorAll('#gamesList .admin-item-group');
+    
+    itemElements.forEach((el, i) => {
+        const nameInput = document.getElementById(`gameName${i}`);
+        const iconInput = document.getElementById(`gameIcon${i}`);
+        const playersInput = document.getElementById(`gamePlayers${i}`);
+        
+        if (nameInput && iconInput && playersInput) {
+            games.push({
+                id: i + 1,
+                name: nameInput.value,
+                icon: iconInput.value,
+                players: playersInput.value
+            });
+        }
+    });
+    
+    localStorage.setItem('games', JSON.stringify(games));
+    alert('Games saved successfully!');
 }
 
 // ================ OFFLINE BOOKING MANAGEMENT ================
@@ -1118,6 +1626,8 @@ function setupDates() {
 
 // ================ INTERACTIVE BOOKING FORM WITH WORKING NEXT BUTTON ================
 
+// ================ 2-STEP BOOKING FORM - NO PAYMENT ================
+
 let currentStep = 1;
 
 // Open booking modal
@@ -1129,7 +1639,7 @@ function openBookingModal(roomType = 'ac') {
         const roomSelect = document.getElementById('modalRoomType');
         if (roomSelect && roomType) roomSelect.value = roomType;
         setupDates();
-        updateMultiRoomSummary();
+        updateBookingSummary();
         resetForm();
         currentStep = 1;
         showStep(1);
@@ -1183,16 +1693,13 @@ function clearAllErrors() {
 
 // Step navigation
 function showStep(step) {
-    // Hide all steps
     document.querySelectorAll('.step').forEach(s => s.style.display = 'none');
     
-    // Show current step
     const currentStepElement = document.querySelector(`.step${step}`);
     if (currentStepElement) {
         currentStepElement.style.display = 'block';
     }
     
-    // Update progress indicators
     document.querySelectorAll('.progress-step').forEach((s, i) => {
         s.classList.remove('active', 'completed');
         if (i + 1 === step) {
@@ -1202,7 +1709,6 @@ function showStep(step) {
         }
     });
     
-    // Show/hide navigation buttons
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const submitBtn = document.getElementById('submitBtn');
@@ -1212,10 +1718,10 @@ function showStep(step) {
     }
     
     if (nextBtn && submitBtn) {
-        if (step === 3) {
+        if (step === 2) {
             nextBtn.style.display = 'none';
             submitBtn.style.display = 'block';
-            validateStep3();
+            updateBookingSummary();
         } else {
             nextBtn.style.display = 'block';
             submitBtn.style.display = 'none';
@@ -1223,24 +1729,15 @@ function showStep(step) {
     }
 }
 
-// Next step function - THIS IS CALLED BY THE NEXT BUTTON
 function nextStep() {
-    console.log("Next button clicked, current step:", currentStep);
-    
     if (currentStep === 1) {
         if (validateStep1()) {
-            currentStep++;
-            showStep(currentStep);
-        }
-    } else if (currentStep === 2) {
-        if (validateStep2()) {
             currentStep++;
             showStep(currentStep);
         }
     }
 }
 
-// Previous step function
 function prevStep() {
     if (currentStep > 1) {
         currentStep--;
@@ -1275,7 +1772,7 @@ function validateStep1() {
     }
 }
 
-// Step 2 validation - Guest Details
+// Step 2 validation - Guest Details (also processes booking)
 function validateStep2() {
     let isValid = true;
     
@@ -1283,7 +1780,6 @@ function validateStep2() {
     const phone = document.getElementById('guestPhone').value;
     const email = document.getElementById('guestEmail').value;
     
-    // Validate name
     const nameValidation = validateName(name);
     const nameError = document.getElementById('guestNameError');
     const nameInput = document.getElementById('guestName');
@@ -1303,7 +1799,6 @@ function validateStep2() {
         }
     }
     
-    // Validate phone
     const phoneValidation = validatePhone(phone);
     const phoneError = document.getElementById('guestPhoneError');
     const phoneInput = document.getElementById('guestPhone');
@@ -1323,7 +1818,6 @@ function validateStep2() {
         }
     }
     
-    // Validate email
     const emailValidation = validateEmail(email);
     const emailError = document.getElementById('guestEmailError');
     const emailInput = document.getElementById('guestEmail');
@@ -1344,12 +1838,6 @@ function validateStep2() {
     }
     
     return isValid;
-}
-
-// Step 3 validation - Just update summary
-function validateStep3() {
-    updateMultiRoomSummary();
-    return true;
 }
 
 // Validation helper functions
@@ -1421,7 +1909,7 @@ function validateDates(checkIn, checkOut) {
 }
 
 // Update booking summary
-function updateMultiRoomSummary() {
+function updateBookingSummary() {
     const checkIn = document.getElementById('modalCheckIn')?.value;
     const checkOut = document.getElementById('modalCheckOut')?.value;
     const guests = parseInt(document.getElementById('modalGuests')?.value || 2);
@@ -1456,6 +1944,185 @@ function updateMultiRoomSummary() {
     }
 }
 
+// Process booking (called from form submit)
+// ================ UPDATED PROCESS BOOKING WITH FRONT END UPDATE ================
+
+function processBooking(event) {
+    event.preventDefault();
+    
+    if (!validateStep1() || !validateStep2()) {
+        alert('Please fill all required fields correctly');
+        return;
+    }
+    
+    const name = document.getElementById('guestName').value;
+    const phone = document.getElementById('guestPhone').value;
+    const email = document.getElementById('guestEmail').value;
+    const guests = document.getElementById('modalGuests').value;
+    const checkIn = document.getElementById('modalCheckIn').value;
+    const checkOut = document.getElementById('modalCheckOut').value;
+    const roomType = document.getElementById('modalRoomType').value;
+    const numRooms = parseInt(document.getElementById('modalNumRooms').value);
+    const specialRequests = document.getElementById('specialRequests').value;
+    const pet = document.getElementById('guestPet').value;
+    
+    const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500, pet: 2500 };
+    const roomPrice = roomType === 'ac' ? prices.ac : prices.pet;
+    const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+    const total = parseInt(guests) * roomPrice * nights * numRooms;
+    
+    // Get current rooms from localStorage
+    let rooms = JSON.parse(localStorage.getItem('rooms')) || [
+        { number: '101', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '102', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '103', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '104', type: 'pet', status: 'available', guest: null, checkIn: null, checkOut: null }
+    ];
+    
+    // Find available rooms of the requested type
+    const availableRooms = rooms.filter(r => r.type === roomType && r.status === 'available');
+    
+    // Check if enough rooms are available
+    if (availableRooms.length < numRooms) {
+        alert(`Only ${availableRooms.length} rooms of this type are available. Please reduce the number of rooms.`);
+        return;
+    }
+    
+    // Book the required number of rooms
+    let bookedCount = 0;
+    let bookedRoomNumbers = [];
+    
+    for (let i = 0; i < rooms.length; i++) {
+        if (rooms[i].type === roomType && rooms[i].status === 'available' && bookedCount < numRooms) {
+            rooms[i].status = 'occupied';
+            rooms[i].guest = name.trim();
+            rooms[i].checkIn = checkIn;
+            rooms[i].checkOut = checkOut;
+            bookedRoomNumbers.push(rooms[i].number);
+            bookedCount++;
+        }
+    }
+    
+    // Save updated rooms back to localStorage
+    localStorage.setItem('rooms', JSON.stringify(rooms));
+    console.log("✅ Rooms updated:", rooms);
+    console.log("✅ Booked rooms:", bookedRoomNumbers);
+    
+    // Create booking record
+    const booking = {
+        id: 'BKG' + Date.now().toString().slice(-8),
+        guestName: name.trim(),
+        guestPhone: phone.replace(/\D/g, ''),
+        guestEmail: email,
+        roomType: roomType,
+        roomNumbers: bookedRoomNumbers,
+        numRooms: numRooms,
+        guests: parseInt(guests),
+        checkIn: checkIn,
+        checkOut: checkOut,
+        nights: nights,
+        total: total,
+        specialRequests: specialRequests,
+        pet: pet,
+        date: new Date().toISOString()
+    };
+    
+    // Save booking
+    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    bookings.push(booking);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    
+    closeBookingModal();
+    
+    // Show confirmation with room numbers
+    document.getElementById('confirmGuestName').textContent = name.trim();
+    document.getElementById('confirmDetails').innerHTML = `
+        <p><strong>Booking ID:</strong> ${booking.id}</p>
+        <p><strong>Name:</strong> ${name.trim()}</p>
+        <p><strong>Phone:</strong> ${phone.replace(/\D/g, '')}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Room Type:</strong> ${roomType === 'ac' ? 'AC Room' : 'Pet Friendly'}</p>
+        <p><strong>Rooms Booked:</strong> ${bookedRoomNumbers.join(', ')}</p>
+        <p><strong>Number of Rooms:</strong> ${numRooms}</p>
+        <p><strong>Guests:</strong> ${guests}</p>
+        <p><strong>Check-in:</strong> ${new Date(checkIn).toLocaleDateString()}</p>
+        <p><strong>Check-out:</strong> ${new Date(checkOut).toLocaleDateString()}</p>
+        <p><strong>Nights:</strong> ${nights}</p>
+        <p><strong>Total:</strong> ₹${total}</p>
+    `;
+    document.getElementById('confirmModal').classList.add('active');
+    
+    // Update front end room display if we're on the rooms page
+    updateFrontendRoomDisplay();
+    
+    // If admin is logged in, refresh admin data
+    if (document.getElementById('adminDashboard')?.style.display === 'block') {
+        loadAllAdminData();
+    }
+}
+// ================ UPDATE FRONT END ROOM DISPLAY ================
+
+function updateFrontendRoomDisplay() {
+    // Check if we're on the rooms page
+    const roomsGrid = document.getElementById('roomsGrid');
+    const availabilityGrid = document.getElementById('availabilityGrid');
+    
+    if (!roomsGrid && !availabilityGrid) return; // Not on rooms page
+    
+    const rooms = JSON.parse(localStorage.getItem('rooms')) || [
+        { number: '101', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '102', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '103', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
+        { number: '104', type: 'pet', status: 'available', guest: null, checkIn: null, checkOut: null }
+    ];
+    
+    const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500, pet: 2500 };
+    
+    // Update rooms grid if it exists
+    if (roomsGrid) {
+        roomsGrid.innerHTML = rooms.map(room => `
+            <div class="room-card" data-type="${room.type}">
+                <div class="room-image" style="background: linear-gradient(135deg, #0a4d4c, #1e7a76); display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-${room.type === 'pet' ? 'paw' : 'snowflake'}"></i>
+                </div>
+                <div class="room-content">
+                    <h3 class="room-title">${room.type === 'ac' ? 'AC Room' : 'Pet Friendly Room'} - ${room.number}</h3>
+                    <div class="room-price">₹${room.type === 'ac' ? prices.ac : prices.pet}<span>/person</span></div>
+                    <ul class="room-features">
+                        <li><i class="fas fa-check"></i> Air Conditioned</li>
+                        <li><i class="fas fa-check"></i> Flat Screen TV</li>
+                        <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
+                        <li><i class="fas fa-check"></i> Free WiFi</li>
+                        ${room.type === 'pet' ? '<li><i class="fas fa-paw"></i> Pets Allowed</li>' : ''}
+                        <li><i class="fas fa-utensils"></i> Meals Included</li>
+                    </ul>
+                    <div class="room-footer">
+                        <span class="room-status ${room.status}">
+                            <i class="fas fa-circle"></i> ${room.status === 'available' ? 'Available' : 'Occupied'}
+                        </span>
+                        <button class="btn btn-accent" onclick="openBookingModal('${room.type}')" ${room.status !== 'available' ? 'disabled' : ''}>
+                            <i class="fas fa-calendar-check"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Update availability grid if it exists
+    if (availabilityGrid) {
+        availabilityGrid.innerHTML = rooms.map(room => `
+            <div class="room-availability-card">
+                <strong>Room ${room.number}</strong><br>
+                <small>${room.type === 'ac' ? 'AC' : 'Pet Friendly'}</small><br>
+                <span style="color: ${room.status === 'available' ? '#4caf50' : '#f44336'}; font-weight: 600;">
+                    <i class="fas fa-circle"></i> ${room.status}
+                </span>
+                ${room.status === 'occupied' ? `<br><small style="color: #8b8a88;">Guest: ${room.guest || 'N/A'}</small>` : ''}
+            </div>
+        `).join('');
+    }
+}
 // ================ UPDATED PROCESS MULTI-ROOM BOOKING - WITH ROOM STATUS FIX ================
 
 function processMultiRoomBooking(event) {

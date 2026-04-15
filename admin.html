@@ -10,52 +10,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
-        .admin-login-modal {
+        .admin-login-container {
+            min-height: 80vh;
             display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 9999;
             align-items: center;
             justify-content: center;
+            padding: 40px;
         }
         
         .admin-login-box {
             background: white;
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 40px;
             max-width: 400px;
-            width: 90%;
+            width: 100%;
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        
-        .cancel-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #f5f1ea;
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #4a4a48;
-            transition: all 0.3s;
-        }
-        
-        .cancel-btn:hover {
-            background: #f44336;
-            color: white;
-            transform: rotate(90deg);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border: 1px solid #f5e6d3;
         }
         
         .admin-login-box h2 {
@@ -65,16 +36,23 @@
         
         .admin-login-box input {
             width: 100%;
-            padding: 12px;
-            margin: 20px 0;
+            padding: 14px;
+            margin: 15px 0;
             border: 2px solid #f5e6d3;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 1rem;
         }
         
-        .admin-login-box input:focus {
-            border-color: #ff8a7a;
-            outline: none;
+        .admin-login-box button {
+            width: 100%;
+            padding: 14px;
+            background: #0a4d4c;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
         }
         
         .admin-panel {
@@ -98,10 +76,6 @@
             gap: 10px;
         }
         
-        .admin-header h2 i {
-            color: #ff8a7a;
-        }
-        
         .admin-stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -115,6 +89,7 @@
             border-radius: 12px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid #f5e6d3;
         }
         
         .stat-card i {
@@ -148,10 +123,6 @@
             transition: all 0.3s;
         }
         
-        .admin-tab:hover {
-            color: #ff8a7a;
-        }
-        
         .admin-tab.active {
             background: #ff8a7a;
             color: white;
@@ -162,8 +133,8 @@
             background: white;
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            border: 1px solid #f5e6d3;
         }
         
         .tab-content.active {
@@ -175,66 +146,40 @@
             border-collapse: collapse;
         }
         
-        .data-table th {
-            background: #0a4d4c;
-            color: white;
+        .data-table th, .data-table td {
             padding: 12px;
             text-align: left;
-        }
-        
-        .data-table td {
-            padding: 12px;
             border-bottom: 1px solid #f5e6d3;
         }
         
-        .data-table tr:hover {
-            background: #f5f1ea;
+        .data-table th {
+            background: #0a4d4c;
+            color: white;
         }
         
         .admin-item-group {
             display: grid;
-            grid-template-columns: 2fr 1fr auto;
+            grid-template-columns: 2fr 2fr 1fr 60px auto;
             gap: 10px;
             margin-bottom: 15px;
-            padding: 15px;
-            background: #f5f1ea;
-            border-radius: 8px;
             align-items: center;
+            background: #f5f1ea;
+            padding: 10px;
+            border-radius: 8px;
         }
         
-        .food-veg-group {
-            grid-template-columns: 2fr 1fr 1fr auto;
-        }
-        
-        .nearby-group {
-            grid-template-columns: 2fr 1fr 2fr 1fr 2fr auto;
-        }
-        
-        .enquiry-group {
-            grid-template-columns: 1fr 2fr 1fr auto;
-            align-items: start;
-        }
-        
-        .admin-item-group input,
-        .admin-item-group textarea,
-        .admin-item-group select {
-            padding: 8px;
-            border: 1px solid #f5e6d3;
-            border-radius: 4px;
+        .admin-item-group input {
+            padding: 10px;
+            border: 2px solid #f5e6d3;
+            border-radius: 8px;
             width: 100%;
-        }
-        
-        .admin-item-group input:focus,
-        .admin-item-group select:focus {
-            border-color: #ff8a7a;
-            outline: none;
         }
         
         .btn-add {
             background: #4caf50;
             color: white;
-            border: none;
             padding: 10px 20px;
+            border: none;
             border-radius: 8px;
             cursor: pointer;
             margin-bottom: 20px;
@@ -244,139 +189,47 @@
             font-weight: 600;
         }
         
-        .btn-add:hover {
-            background: #45a049;
-        }
-        
         .btn-save {
             background: #ff8a7a;
             color: white;
-            border: none;
             padding: 12px 30px;
+            border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
             margin-top: 20px;
         }
         
-        .btn-save:hover {
-            background: #ffb6aa;
-        }
-        
         .btn-danger {
             background: #f44336;
             color: white;
+            padding: 8px 15px;
             border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
+        }
+        
+        .image-preview {
+            width: 50px;
+            height: 50px;
+            background: #e0dbd1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .help-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
             font-size: 0.9rem;
-        }
-        
-        .btn-danger:hover {
-            background: #d32f2f;
-        }
-        
-        .btn-success {
-            background: #4caf50;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .btn-success:hover {
-            background: #45a049;
-        }
-        
-        .btn-warning {
-            background: #ff9800;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .btn-warning:hover {
-            background: #f57c00;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-        
-        .section-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        
-        .veg-badge {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .nonveg-badge {
-            background: #f44336;
-            color: white;
-        }
-        
-        .enquiry-status {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        
-        .status-pending {
-            background: #ff9800;
-            color: white;
-        }
-        
-        .status-replied {
-            background: #4caf50;
-            color: white;
-        }
-        
-        .back-to-site {
-            margin-top: 20px;
-            text-align: center;
-        }
-        
-        .back-to-site a {
-            color: #8b8a88;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.3s;
-        }
-        
-        .back-to-site a:hover {
-            color: #ff8a7a;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #8b8a88;
-        }
-        
-        .empty-state i {
-            font-size: 3rem;
-            color: #f5e6d3;
-            margin-bottom: 15px;
         }
         
         @media (max-width: 768px) {
@@ -384,12 +237,6 @@
                 grid-template-columns: repeat(2, 1fr);
             }
             .admin-item-group {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .admin-stats {
                 grid-template-columns: 1fr;
             }
         }
@@ -403,7 +250,7 @@
                 <div class="logo-text"><h1>Swami Holiday Home</h1><p>Admin Panel</p></div>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">← Back to Home</a></li>
+                <li><a href="index.html" class="nav-link">← Back to Site</a></li>
             </ul>
             <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
                 <span></span><span></span><span></span>
@@ -412,28 +259,20 @@
     </nav>
 
     <div class="container">
-        <!-- Login Modal with Cancel Button -->
-        <div class="admin-login-modal" id="adminLoginModal">
+        <!-- Login Section -->
+        <div class="admin-login-container" id="adminLoginContainer">
             <div class="admin-login-box">
-                <button class="cancel-btn" onclick="goBackToSite()"><i class="fas fa-times"></i></button>
                 <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
-                <input type="password" id="adminPassword" placeholder="Enter Password">
-                <button class="btn btn-primary" onclick="checkAdminLogin()" style="width:100%; padding:12px; background:#0a4d4c; color:white; border:none; border-radius:8px; font-weight:600; cursor:pointer;">Login</button>
-                <p style="margin-top: 15px; color: #8b8a88;">Demo Password: admin123</p>
-                <div class="back-to-site">
-                    <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a>
-                </div>
+                <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+                <button onclick="checkAdminLogin()">Login</button>
             </div>
         </div>
 
         <!-- Admin Dashboard -->
         <div class="admin-panel" id="adminDashboard">
             <div class="admin-header">
-                <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
-                <div>
-                    <button class="btn" onclick="window.location.href='index.html'" style="background:#8b8a88; color:white; margin-right:10px; padding:10px 20px; border:none; border-radius:8px; cursor:pointer;">View Site</button>
-                    <button class="btn btn-danger" onclick="logoutAdmin()" style="background:#f44336; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Logout</button>
-                </div>
+                <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                <button onclick="logoutAdmin()" style="background:#f44336; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Logout</button>
             </div>
 
             <div class="admin-stats">
@@ -445,7 +284,7 @@
                 <div class="stat-card">
                     <i class="fas fa-rupee-sign"></i>
                     <h3 id="totalRevenue">₹0</h3>
-                    <p>Total Revenue</p>
+                    <p>Revenue</p>
                 </div>
                 <div class="stat-card">
                     <i class="fas fa-bed"></i>
@@ -455,7 +294,7 @@
                 <div class="stat-card">
                     <i class="fas fa-envelope"></i>
                     <h3 id="totalEnquiries">0</h3>
-                    <p>Contact Enquiries</p>
+                    <p>Enquiries</p>
                 </div>
             </div>
 
@@ -474,145 +313,490 @@
             <!-- Bookings Tab -->
             <div class="tab-content active" id="bookingsTab">
                 <h3>All Bookings</h3>
-                <button class="btn-add" onclick="addSampleBooking()"><i class="fas fa-plus"></i> Add Sample Booking</button>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Booking ID</th>
-                            <th>Guest Name</th>
-                            <th>Phone</th>
-                            <th>Room</th>
-                            <th>Check-in</th>
-                            <th>Check-out</th>
-                            <th>Amount</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="bookingsTable"></tbody>
-                </table>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead><tr><th>ID</th><th>Guest</th><th>Phone</th><th>Rooms</th><th>Check-in</th><th>Check-out</th><th>Amount</th><th>Action</th></tr></thead>
+                        <tbody id="bookingsTable"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Enquiries Tab -->
-<!-- Enquiries Tab -->
-<div class="tab-content" id="enquiriesTab">
-    <h3>Contact Form Enquiries</h3>
-    <div style="margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-        <button onclick="loadEnquiriesData()" style="background:#4caf50; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
-            <i class="fas fa-sync-alt"></i> Refresh Enquiries
-        </button>
-    </div>
-    <div id="enquiriesList"></div>
-</div>
+            <div class="tab-content" id="enquiriesTab">
+                <h3>Customer Enquiries</h3>
+                <div id="enquiriesList"></div>
+            </div>
 
             <!-- Rooms Tab -->
             <div class="tab-content" id="roomsTab">
                 <h3>Room Status</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Room</th>
-                            <th>Type</th>
-                            <th>Status</th>
-                            <th>Current Guest</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="roomsTable"></tbody>
-                </table>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead><tr><th>Room</th><th>Type</th><th>Status</th><th>Guest</th><th>Action</th></tr></thead>
+                        <tbody id="roomsTable"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- Prices Tab -->
             <div class="tab-content" id="pricesTab">
                 <h3>Manage Prices</h3>
                 <div style="max-width: 400px;">
-                    <div style="margin-bottom: 15px;">
-                        <label style="display:block; margin-bottom:5px; font-weight:600; color:#0a4d4c;">AC Room Price (per person)</label>
-                        <input type="number" id="acPrice" style="width:100%; padding:10px; border:2px solid #f5e6d3; border-radius:8px;" value="2500">
-                    </div>
                     <div style="margin-bottom: 20px;">
-                        <label style="display:block; margin-bottom:5px; font-weight:600; color:#0a4d4c;">Pet Room Price (per person)</label>
-                        <input type="number" id="petPrice" style="width:100%; padding:10px; border:2px solid #f5e6d3; border-radius:8px;" value="2500">
+                        <label>AC Room Price (per person)</label>
+                        <input type="number" id="acPrice" class="form-input" value="2500" style="width:100%; padding:10px; margin-top:5px;">
                     </div>
-                    <button onclick="savePrices()" style="background:#ff8a7a; color:white; border:none; padding:12px 30px; border-radius:8px; font-weight:600; cursor:pointer;">Save Prices</button>
+                    <button onclick="savePrices()" class="btn-save">Save Prices</button>
                 </div>
             </div>
 
             <!-- Veg Food Tab -->
             <div class="tab-content" id="vegfoodTab">
-                <h3>Manage Vegetarian Food Items <span class="section-badge veg-badge">Pure Veg</span></h3>
-                <button class="btn-add" onclick="addVegFoodItem()"><i class="fas fa-plus"></i> Add Veg Item</button>
+                <h3>Vegetarian Food Items</h3>
+                <div class="help-box">
+                    <i class="fas fa-info-circle"></i> <strong>How to add images:</strong><br>
+                    1. Find any food image on Google Images<br>
+                    2. Right-click on the image → "Copy image address"<br>
+                    3. Paste the URL in the "Image URL" field below<br>
+                    4. No need to upload files!
+                </div>
                 <div id="vegFoodItemsList"></div>
-                <button class="btn-save" onclick="saveVegFoodItems()">Save Changes</button>
             </div>
 
             <!-- Non-Veg Food Tab -->
             <div class="tab-content" id="nonvegfoodTab">
-                <h3>Manage Non-Veg Food Items <span class="section-badge nonveg-badge">Contains Meat</span></h3>
-                <button class="btn-add" onclick="addNonVegFoodItem()"><i class="fas fa-plus"></i> Add Non-Veg Item</button>
+                <h3>Non-Vegetarian Food Items</h3>
+                <div class="help-box">
+                    <i class="fas fa-info-circle"></i> <strong>How to add images:</strong><br>
+                    1. Find any food image on Google Images<br>
+                    2. Right-click on the image → "Copy image address"<br>
+                    3. Paste the URL in the "Image URL" field below<br>
+                    4. No need to upload files!
+                </div>
                 <div id="nonVegFoodItemsList"></div>
-                <button class="btn-save" onclick="saveNonVegFoodItems()">Save Changes</button>
             </div>
 
             <!-- Facilities Tab -->
             <div class="tab-content" id="facilitiesTab">
-                <h3>Manage Facilities</h3>
-                <button class="btn-add" onclick="addFacility()"><i class="fas fa-plus"></i> Add Facility</button>
+                <h3>Facilities</h3>
                 <div id="facilitiesList"></div>
-                <button class="btn-save" onclick="saveFacilities()">Save Changes</button>
             </div>
 
             <!-- Nearby Tab -->
             <div class="tab-content" id="nearbyTab">
-                <h3>Manage Nearby Places</h3>
-                <button class="btn-add" onclick="addNearbyPlace()"><i class="fas fa-plus"></i> Add Place</button>
+                <h3>Nearby Places</h3>
                 <div id="nearbyList"></div>
-                <button class="btn-save" onclick="saveNearbyPlaces()">Save Changes</button>
             </div>
 
             <!-- Games Tab -->
             <div class="tab-content" id="gamesTab">
-                <h3>Manage Indoor Games</h3>
-                <button class="btn-add" onclick="addGame()"><i class="fas fa-plus"></i> Add Game</button>
+                <h3>Indoor Games</h3>
                 <div id="gamesList"></div>
-                <button class="btn-save" onclick="saveGames()">Save Changes</button>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-section">
                 <h4>Swami Holiday Home</h4>
                 <p><i class="fas fa-map-marker-alt"></i> Puro Aali, Sasawane Beach Road, Alibag - 402201</p>
                 <p><i class="fas fa-phone-alt"></i> +91 91460 54013</p>
-                <p><i class="fas fa-envelope"></i> reenamaniyar99@gmail.com</p>
-                <div class="social-links">
-                    <a href="https://www.instagram.com/swamiholidayhome" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="#" id="facebookLink" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-tripadvisor"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="index.html"><i class="fas fa-chevron-right"></i> Home</a></li>
-                    <li><a href="about.html"><i class="fas fa-chevron-right"></i> About</a></li>
-                    <li><a href="rooms.html"><i class="fas fa-chevron-right"></i> Rooms</a></li>
-                    <li><a href="facilities.html"><i class="fas fa-chevron-right"></i> Facilities</a></li>
-                    <li><a href="nearby.html"><i class="fas fa-chevron-right"></i> Nearby</a></li>
-                    <li><a href="contact.html"><i class="fas fa-chevron-right"></i> Contact</a></li>
-                </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="footer-bottom-content">
-                <p>&copy; 2024 Swami Holiday Home. All rights reserved.</p>
-                <p>Developed with <i class="fas fa-heart" style="color: #ff8a7a;"></i> by Sanskari Rebels</p>
-            </div>
+            <p>&copy; 2024 Swami Holiday Home | Admin Panel</p>
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
+    <script>
+        // ================ ADMIN LOGIN ================
+        function checkAdminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'admin123') {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                document.getElementById('adminLoginContainer').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadAllAdminData();
+            } else {
+                alert('Invalid password! Use: admin123');
+            }
+        }
+        
+        function logoutAdmin() {
+            sessionStorage.removeItem('adminLoggedIn');
+            document.getElementById('adminLoginContainer').style.display = 'flex';
+            document.getElementById('adminDashboard').style.display = 'none';
+        }
+        
+        function switchAdminTab(tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(tab + 'Tab').classList.add('active');
+        }
+        
+        function loadAllAdminData() {
+            loadBookings();
+            loadEnquiries();
+            loadRooms();
+            loadPrices();
+            loadVegFood();
+            loadNonVegFood();
+            loadFacilities();
+            loadNearbyPlaces();
+            loadGames();
+        }
+        
+        // ================ BOOKINGS ================
+        function loadBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            document.getElementById('totalBookings').textContent = bookings.length;
+            let totalRevenue = 0;
+            let html = '';
+            bookings.forEach(b => {
+                totalRevenue += b.total || 0;
+                html += `<tr><td>${b.id}</td><td>${b.guestName}</td><td>${b.guestPhone}</td><td>${b.numRooms || 1}</td><td>${b.checkIn}</td><td>${b.checkOut}</td><td>₹${b.total}</td><td><button class="btn-danger" onclick="deleteBooking('${b.id}')">Delete</button></td></tr>`;
+            });
+            document.getElementById('bookingsTable').innerHTML = html || '<tr><td colspan="8">No bookings yet</td></tr>';
+            document.getElementById('totalRevenue').textContent = `₹${totalRevenue}`;
+        }
+        
+        function deleteBooking(id) {
+            let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            bookings = bookings.filter(b => b.id !== id);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            loadBookings();
+        }
+        
+        // ================ ENQUIRIES ================
+        function loadEnquiries() {
+            const enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
+            document.getElementById('totalEnquiries').textContent = enquiries.length;
+            const container = document.getElementById('enquiriesList');
+            if (enquiries.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;">No enquiries yet</div>';
+                return;
+            }
+            let html = '';
+            enquiries.forEach(e => {
+                html += `<div style="background:#f5f1ea;padding:15px;margin-bottom:10px;border-radius:8px;">
+                    <strong>${e.name}</strong> (${e.email})<br>
+                    <strong>Subject:</strong> ${e.subject}<br>
+                    <strong>Message:</strong> ${e.message}<br>
+                    <small>${new Date(e.date).toLocaleString()}</small><br>
+                    <button class="btn-danger" onclick="deleteEnquiry('${e.id}')" style="margin-top:10px;">Delete</button>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+        
+        function deleteEnquiry(id) {
+            let enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
+            enquiries = enquiries.filter(e => e.id !== id);
+            localStorage.setItem('enquiries', JSON.stringify(enquiries));
+            loadEnquiries();
+        }
+        
+        // ================ ROOMS ================
+        function loadRooms() {
+            const rooms = JSON.parse(localStorage.getItem('rooms')) || [
+                { number: '101', type: 'AC', status: 'available', guest: null },
+                { number: '102', type: 'AC', status: 'available', guest: null },
+                { number: '103', type: 'AC', status: 'available', guest: null },
+                { number: '104', type: 'AC', status: 'available', guest: null }
+            ];
+            let available = rooms.filter(r => r.status === 'available').length;
+            document.getElementById('availableRooms').textContent = available;
+            let html = '';
+            rooms.forEach(r => {
+                html += `<tr><td>${r.number}</td><td>${r.type} Room</td><td style="color:${r.status === 'available' ? '#4caf50' : '#f44336'}">${r.status}</td><td>${r.guest || '-'}</td><td>${r.status === 'occupied' ? `<button class="btn-danger" onclick="checkOutRoom('${r.number}')">Check Out</button>` : '-'}</td></tr>`;
+            });
+            document.getElementById('roomsTable').innerHTML = html;
+        }
+        
+        function checkOutRoom(roomNumber) {
+            let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
+            const room = rooms.find(r => r.number === roomNumber);
+            if (room) {
+                room.status = 'available';
+                room.guest = null;
+                localStorage.setItem('rooms', JSON.stringify(rooms));
+                loadRooms();
+            }
+        }
+        
+        // ================ PRICES ================
+        function loadPrices() {
+            const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
+            document.getElementById('acPrice').value = prices.ac;
+        }
+        
+        function savePrices() {
+            const acPrice = document.getElementById('acPrice').value;
+            localStorage.setItem('prices', JSON.stringify({ ac: parseInt(acPrice) }));
+            alert('Prices saved successfully!');
+            if (typeof updateAllRoomPrices === 'function') updateAllRoomPrices();
+        }
+        
+        // ================ VEG FOOD WITH IMAGE ================
+        function loadVegFood() {
+            const items = JSON.parse(localStorage.getItem('vegFoodItems')) || [
+                { name: 'Veg Thali', price: 0, image: 'images/vegthali.jpg' },
+                { name: 'Dal Rice', price: 0, image: 'images/dal rice.jpg' },
+                { name: 'Matar Paneer', price: 0, image: 'images/Matar-Paneer-1.jpg' },
+                { name: 'Dry Sabzi', price: 0, image: 'images/dry sabzi.jpg' },
+                { name: 'Sweet Salad', price: 0, image: 'images/Dahi-Salad-Recipe.jpg' }
+            ];
+            
+            let html = '<button class="btn-add" onclick="addVegItem()">+ Add New Veg Item</button>';
+            items.forEach((item, i) => {
+                html += `<div class="admin-item-group">
+                    <input type="text" id="vegName${i}" value="${item.name}" placeholder="Food name">
+                    <input type="text" id="vegImage${i}" value="${item.image || ''}" placeholder="Image URL (paste from Google Images)">
+                    <input type="number" id="vegPrice${i}" value="${item.price}" placeholder="Price (0=free)">
+                    <div class="image-preview">
+                        <img src="${item.image || 'https://via.placeholder.com/50'}" onerror="this.src='https://via.placeholder.com/50'">
+                    </div>
+                    <button class="btn-danger" onclick="removeVegItem(${i})">Delete</button>
+                </div>`;
+            });
+            html += '<button class="btn-save" onclick="saveVegFood()">Save Changes</button>';
+            document.getElementById('vegFoodItemsList').innerHTML = html;
+        }
+        
+        function addVegItem() {
+            const items = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
+            items.push({ name: 'New Veg Item', price: 0, image: 'https://via.placeholder.com/200?text=Add+Image+URL' });
+            localStorage.setItem('vegFoodItems', JSON.stringify(items));
+            loadVegFood();
+        }
+        
+        function removeVegItem(index) {
+            if (!confirm('Delete this item?')) return;
+            let items = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
+            items.splice(index, 1);
+            localStorage.setItem('vegFoodItems', JSON.stringify(items));
+            loadVegFood();
+        }
+        
+        function saveVegFood() {
+            const items = [];
+            const groups = document.querySelectorAll('#vegFoodItemsList .admin-item-group');
+            groups.forEach(group => {
+                const name = group.querySelector('input[type="text"]')?.value;
+                const image = group.querySelectorAll('input[type="text"]')[1]?.value;
+                const price = group.querySelector('input[type="number"]')?.value;
+                if (name) items.push({ name, image: image || 'https://via.placeholder.com/200', price: parseInt(price) || 0 });
+            });
+            localStorage.setItem('vegFoodItems', JSON.stringify(items));
+            alert('Veg food saved!');
+            if (typeof loadFoodItems === 'function') loadFoodItems();
+        }
+        
+        // ================ NON-VEG FOOD WITH IMAGE ================
+        function loadNonVegFood() {
+            const items = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [
+                { name: 'Fish Curry Rice', price: 0, image: 'images/fish curry.jpg' },
+                { name: 'Chicken Thali', price: 0, image: 'images/chicken_thali_featured.jpg' },
+                { name: 'Prawns Masala', price: 0, image: 'images/Prawn-Masala-450x450.jpeg' },
+                { name: 'Sol Kadhi', price: 0, image: 'images/sol kadhi.jpg' },
+                { name: 'Kokani Special', price: 0, image: 'images/kokani.jpg' }
+            ];
+            
+            let html = '<button class="btn-add" onclick="addNonVegItem()">+ Add New Non-Veg Item</button>';
+            items.forEach((item, i) => {
+                html += `<div class="admin-item-group">
+                    <input type="text" id="nonvegName${i}" value="${item.name}" placeholder="Food name">
+                    <input type="text" id="nonvegImage${i}" value="${item.image || ''}" placeholder="Image URL (paste from Google Images)">
+                    <input type="number" id="nonvegPrice${i}" value="${item.price}" placeholder="Price (0=free)">
+                    <div class="image-preview">
+                        <img src="${item.image || 'https://via.placeholder.com/50'}" onerror="this.src='https://via.placeholder.com/50'">
+                    </div>
+                    <button class="btn-danger" onclick="removeNonVegItem(${i})">Delete</button>
+                </div>`;
+            });
+            html += '<button class="btn-save" onclick="saveNonVegFood()">Save Changes</button>';
+            document.getElementById('nonVegFoodItemsList').innerHTML = html;
+        }
+        
+        function addNonVegItem() {
+            const items = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
+            items.push({ name: 'New Non-Veg Item', price: 0, image: 'https://via.placeholder.com/200?text=Add+Image+URL' });
+            localStorage.setItem('nonVegFoodItems', JSON.stringify(items));
+            loadNonVegFood();
+        }
+        
+        function removeNonVegItem(index) {
+            if (!confirm('Delete this item?')) return;
+            let items = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
+            items.splice(index, 1);
+            localStorage.setItem('nonVegFoodItems', JSON.stringify(items));
+            loadNonVegFood();
+        }
+        
+        function saveNonVegFood() {
+            const items = [];
+            const groups = document.querySelectorAll('#nonVegFoodItemsList .admin-item-group');
+            groups.forEach(group => {
+                const name = group.querySelector('input[type="text"]')?.value;
+                const image = group.querySelectorAll('input[type="text"]')[1]?.value;
+                const price = group.querySelector('input[type="number"]')?.value;
+                if (name) items.push({ name, image: image || 'https://via.placeholder.com/200', price: parseInt(price) || 0 });
+            });
+            localStorage.setItem('nonVegFoodItems', JSON.stringify(items));
+            alert('Non-veg food saved!');
+            if (typeof loadFoodItems === 'function') loadFoodItems();
+        }
+        
+        // ================ FACILITIES ================
+        function loadFacilities() {
+            const items = JSON.parse(localStorage.getItem('facilities')) || [
+                { name: 'Swimming Pool', icon: 'swimming-pool' },
+                { name: 'Restaurant', icon: 'utensils' },
+                { name: 'Free WiFi', icon: 'wifi' },
+                { name: 'Car Parking', icon: 'parking' }
+            ];
+            let html = '<button class="btn-add" onclick="addFacility()">+ Add Facility</button>';
+            items.forEach((item, i) => {
+                html += `<div class="admin-item-group" style="grid-template-columns: 2fr 1fr auto;">
+                    <input type="text" id="facName${i}" value="${item.name}" placeholder="Facility name">
+                    <input type="text" id="facIcon${i}" value="${item.icon}" placeholder="Icon name">
+                    <button class="btn-danger" onclick="removeFacility(${i})">Delete</button>
+                </div>`;
+            });
+            html += '<button class="btn-save" onclick="saveFacilities()">Save Changes</button>';
+            document.getElementById('facilitiesList').innerHTML = html;
+        }
+        
+        function addFacility() {
+            const items = JSON.parse(localStorage.getItem('facilities')) || [];
+            items.push({ name: 'New Facility', icon: 'plus-circle' });
+            localStorage.setItem('facilities', JSON.stringify(items));
+            loadFacilities();
+        }
+        
+        function removeFacility(index) {
+            let items = JSON.parse(localStorage.getItem('facilities')) || [];
+            items.splice(index, 1);
+            localStorage.setItem('facilities', JSON.stringify(items));
+            loadFacilities();
+        }
+        
+        function saveFacilities() {
+            const items = [];
+            const groups = document.querySelectorAll('#facilitiesList .admin-item-group');
+            groups.forEach((group, i) => {
+                const name = group.querySelector('input[type="text"]')?.value;
+                const icon = group.querySelectorAll('input[type="text"]')[1]?.value;
+                if (name) items.push({ name, icon });
+            });
+            localStorage.setItem('facilities', JSON.stringify(items));
+            alert('Facilities saved!');
+        }
+        
+        // ================ NEARBY PLACES ================
+        function loadNearbyPlaces() {
+            const items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [
+                { name: 'Sasawane Beach', distance: '2 min', icon: 'umbrella-beach' },
+                { name: 'Karmarkar Museum', distance: '2 min', icon: 'university' },
+                { name: 'Mandwa Beach', distance: '10 min', icon: 'water' }
+            ];
+            let html = '<button class="btn-add" onclick="addNearbyPlace()">+ Add Place</button>';
+            items.forEach((item, i) => {
+                html += `<div class="admin-item-group" style="grid-template-columns: 2fr 1fr 2fr auto;">
+                    <input type="text" id="placeName${i}" value="${item.name}" placeholder="Name">
+                    <input type="text" id="placeDist${i}" value="${item.distance}" placeholder="Distance">
+                    <input type="text" id="placeIcon${i}" value="${item.icon}" placeholder="Icon">
+                    <button class="btn-danger" onclick="removeNearbyPlace(${i})">Delete</button>
+                </div>`;
+            });
+            html += '<button class="btn-save" onclick="saveNearbyPlaces()">Save Changes</button>';
+            document.getElementById('nearbyList').innerHTML = html;
+        }
+        
+        function addNearbyPlace() {
+            const items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
+            items.push({ name: 'New Place', distance: '10 min', icon: 'map-marker-alt' });
+            localStorage.setItem('nearbyPlaces', JSON.stringify(items));
+            loadNearbyPlaces();
+        }
+        
+        function removeNearbyPlace(index) {
+            let items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
+            items.splice(index, 1);
+            localStorage.setItem('nearbyPlaces', JSON.stringify(items));
+            loadNearbyPlaces();
+        }
+        
+        function saveNearbyPlaces() {
+            const items = [];
+            const groups = document.querySelectorAll('#nearbyList .admin-item-group');
+            groups.forEach((group, i) => {
+                const name = group.querySelector('input[type="text"]')?.value;
+                const dist = group.querySelectorAll('input[type="text"]')[1]?.value;
+                const icon = group.querySelectorAll('input[type="text"]')[2]?.value;
+                if (name) items.push({ name, distance: dist, icon });
+            });
+            localStorage.setItem('nearbyPlaces', JSON.stringify(items));
+            alert('Nearby places saved!');
+        }
+        
+        // ================ GAMES ================
+        function loadGames() {
+            const items = JSON.parse(localStorage.getItem('games')) || [
+                { name: 'Carrom', icon: 'chess-board', players: '2-4' },
+                { name: 'Chess', icon: 'chess', players: '2' },
+                { name: 'Bat & Ball', icon: 'baseball-ball', players: 'Outdoor' }
+            ];
+            let html = '<button class="btn-add" onclick="addGame()">+ Add Game</button>';
+            items.forEach((item, i) => {
+                html += `<div class="admin-item-group" style="grid-template-columns: 2fr 1fr 1fr auto;">
+                    <input type="text" id="gameName${i}" value="${item.name}" placeholder="Game name">
+                    <input type="text" id="gameIcon${i}" value="${item.icon}" placeholder="Icon">
+                    <input type="text" id="gamePlayers${i}" value="${item.players}" placeholder="Players">
+                    <button class="btn-danger" onclick="removeGame(${i})">Delete</button>
+                </div>`;
+            });
+            html += '<button class="btn-save" onclick="saveGames()">Save Changes</button>';
+            document.getElementById('gamesList').innerHTML = html;
+        }
+        
+        function addGame() {
+            const items = JSON.parse(localStorage.getItem('games')) || [];
+            items.push({ name: 'New Game', icon: 'gamepad', players: '2' });
+            localStorage.setItem('games', JSON.stringify(items));
+            loadGames();
+        }
+        
+        function removeGame(index) {
+            let items = JSON.parse(localStorage.getItem('games')) || [];
+            items.splice(index, 1);
+            localStorage.setItem('games', JSON.stringify(items));
+            loadGames();
+        }
+        
+        function saveGames() {
+            const items = [];
+            const groups = document.querySelectorAll('#gamesList .admin-item-group');
+            groups.forEach((group, i) => {
+                const name = group.querySelector('input[type="text"]')?.value;
+                const icon = group.querySelectorAll('input[type="text"]')[1]?.value;
+                const players = group.querySelectorAll('input[type="text"]')[2]?.value;
+                if (name) items.push({ name, icon, players });
+            });
+            localStorage.setItem('games', JSON.stringify(items));
+            alert('Games saved!');
+        }
+        
+        // Check login status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                document.getElementById('adminLoginContainer').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadAllAdminData();
+            }
+        });
+    </script>
 </body>
 </html>

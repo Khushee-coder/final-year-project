@@ -577,6 +577,22 @@
                 });
         }
     });
+    
+</script>
+<script>
+    // Load rooms when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof loadRooms === 'function') {
+            loadRooms();
+        }
+    });
+    
+    // Also load rooms when page becomes visible (in case user navigates back)
+    window.addEventListener('pageshow', function() {
+        if (typeof loadRooms === 'function') {
+            loadRooms();
+        }
+    });
 </script>
 </body>
 </html>

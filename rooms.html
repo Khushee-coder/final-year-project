@@ -122,6 +122,28 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .room-image {
+    height: 250px;
+    overflow: hidden;
+}
+
+.room-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.room-card:hover .room-image img {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .room-image {
+        height: 200px;
+    }
+}
     </style>
 </head>
 <body>
@@ -133,6 +155,7 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="rooms.html" class="nav-link active">Rooms</a></li>
                 <li><a href="facilities.html" class="nav-link">Facilities</a></li>
                 <li><a href="nearby.html" class="nav-link">Nearby</a></li>
@@ -151,18 +174,13 @@
             <p class="page-subtitle">4 comfortable air-conditioned rooms • Pet friendly available</p>
         </div>
 
-        <!-- Room Filters -->
-        <div class="room-filters">
-            <button class="filter-btn active" onclick="filterRooms('all')">All Rooms</button>
-            <button class="filter-btn" onclick="filterRooms('ac')">AC Rooms</button>
-            <button class="filter-btn" onclick="filterRooms('pet')">Pet Friendly</button>
-        </div>
-
-        <!-- Rooms Grid -->
-<div class="rooms-grid" id="roomsGrid">
-    <!-- Room 101 - Using r1 (2).jpeg -->
+       <!-- Rooms Grid with Actual Images -->
+<div class="rooms-grid">
+    <!-- Room 101 -->
     <div class="room-card" data-type="ac">
-        <div class="room-image" style="background-image: url('images/r1 (2).jpeg'); background-size: cover; background-position: center;"></div>
+        <div class="room-image">
+            <img src="images/room-101.jpg" alt="AC Room 101" onerror="this.src='images/r1.jpeg'">
+        </div>
         <div class="room-content">
             <div class="room-header">
                 <h3 class="room-title">AC Room - 101</h3>
@@ -173,6 +191,7 @@
                 <li><i class="fas fa-check"></i> Flat Screen TV</li>
                 <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
                 <li><i class="fas fa-check"></i> Free WiFi</li>
+                <li><i class="fas fa-paw"></i> Pet Friendly</li>
                 <li><i class="fas fa-utensils"></i> Meals Included</li>
             </ul>
             <div class="room-footer">
@@ -182,9 +201,11 @@
         </div>
     </div>
 
-    <!-- Room 102 - Using r2.jpeg -->
+    <!-- Room 102 -->
     <div class="room-card" data-type="ac">
-        <div class="room-image" style="background-image: url('images/r2.jpeg'); background-size: cover; background-position: center;"></div>
+        <div class="room-image">
+            <img src="images/room-102.jpg" alt="AC Room 102" onerror="this.src='images/r2.jpeg'">
+        </div>
         <div class="room-content">
             <div class="room-header">
                 <h3 class="room-title">AC Room - 102</h3>
@@ -195,6 +216,7 @@
                 <li><i class="fas fa-check"></i> Flat Screen TV</li>
                 <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
                 <li><i class="fas fa-check"></i> Free WiFi</li>
+                <li><i class="fas fa-paw"></i> Pet Friendly</li>
                 <li><i class="fas fa-utensils"></i> Meals Included</li>
             </ul>
             <div class="room-footer">
@@ -204,9 +226,11 @@
         </div>
     </div>
 
-    <!-- Room 103 - Using r1 (2).jpeg again -->
+    <!-- Room 103 -->
     <div class="room-card" data-type="ac">
-        <div class="room-image" style="background-image: url('images/r1 (2).jpeg'); background-size: cover; background-position: center;"></div>
+        <div class="room-image">
+            <img src="images/room-103.jpg" alt="AC Room 103" onerror="this.src='images/r1.jpeg'">
+        </div>
         <div class="room-content">
             <div class="room-header">
                 <h3 class="room-title">AC Room - 103</h3>
@@ -217,6 +241,7 @@
                 <li><i class="fas fa-check"></i> Flat Screen TV</li>
                 <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
                 <li><i class="fas fa-check"></i> Free WiFi</li>
+                <li><i class="fas fa-paw"></i> Pet Friendly</li>
                 <li><i class="fas fa-utensils"></i> Meals Included</li>
             </ul>
             <div class="room-footer">
@@ -226,12 +251,14 @@
         </div>
     </div>
 
-    <!-- Room 104 - Using r2.jpeg -->
+    <!-- Room 104 - AC Room - 104 -->
     <div class="room-card" data-type="pet">
-        <div class="room-image" style="background-image: url('images/r2.jpeg'); background-size: cover; background-position: center;"></div>
+        <div class="room-image">
+            <img src="images/pet-room.jpg" alt="Pet Friendly Room" onerror="this.src='images/r2.jpeg'">
+        </div>
         <div class="room-content">
             <div class="room-header">
-                <h3 class="room-title">Pet Friendly Room - 104</h3>
+                <h3 class="room-title">AC Room - 104</h3>
                 <div class="room-price">₹2,500 <span>/person</span></div>
             </div>
             <ul class="room-features">
@@ -239,7 +266,7 @@
                 <li><i class="fas fa-check"></i> Flat Screen TV</li>
                 <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
                 <li><i class="fas fa-check"></i> Free WiFi</li>
-                <li><i class="fas fa-paw"></i> Pets Allowed</li>
+                <li><i class="fas fa-paw"></i> Pet Friendly</li>
                 <li><i class="fas fa-utensils"></i> Meals Included</li>
             </ul>
             <div class="room-footer">
@@ -250,32 +277,41 @@
     </div>
 </div>
 
+<!-- Room Policies -->
+<div class="policies-grid">
+    <div class="policy-card">
+        <i class="fas fa-clock"></i>
+        <span>Check-in: 12:00 PM</span>
+    </div>
+    <div class="policy-card">
+        <i class="fas fa-clock"></i>
+        <span>Check-out: 11:00 AM</span>
+    </div>
+    <div class="policy-card">
+        <i class="fas fa-paw"></i>
+        <span>Pet Friendly</span>
+    </div>
+    <div class="policy-card">
+        <i class="fas fa-smoking-ban"></i>
+        <span>Non-Smoking</span>
+    </div>
+    <div class="policy-card">
+        <i class="fas fa-child"></i>
+        <span>Child Friendly</span>
+    </div>
+    <div class="policy-card">
+        <i class="fas fa-credit-card"></i>
+        <span>All Cards Accepted</span>
+    </div>
+</div>
+
         <!-- Availability Section -->
-        <div class="availability-section">
-            <h3 style="color: #0a4d4c; margin-bottom: 20px;"><i class="fas fa-calendar-check" style="color: #ff8a7a;"></i> Real-time Availability</h3>
-            <div class="availability-grid">
-                <div class="availability-card">
-                    <div class="room-num">Room 101</div>
-                    <div class="room-type">AC Room</div>
-                    <div class="status available">✓ Available</div>
-                </div>
-                <div class="availability-card">
-                    <div class="room-num">Room 102</div>
-                    <div class="room-type">AC Room</div>
-                    <div class="status available">✓ Available</div>
-                </div>
-                <div class="availability-card">
-                    <div class="room-num">Room 103</div>
-                    <div class="room-type">AC Room</div>
-                    <div class="status available">✓ Available</div>
-                </div>
-                <div class="availability-card">
-                    <div class="room-num">Room 104</div>
-                    <div class="room-type">Pet Friendly</div>
-                    <div class="status available">✓ Available</div>
-                </div>
-            </div>
-        </div>
+<div class="availability-section">
+    <h3 style="color: #0a4d4c; margin-bottom: 20px;"><i class="fas fa-calendar-check" style="color: #ff8a7a;"></i> Real-time Availability</h3>
+    <div class="availability-grid" id="availabilityGrid">
+        <!-- Rooms will be loaded dynamically by JavaScript -->
+    </div>
+</div>
 
         <!-- Room Policies -->
         <h2 class="section-heading">Room Policies</h2>
@@ -526,11 +562,6 @@
     </div>
 </div>
 
-<!-- Floating Book Now Button -->
-<button class="floating-book" onclick="openBookingModal()">
-    <i class="fas fa-calendar-check"></i> Book Now
-</button>
-
     <!-- Secret Admin Access - Press A+D+M+I+N in sequence -->
     <script>
         // Secret code to open admin panel
@@ -593,6 +624,479 @@
             loadRooms();
         }
     });
+</script>
+<!-- Floating Action Buttons - Simple WhatsApp -->
+<style>
+    .floating-container {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .floating-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        min-width: 140px;
+    }
+    
+    .floating-btn i {
+        font-size: 1.2rem;
+    }
+    
+    .btn-book {
+        background: #ff8a7a;
+        color: white;
+    }
+    
+    .btn-book:hover {
+        background: #ff6b5a;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 138, 122, 0.4);
+    }
+    
+    .btn-wa {
+        background: #25D366;
+        color: white;
+    }
+    
+    .btn-wa:hover {
+        background: #20b859;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    }
+    
+    .wa-preview {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        background: white;
+        border-radius: 15px;
+        padding: 12px 18px;
+        max-width: 280px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        border-left: 4px solid #25D366;
+        margin-bottom: 10px;
+        animation: slideIn 0.3s ease;
+        cursor: pointer;
+        z-index: 1001;
+    }
+    
+    .wa-preview p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #333;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .floating-btn {
+            padding: 12px;
+            min-width: auto;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+        }
+        
+        .floating-btn .btn-text {
+            display: none;
+        }
+        
+        .floating-btn i {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .floating-container {
+            bottom: 20px;
+            right: 20px;
+            gap: 12px;
+        }
+        
+        .wa-preview {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .floating-btn i {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+
+<div class="floating-container">
+    <!-- WhatsApp Button -->
+    <div style="position: relative;">
+        <div class="wa-preview" id="waPreview">
+            <p>💬 <strong>Chat with us on WhatsApp!</strong></p>
+            <p>Click to send us a message</p>
+        </div>
+        <button class="floating-btn btn-wa" onclick="openWhatsApp()">
+            <i class="fab fa-whatsapp"></i>
+            <span class="btn-text">WhatsApp</span>
+        </button>
+    </div>
+    
+    <!-- Book Now Button -->
+    <button class="floating-btn btn-book" onclick="openBookingModal()">
+        <i class="fas fa-calendar-check"></i>
+        <span class="btn-text">Book Now</span>
+    </button>
+</div>
+
+<script>
+    const WHATSAPP_NUMBER = "918237141702"; // Admin's WhatsApp number
+    
+    function openWhatsApp() {
+        const message = "Hello! I have a question about Swami Holiday Home.";
+        const encodedMessage = encodeURIComponent(message);
+        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+        window.open(waLink, '_blank');
+    }
+    
+    // Auto-hide preview after 8 seconds
+    setTimeout(() => {
+        const preview = document.getElementById('waPreview');
+        if (preview) {
+            preview.style.opacity = '0';
+            setTimeout(() => {
+                if (preview) preview.style.display = 'none';
+            }, 500);
+        }
+    }, 8000);
+</script>
+<!-- Payment Modal with QR Scanner and Online Payment -->
+<style>
+    .payment-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        z-index: 10000;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(5px);
+    }
+    
+    .payment-modal.active {
+        display: flex;
+    }
+    
+    .payment-modal-content {
+        background: white;
+        border-radius: 20px;
+        max-width: 500px;
+        width: 90%;
+        max-height: 85vh;
+        overflow-y: auto;
+        padding: 25px;
+        position: relative;
+    }
+    
+    .payment-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .payment-header h3 {
+        color: #0a4d4c;
+        font-size: 1.5rem;
+    }
+    
+    .payment-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+    }
+    
+    .payment-option {
+        background: #f5f1ea;
+        padding: 20px;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    .payment-option:hover {
+        border-color: #ff8a7a;
+        transform: translateY(-3px);
+    }
+    
+    .payment-option.selected {
+        border-color: #4caf50;
+        background: #e8f5e9;
+    }
+    
+    .payment-option i {
+        font-size: 2rem;
+        color: #ff8a7a;
+        margin-bottom: 10px;
+    }
+    
+    .payment-option h4 {
+        margin: 0;
+        color: #0a4d4c;
+    }
+    
+    .qr-section {
+        text-align: center;
+        margin: 20px 0;
+        padding: 20px;
+        background: #f5f1ea;
+        border-radius: 12px;
+    }
+    
+    .qr-code {
+        width: 200px;
+        height: 200px;
+        background: white;
+        margin: 15px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .qr-code img {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .upi-id {
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        font-family: monospace;
+        font-size: 1rem;
+        margin: 10px 0;
+        border: 1px solid #ddd;
+    }
+    
+    .payment-summary {
+        background: #0a4d4c;
+        color: white;
+        padding: 15px;
+        border-radius: 12px;
+        margin: 20px 0;
+    }
+    
+    .pay-at-venue {
+        background: #ff8a7a;
+        color: white;
+        padding: 15px;
+        border-radius: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 15px;
+    }
+    
+    .pay-at-venue:hover {
+        background: #ff6b5a;
+        transform: translateY(-2px);
+    }
+    
+    .confirm-payment {
+        background: #4caf50;
+        color: white;
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+    
+    .close-payment {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #8b8a88;
+    }
+</style>
+
+<!-- Payment Modal -->
+<div class="payment-modal" id="paymentModal">
+    <div class="payment-modal-content">
+        <button class="close-payment" onclick="closePaymentModal()">&times;</button>
+        
+        <div class="payment-header">
+            <h3><i class="fas fa-credit-card"></i> Secure Payment</h3>
+            <p>Choose your preferred payment method</p>
+        </div>
+        
+        <div class="payment-options">
+            <div class="payment-option" onclick="selectPaymentMethod('online')">
+                <i class="fas fa-qrcode"></i>
+                <h4>Pay Online</h4>
+                <small>UPI / Card / NetBanking</small>
+            </div>
+            <div class="payment-option" onclick="selectPaymentMethod('venue')">
+                <i class="fas fa-building"></i>
+                <h4>Pay at Venue</h4>
+                <small>Cash / Card / UPI at check-in</small>
+            </div>
+        </div>
+        
+        <!-- Online Payment Section -->
+        <div id="onlinePaymentSection" style="display: none;">
+            <div class="qr-section">
+                <h4><i class="fas fa-qrcode"></i> Scan to Pay</h4>
+                <div class="qr-code" id="qrCodeContainer">
+                    <!-- QR Code will be generated here -->
+                    <canvas id="qrCanvas" width="180" height="180"></canvas>
+                </div>
+                <div class="upi-id">
+                    <strong>UPI ID:</strong> swamiholiday@okhdfcbank
+                </div>
+                <button class="confirm-payment" onclick="verifyPayment()">
+                    <i class="fas fa-check-circle"></i> I have made the payment
+                </button>
+            </div>
+        </div>
+        
+        <!-- Pay at Venue Section -->
+        <div id="venuePaymentSection" style="display: none;">
+            <div class="pay-at-venue" onclick="confirmVenueBooking()">
+                <i class="fas fa-calendar-check"></i>
+                <h4>Confirm Booking - Pay at Check-in</h4>
+                <p>No advance payment required! Pay when you arrive.</p>
+                <small>✅ Booking will be confirmed immediately</small>
+            </div>
+            
+            <div class="payment-summary">
+                <h4>Booking Summary</h4>
+                <p id="paymentTotal">Total: ₹0</p>
+                <p>Pay at: Swami Holiday Home, Alibag</p>
+                <p>Payment methods accepted: Cash, Card, UPI</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script>
+    let selectedPaymentMethod = null;
+    let currentBookingAmount = 0;
+    let currentBookingData = null;
+    
+    // Open payment modal
+    function openPaymentModal(amount, bookingData) {
+        currentBookingAmount = amount;
+        currentBookingData = bookingData;
+        document.getElementById('paymentModal').classList.add('active');
+        document.getElementById('paymentTotal').innerHTML = `Total: ₹${amount}`;
+        
+        // Generate QR Code for UPI payment
+        const upiString = `upi://pay?pa=swamiholiday@okhdfcbank&pn=Swami%20Holiday%20Home&am=${amount}&cu=INR`;
+        const qrContainer = document.getElementById('qrCodeContainer');
+        qrContainer.innerHTML = '';
+        new QRCode(qrContainer, {
+            text: upiString,
+            width: 180,
+            height: 180,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+    
+    function closePaymentModal() {
+        document.getElementById('paymentModal').classList.remove('active');
+        document.getElementById('onlinePaymentSection').style.display = 'none';
+        document.getElementById('venuePaymentSection').style.display = 'none';
+    }
+    
+    function selectPaymentMethod(method) {
+        selectedPaymentMethod = method;
+        document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+        event.currentTarget.classList.add('selected');
+        
+        if (method === 'online') {
+            document.getElementById('onlinePaymentSection').style.display = 'block';
+            document.getElementById('venuePaymentSection').style.display = 'none';
+        } else {
+            document.getElementById('onlinePaymentSection').style.display = 'none';
+            document.getElementById('venuePaymentSection').style.display = 'block';
+        }
+    }
+    
+    function verifyPayment() {
+        // Simulate payment verification
+        alert("✅ Payment verification initiated!\n\n📱 Please complete the payment using the QR code.\n\n📧 A confirmation email will be sent after verification.\n\n📞 For support: +91 91460 54013");
+        
+        // Here you would integrate with Razorpay or other payment gateway
+        // For demo, we'll show success
+        setTimeout(() => {
+            const confirm = confirm("Have you completed the payment?");
+            if (confirm) {
+                alert("🎉 Payment successful! Your booking is confirmed.\n\nBooking ID: " + currentBookingData?.id);
+                closePaymentModal();
+                // Save booking
+                saveBookingToLocalStorage(currentBookingData);
+            }
+        }, 1000);
+    }
+    
+    function confirmVenueBooking() {
+        alert("✅ Booking Confirmed - Pay at Venue!\n\n📅 Your booking has been reserved.\n💰 Payment will be collected at check-in.\n📍 Address: Puro Aali, Sasawane Beach Road, Alibag\n\n📞 For any changes: +91 91460 54013");
+        closePaymentModal();
+        saveBookingToLocalStorage(currentBookingData);
+    }
+    
+    function saveBookingToLocalStorage(booking) {
+        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+        bookings.push(booking);
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        showBookingConfirmation(booking);
+    }
+    
+    function showBookingConfirmation(booking) {
+        alert(`🎉 Booking Confirmed!\n\nBooking ID: ${booking.id}\nName: ${booking.guestName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nTotal: ₹${booking.total}\n\nWe look forward to hosting you! 🏖️`);
+    }
 </script>
 </body>
 </html>

@@ -287,6 +287,7 @@
             </div>
             <ul class="nav-menu">
                 <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
                 <li><a href="rooms.html" class="nav-link">Rooms</a></li>
                 <li><a href="facilities.html" class="nav-link active">Facilities</a></li>
                 <li><a href="nearby.html" class="nav-link">Nearby</a></li>
@@ -357,118 +358,101 @@
         </div>
 
         <!-- Vegetarian Section -->
-        <h2 class="section-heading">
-            <i class="fas fa-leaf" style="color: #4caf50;"></i> Vegetarian Delights 
-            <span class="veg-badge">Pure Veg</span>
-        </h2>
-        <div class="food-grid">
-            <!-- Veg Thali -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url('images/vegthali.jpg');"></div>
-                <div class="food-info">
-                    <div class="food-name">Veg Thali</div>
-                    <div class="food-desc">Rice, dal, sabzi, roti, salad, sweet</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Dal Rice -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url('images/dal rice.jpg');"></div>
-                <div class="food-info">
-                    <div class="food-name">Dal Rice</div>
-                    <div class="food-desc">Comfort food with ghee and papad</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Matar Paneer -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/Matar-Paneer-1.jpg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Matar Paneer</div>
-                    <div class="food-desc">Cottage cheese in rich tomato gravy</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Dry Sabzi -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/dry\ sabzi.jpg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Dry Sabzi</div>
-                    <div class="food-desc">Seasonal vegetable stir-fry</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Sweet Salad -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/Dahi-Salad-Recipe.jpg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Sweet Salad</div>
-                    <div class="food-desc">Fresh fruits with honey and nuts</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
+<h2 class="section-heading">
+    <i class="fas fa-leaf" style="color: #4caf50;"></i> Vegetarian Delights 
+    <span class="veg-badge">Pure Veg</span>
+</h2>
+<div class="food-grid" id="vegFoodGrid">
+    <!-- Hardcoded for now - will be dynamic -->
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/vegthali.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Veg Thali</div>
+            <div class="food-desc">Rice, dal, sabzi, roti, salad, sweet</div>
+            <div class="food-price">Included in Package</div>
         </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/dal rice.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Dal Rice</div>
+            <div class="food-desc">Comfort food with ghee and papad</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/Matar-Paneer-1.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Matar Paneer</div>
+            <div class="food-desc">Cottage cheese in rich tomato gravy</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/dry sabzi.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Dry Sabzi</div>
+            <div class="food-desc">Seasonal vegetable stir-fry</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/Dahi-Salad-Recipe.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Sweet Salad</div>
+            <div class="food-desc">Fresh fruits with honey and nuts</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+</div>
 
-        <!-- Non-Vegetarian Section -->
-        <h2 class="section-heading">
-            <i class="fas fa-drumstick-bite" style="color: #f44336;"></i> Non-Veg Specialties 
-            <span class="nonveg-badge">Contains Meat</span>
-        </h2>
-        <div class="food-grid">
-            <!-- Fish Curry Rice -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/fish\ curry.jpg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Fish Curry Rice</div>
-                    <div class="food-desc">Fresh catch with coastal spices</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Chicken Thali -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/chicken_thali_featured.jpg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Chicken Thali</div>
-                    <div class="food-desc">Chicken curry, rice, roti, salad</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Prawns Masala -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/Prawn-Masala-450x450.jpeg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Prawns Masala</div>
-                    <div class="food-desc">Spicy prawn gravy with rice</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Sol Kadhi -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/sol\ kadhi.jpg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Sol Kadhi</div>
-                    <div class="food-desc">Kokam and coconut drink</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
-            
-            <!-- Kokani Special -->
-            <div class="food-card">
-                <div class="food-image" style="background-image: url(images/kokani.jpg);"></div>
-                <div class="food-info">
-                    <div class="food-name">Kokani Special</div>
-                    <div class="food-desc">Chef's special seafood delicacy</div>
-                    <div class="food-price">Included in Package</div>
-                </div>
-            </div>
+<!-- Non-Vegetarian Section -->
+<h2 class="section-heading">
+    <i class="fas fa-drumstick-bite" style="color: #f44336;"></i> Non-Veg Specialties 
+    <span class="nonveg-badge">Contains Meat</span>
+</h2>
+<div class="food-grid" id="nonVegFoodGrid">
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/fish curry.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Fish Curry Rice</div>
+            <div class="food-desc">Fresh catch with coastal spices</div>
+            <div class="food-price">Included in Package</div>
         </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/chicken_thali_featured.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Chicken Thali</div>
+            <div class="food-desc">Chicken curry, rice, roti, salad</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/Prawn-Masala-450x450.jpeg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Prawns Masala</div>
+            <div class="food-desc">Spicy prawn gravy with rice</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/sol kadhi.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Sol Kadhi</div>
+            <div class="food-desc">Kokam and coconut drink</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+    <div class="food-card">
+        <div class="food-image" style="background-image: url('images/kokani.jpg'); background-size: cover; background-position: center;"></div>
+        <div class="food-info">
+            <div class="food-name">Kokani Special</div>
+            <div class="food-desc">Chef's special seafood delicacy</div>
+            <div class="food-price">Included in Package</div>
+        </div>
+    </div>
+</div>
 
         <!-- Important Information Note -->
         <div class="info-note">
@@ -719,11 +703,6 @@
     </div>
 </div>
 
-<!-- Floating Book Now Button -->
-<button class="floating-book" onclick="openBookingModal()">
-    <i class="fas fa-calendar-check"></i> Book Now
-</button>
-
     <!-- Secret Admin Access - Press A+D+M+I+N in sequence -->
     <script>
         // Secret code to open admin panel
@@ -768,6 +747,210 @@
                     // Fallback if API fails
                     facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
                 });
+        }
+    });
+</script>
+<!-- Floating Action Buttons - Simple WhatsApp -->
+<style>
+    .floating-container {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .floating-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 12px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        text-decoration: none;
+        min-width: 140px;
+    }
+    
+    .floating-btn i {
+        font-size: 1.2rem;
+    }
+    
+    .btn-book {
+        background: #ff8a7a;
+        color: white;
+    }
+    
+    .btn-book:hover {
+        background: #ff6b5a;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 138, 122, 0.4);
+    }
+    
+    .btn-wa {
+        background: #25D366;
+        color: white;
+    }
+    
+    .btn-wa:hover {
+        background: #20b859;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    }
+    
+    .wa-preview {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        background: white;
+        border-radius: 15px;
+        padding: 12px 18px;
+        max-width: 280px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        border-left: 4px solid #25D366;
+        margin-bottom: 10px;
+        animation: slideIn 0.3s ease;
+        cursor: pointer;
+        z-index: 1001;
+    }
+    
+    .wa-preview p {
+        margin: 0;
+        font-size: 0.85rem;
+        color: #333;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .floating-btn {
+            padding: 12px;
+            min-width: auto;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+        }
+        
+        .floating-btn .btn-text {
+            display: none;
+        }
+        
+        .floating-btn i {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .floating-container {
+            bottom: 20px;
+            right: 20px;
+            gap: 12px;
+        }
+        
+        .wa-preview {
+            display: none;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .floating-btn {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .floating-btn i {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+
+<div class="floating-container">
+    <!-- WhatsApp Button -->
+    <div style="position: relative;">
+        <div class="wa-preview" id="waPreview">
+            <p>💬 <strong>Chat with us on WhatsApp!</strong></p>
+            <p>Click to send us a message</p>
+        </div>
+        <button class="floating-btn btn-wa" onclick="openWhatsApp()">
+            <i class="fab fa-whatsapp"></i>
+            <span class="btn-text">WhatsApp</span>
+        </button>
+    </div>
+    
+    <!-- Book Now Button -->
+    <button class="floating-btn btn-book" onclick="openBookingModal()">
+        <i class="fas fa-calendar-check"></i>
+        <span class="btn-text">Book Now</span>
+    </button>
+</div>
+
+<script>
+    const WHATSAPP_NUMBER = "918237141702"; // Admin's WhatsApp number
+    
+    function openWhatsApp() {
+        const message = "Hello! I have a question about Swami Holiday Home.";
+        const encodedMessage = encodeURIComponent(message);
+        const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+        window.open(waLink, '_blank');
+    }
+    
+    // Auto-hide preview after 8 seconds
+    setTimeout(() => {
+        const preview = document.getElementById('waPreview');
+        if (preview) {
+            preview.style.opacity = '0';
+            setTimeout(() => {
+                if (preview) preview.style.display = 'none';
+            }, 500);
+        }
+    }, 8000);
+</script>
+<script>
+    function displayVegFoodInFacilities() {
+        let items = JSON.parse(localStorage.getItem('vegFoodItems') || '[]');
+        let foodListDiv = document.getElementById('foodList');
+        
+        if (!foodListDiv) return;
+        
+        if (items.length === 0) {
+            foodListDiv.innerHTML = '<p>No veg food items added yet</p>';
+            return;
+        }
+        
+        foodListDiv.innerHTML = '';
+        
+        for (let i = 0; i < items.length; i++) {
+            foodListDiv.innerHTML += `
+                <div style="margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
+                    <img src="${items[i].image}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;" onerror="this.src='https://via.placeholder.com/300x150?text=No+Image'">
+                    <p style="margin-top: 8px;"><strong>${items[i].name}</strong></p>
+                </div>
+            `;
+        }
+    }
+    
+    // Load veg food items when page opens
+    displayVegFoodInFacilities();
+    
+    // Reload when page becomes visible (after admin panel)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            displayVegFoodInFacilities();
         }
     });
 </script>

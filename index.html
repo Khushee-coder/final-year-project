@@ -1125,5 +1125,22 @@
         alert(`🎉 Booking Confirmed!\n\nBooking ID: ${booking.id}\nName: ${booking.guestName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nTotal: ₹${booking.total}\n\nWe look forward to hosting you! 🏖️`);
     }
 </script>
+<script>
+    // Get the current price from wherever it's defined on Home page
+    // Look for something like: acPrice = 2500 or price = 2500
+    
+    // Try to find the price from your existing code
+    let currentPrice = 2500; // Default
+    
+    // If you have a variable called acPrice, use that
+    if (typeof acPrice !== 'undefined') {
+        currentPrice = acPrice;
+    }
+    
+    // Save to localStorage so Rooms page can use it
+    localStorage.setItem('roomPrice', currentPrice);
+    
+    console.log('Price saved to localStorage: ₹' + currentPrice);
+</script>
 </body>
 </html>

@@ -587,27 +587,13 @@
 
     <script src="js/script.js"></script>
     <script>
-    // Auto-detect and set Facebook link
-    document.addEventListener('DOMContentLoaded', function() {
-        const facebookLink = document.getElementById('facebookLink');
-        if (facebookLink) {
-            // Search for the Facebook page
-            fetch('https://graph.facebook.com/search?q=Swami+Holiday+Home&type=page&limit=1')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.data && data.data.length > 0) {
-                        facebookLink.href = `https://facebook.com/${data.data[0].id}`;
-                    } else {
-                        // Fallback to search page if not found
-                        facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
-                    }
-                })
-                .catch(() => {
-                    // Fallback if API fails
-                    facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
-                });
-        }
-    });
+   // Simple Facebook link (no API error)
+document.addEventListener('DOMContentLoaded', function() {
+    const facebookLink = document.getElementById('facebookLink');
+    if (facebookLink) {
+        facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
+    }
+});
     
 </script>
 <script>
@@ -1097,6 +1083,30 @@
     function showBookingConfirmation(booking) {
         alert(`🎉 Booking Confirmed!\n\nBooking ID: ${booking.id}\nName: ${booking.guestName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nTotal: ₹${booking.total}\n\nWe look forward to hosting you! 🏖️`);
     }
+</script>
+<script>
+    function updateRoomPrices() {
+        let currentPrice = localStorage.getItem('acPrice');
+        
+        if (!currentPrice) {
+            currentPrice = "2500";
+        }
+        
+        const roomPrices = document.querySelectorAll('.room-price');
+        roomPrices.forEach(priceElement => {
+            priceElement.innerHTML = `₹${currentPrice} <span>/person</span>`;
+        });
+        
+        const modalRoomType = document.getElementById('modalRoomType');
+        if (modalRoomType) {
+            modalRoomType.innerHTML = `
+                <option value="ac">AC Room - ₹${currentPrice}/person</option>
+                <option value="pet">Pet Friendly Room - ₹${currentPrice}/person</option>
+            `;
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', updateRoomPrices);
 </script>
 </body>
 </html>

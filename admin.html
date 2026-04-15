@@ -528,16 +528,31 @@
         
         // ================ PRICES ================
         function loadPrices() {
-            const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
-            document.getElementById('acPrice').value = prices.ac;
-        }
-        
-        function savePrices() {
-            const acPrice = document.getElementById('acPrice').value;
-            localStorage.setItem('prices', JSON.stringify({ ac: parseInt(acPrice) }));
-            alert('Prices saved successfully!');
-            if (typeof updateAllRoomPrices === 'function') updateAllRoomPrices();
-        }
+    const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
+    document.getElementById('acPrice').value = prices.ac;
+    
+    // ALSO save as simple acPrice for other pages
+    localStorage.setItem('acPrice', prices.ac);
+}
+
+function savePrices() {
+    const acPrice = document.getElementById('acPrice').value;
+    const priceValue = parseInt(acPrice);
+    
+    // Save as object (for admin panel)
+    localStorage.setItem('prices', JSON.stringify({ ac: priceValue }));
+    
+    // Save as simple key (for rooms page and other pages)
+    localStorage.setItem('acPrice', priceValue);
+    
+    alert('Prices saved successfully!');
+    
+    // Update price on current page if function exists
+    if (typeof updateAllRoomPrices === 'function') updateAllRoomPrices();
+    
+    // Optional: Refresh the page to show updated price
+    location.reload();
+}
         
         // ================ VEG FOOD WITH IMAGE ================
         function loadVegFood() {

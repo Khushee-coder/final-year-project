@@ -574,16 +574,46 @@ function checkOutRoom(roomNumber) {
     }
 }
 
-function loadPricesData() {
+function loadPrices() {
     const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
     document.getElementById('acPrice').value = prices.ac;
+    
+    // Also set the simple key when loading
+    localStorage.setItem('acPrice', prices.ac);
 }
 
 function savePrices() {
-    const acPrice = document.getElementById('acPrice')?.value;
-    localStorage.setItem('prices', JSON.stringify({ ac: parseInt(acPrice) }));
-    updateAllRoomPrices();
-    alert('Prices saved successfully!');
+    const acPriceInput = document.getElementById('acPrice');
+    if (!acPriceInput) {
+        console.error('acPrice input not found');
+        return;
+    }
+    
+    const priceValue = parseInt(acPriceInput.value);
+    
+    if (isNaN(priceValue)) {
+        alert('Please enter a valid price');
+        return;
+    }
+    
+    // Save as object (for your admin panel)
+    localStorage.setItem('prices', JSON.stringify({ ac: priceValue }));
+    
+    // Save as simple key (for rooms page and home page)
+    localStorage.setItem('acPrice', priceValue);
+    
+    // Also save as roomPrice for backup
+    localStorage.setItem('roomPrice', priceValue);
+    
+    alert(`Price saved: ₹${priceValue} per person`);
+    
+    // Refresh prices on current page if function exists
+    if (typeof updateAllRoomPrices === 'function') {
+        updateAllRoomPrices();
+    }
+    
+    // Optional: reload to show changes
+    location.reload();
 }
 
 // ================ VEG FOOD ADMIN ================

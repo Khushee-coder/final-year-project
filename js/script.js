@@ -932,102 +932,234 @@ function setFacebookLink() {
     }
 }
 
-// ================ BOOKING MODAL HTML ================
-const bookingModalHTML = `
-<div class="booking-modal" id="bookingModal">
-    <div class="booking-modal-content">
-        <div class="booking-modal-header">
-            <h3><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
-            <button class="modal-close" onclick="closeBookingModal()">&times;</button>
-        </div>
-        <div class="booking-modal-body">
-            <form onsubmit="processBooking(event)">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
-                    <div>
-                        <label>Room Type</label>
-                        <select id="modalRoomType">
-                            <option value="ac">AC Room - ₹2,500/person</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Number of Rooms</label>
-                        <select id="modalNumRooms">
-                            <option value="1">1 Room</option>
-                            <option value="2">2 Rooms</option>
-                            <option value="3">3 Rooms</option>
-                            <option value="4">4 Rooms</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
-                    <div>
-                        <label>Guests</label>
-                        <select id="modalGuests">
-                            <option value="1">1 Guest</option>
-                            <option value="2" selected>2 Guests</option>
-                            <option value="3">3 Guests</option>
-                            <option value="4">4 Guests</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Check-in</label>
-                        <input type="date" id="modalCheckIn">
-                    </div>
-                </div>
-                
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
-                    <div>
-                        <label>Check-out</label>
-                        <input type="date" id="modalCheckOut">
-                    </div>
-                    <div></div>
-                </div>
-                
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-bottom:15px;">
-                    <div>
-                        <label>Full Name</label>
-                        <input type="text" id="guestName" required>
-                    </div>
-                    <div>
-                        <label>Phone</label>
-                        <input type="tel" id="guestPhone" required>
-                    </div>
-                </div>
-                
-                <div>
-                    <label>Email</label>
-                    <input type="email" id="guestEmail" required>
-                </div>
-                
-                <div style="background:#f5f1ea; padding:15px; border-radius:8px; margin:20px 0;">
-                    <div>Room: AC Room</div>
-                    <div id="summaryDetails">Select dates to see total</div>
-                    <div style="font-weight:700; margin-top:10px;">Total: ₹<span id="summaryTotal">0</span></div>
-                </div>
-                
-                <button type="submit" style="width:100%; background:#ff8a7a; color:white; border:none; padding:15px; border-radius:50px; font-weight:700; cursor:pointer;">
-                    Confirm Booking
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
+// ==================== BOOKING MODAL FUNCTIONS ====================
 
-<div class="booking-modal" id="confirmModal">
-    <div class="booking-modal-content" style="max-width:400px;">
-        <div class="booking-modal-header" style="background:#4caf50;">
-            <h3>Booking Confirmed!</h3>
-            <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
-        </div>
-        <div class="booking-modal-body">
-            <h4>Thank You, <span id="confirmGuestName">Guest</span>!</h4>
-            <div id="confirmDetails" style="background:#f5f1ea; padding:15px; border-radius:8px; margin:20px 0;"></div>
-            <button onclick="closeConfirmModal()" style="background:#0a4d4c; color:white; border:none; padding:10px 30px; border-radius:50px; cursor:pointer;">Close</button>
-        </div>
-    </div>
-</div>
-`;
+let currentStep = 1;
+let selectedDates = { checkIn: null, checkOut: null };
+
+function openBookingModal(roomType = 'ac') {
+    document.getElementById('bookingModal').style.display = 'flex';
+    currentStep = 1;
+    showStep(1);
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    const checkInInput = document.getElementById('modalCheckIn');
+    const checkOutInput = document.getElementById('modalCheckOut');
+    
+    if (checkInInput) checkInInput.min = today;
+    if (checkOutInput) checkOutInput.min = today;
+    
+    // Update summary
+    updateMultiRoomSummary();
+}
+
+function closeBookingModal() {
+    document.getElementById('bookingModal').style.display = 'none';
+}
+
+function showStep(step) {
+    // Hide all steps
+    document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+    document.querySelector(`.step${step}`).classList.add('active');
+    
+    // Update progress steps
+    for (let i = 1; i <= 3; i++) {
+        const stepEl = document.getElementById(`step${i}`);
+        if (stepEl) {
+            if (i < step) {
+                stepEl.classList.add('completed');
+                stepEl.classList.remove('active');
+            } else if (i === step) {
+                stepEl.classList.add('active');
+                stepEl.classList.remove('completed');
+            } else {
+                stepEl.classList.remove('active', 'completed');
+            }
+        }
+    }
+    
+    // Show/hide buttons
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (prevBtn) prevBtn.style.display = step === 1 ? 'none' : 'flex';
+    if (nextBtn) nextBtn.style.display = step === 3 ? 'none' : 'flex';
+    if (submitBtn) submitBtn.style.display = step === 3 ? 'flex' : 'none';
+    
+    currentStep = step;
+}
+
+function nextStep() {
+    // Validate current step before proceeding
+    if (currentStep === 1) {
+        const checkIn = document.getElementById('modalCheckIn').value;
+        const checkOut = document.getElementById('modalCheckOut').value;
+        
+        if (!checkIn) {
+            alert('Please select check-in date');
+            return;
+        }
+        if (!checkOut) {
+            alert('Please select check-out date');
+            return;
+        }
+        
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
+        
+        if (checkOutDate <= checkInDate) {
+            alert('Check-out date must be after check-in date');
+            return;
+        }
+        
+        selectedDates = { checkIn, checkOut };
+    }
+    
+    if (currentStep === 2) {
+        const name = document.getElementById('guestName').value;
+        const phone = document.getElementById('guestPhone').value;
+        const email = document.getElementById('guestEmail').value;
+        
+        if (!name) {
+            alert('Please enter your full name');
+            return;
+        }
+        if (!phone || phone.length !== 10) {
+            alert('Please enter a valid 10-digit phone number');
+            return;
+        }
+        if (!email || !email.includes('@')) {
+            alert('Please enter a valid email address');
+            return;
+        }
+    }
+    
+    showStep(currentStep + 1);
+}
+
+function prevStep() {
+    showStep(currentStep - 1);
+}
+
+function updateMultiRoomSummary() {
+    const roomType = document.getElementById('modalRoomType').value;
+    const numRooms = parseInt(document.getElementById('modalNumRooms').value);
+    const guests = parseInt(document.getElementById('modalGuests').value);
+    const checkIn = document.getElementById('modalCheckIn').value;
+    const checkOut = document.getElementById('modalCheckOut').value;
+    
+    // Get price from localStorage
+    let pricePerPerson = parseInt(localStorage.getItem('acPrice')) || 2500;
+    
+    // Calculate nights
+    let nights = 1;
+    if (checkIn && checkOut) {
+        const start = new Date(checkIn);
+        const end = new Date(checkOut);
+        nights = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+    }
+    
+    // Calculate total
+    const total = pricePerPerson * guests * nights * numRooms;
+    
+    // Update summary display
+    document.getElementById('summaryRoom').textContent = roomType === 'ac' ? 'AC Room' : 'Pet Friendly Room';
+    document.getElementById('summaryRooms').textContent = numRooms;
+    document.getElementById('summaryGuests').textContent = guests;
+    document.getElementById('summaryDates').textContent = checkIn && checkOut ? `${checkIn} to ${checkOut}` : 'Not selected';
+    document.getElementById('summaryNights').textContent = nights;
+    document.getElementById('summaryTotal').textContent = total;
+}
+
+function processMultiRoomBooking(event) {
+    event.preventDefault();
+    
+    // Get all booking details
+    const roomType = document.getElementById('modalRoomType').value;
+    const numRooms = document.getElementById('modalNumRooms').value;
+    const guests = document.getElementById('modalGuests').value;
+    const checkIn = document.getElementById('modalCheckIn').value;
+    const checkOut = document.getElementById('modalCheckOut').value;
+    const guestName = document.getElementById('guestName').value;
+    const guestPhone = document.getElementById('guestPhone').value;
+    const guestEmail = document.getElementById('guestEmail').value;
+    const guestPet = document.getElementById('guestPet').value;
+    const specialRequests = document.getElementById('specialRequests').value;
+    
+    let pricePerPerson = parseInt(localStorage.getItem('acPrice')) || 2500;
+    
+    let nights = 1;
+    if (checkIn && checkOut) {
+        const start = new Date(checkIn);
+        const end = new Date(checkOut);
+        nights = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+    }
+    
+    const total = pricePerPerson * parseInt(guests) * nights * parseInt(numRooms);
+    
+    const bookingData = {
+        id: 'SHH' + Date.now(),
+        roomType: roomType,
+        numRooms: numRooms,
+        guests: guests,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        guestName: guestName,
+        guestPhone: guestPhone,
+        guestEmail: guestEmail,
+        pet: guestPet,
+        specialRequests: specialRequests,
+        total: total,
+        pricePerPerson: pricePerPerson,
+        nights: nights,
+        bookingDate: new Date().toISOString()
+    };
+    
+    // Save to localStorage
+    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    bookings.push(bookingData);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    
+    // Close booking modal
+    closeBookingModal();
+    
+    // Show payment modal
+    openPaymentModal(total, bookingData);
+}
+
+function openPaymentModal(amount, bookingData) {
+    alert(`🎉 Booking Confirmed!\n\nBooking ID: ${bookingData.id}\nName: ${bookingData.guestName}\nCheck-in: ${bookingData.checkIn}\nCheck-out: ${bookingData.checkOut}\nTotal: ₹${amount}\n\n💰 Payment: Pay at venue (Cash/Card/UPI)\n📍 Swami Holiday Home, Alibag\n\nWe look forward to hosting you! 🏖️`);
+    
+    // Save to WhatsApp
+    sendBookingToWhatsApp(bookingData);
+}
+
+function sendBookingToWhatsApp(booking) {
+    const message = `*New Booking at Swami Holiday Home*%0A%0A
+📅 Booking ID: ${booking.id}%0A
+👤 Guest: ${booking.guestName}%0A
+📞 Phone: ${booking.guestPhone}%0A
+📧 Email: ${booking.guestEmail}%0A
+🏠 Room: ${booking.roomType === 'ac' ? 'AC Room' : 'Pet Friendly Room'}%0A
+🚪 Rooms: ${booking.numRooms}%0A
+👥 Guests: ${booking.guests}%0A
+📅 Check-in: ${booking.checkIn}%0A
+📅 Check-out: ${booking.checkOut}%0A
+🌙 Nights: ${booking.nights}%0A
+💰 Total: ₹${booking.total}%0A
+🐾 Pet: ${booking.pet === 'yes' ? 'Yes' : 'No'}%0A
+💬 Requests: ${booking.specialRequests || 'None'}%0A%0A
+📍 Swami Holiday Home, Alibag`;
+    
+    const whatsappUrl = `https://wa.me/918237141702?text=${message}`;
+    window.open(whatsappUrl, '_blank');
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+}
 
 // ================ INITIALIZATION ================
 document.addEventListener('DOMContentLoaded', function() {

@@ -310,20 +310,264 @@ function loadRooms() {
     `).join('');
 }
 
-// ================ BOOKING MODAL FUNCTIONS ================
-function openBookingModal() {
+// ==================== BOOKING MODAL FUNCTIONS ====================
+
+let currentStep = 1;
+let selectedDates = { checkIn: null, checkOut: null };
+
+function openBookingModal(roomType = 'ac') {
     const modal = document.getElementById('bookingModal');
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
+    
+    // Set minimum date to today
+    const today = new Date().toISOString().split('T')[0];
+    const checkInInput = document.getElementById('modalCheckIn');
+    const checkOutInput = document.getElementById('modalCheckOut');
+    
+    if (checkInInput) checkInInput.min = today;
+    if (checkOutInput) checkOutInput.min = today;
+    
+    // Reset to step 1
+    goBackToDetails();
+    
+    // Update summary
+    updateSummary();
 }
 
 function closeBookingModal() {
     const modal = document.getElementById('bookingModal');
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    // Reset to step 1
+    goBackToDetails();
+    document.getElementById('upiSection').style.display = 'none';
 }
 
-function closeConfirmModal() {
-    const modal = document.getElementById('confirmModal');
-    if (modal) modal.classList.remove('active');
+function updateSummary() {
+    const roomType = document.getElementById('modalRoomType')?.value;
+    const numRooms = parseInt(document.getElementById('modalNumRooms')?.value || '1');
+    const guests = parseInt(document.getElementById('modalGuests')?.value || '2');
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    
+    let pricePerPerson = parseInt(localStorage.getItem('acPrice')) || 2500;
+    
+    let nights = 1;
+    if (checkIn && checkOut) {
+        const start = new Date(checkIn);
+        const end = new Date(checkOut);
+        nights = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+    }
+    
+    const total = pricePerPerson * guests * nights * numRooms;
+    
+    if (document.getElementById('summaryRoom')) {
+        document.getElementById('summaryRoom').textContent = roomType === 'ac' ? 'AC Room' : 'Pet Friendly Room';
+        document.getElementById('summaryRooms').textContent = numRooms;
+        document.getElementById('summaryGuests').textContent = guests;
+        document.getElementById('summaryDates').textContent = checkIn && checkOut ? `${checkIn} to ${checkOut}` : 'Not selected';
+        document.getElementById('summaryNights').textContent = nights;
+        document.getElementById('summaryTotal').textContent = total;
+    }
+}
+
+function goToPayment() {
+    // Validate Step 1 fields
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    const guestName = document.getElementById('guestName')?.value;
+    const guestPhone = document.getElementById('guestPhone')?.value;
+    const guestEmail = document.getElementById('guestEmail')?.value;
+    
+    if (!checkIn) {
+        alert('Please select check-in date');
+        return;
+    }
+    if (!checkOut) {
+        alert('Please select check-out date');
+        return;
+    }
+    if (!guestName) {
+        alert('Please enter your full name');
+        return;
+    }
+    if (!guestPhone || guestPhone.length !== 10) {
+        alert('Please enter a valid 10-digit phone number');
+        return;
+    }
+    if (!guestEmail || !guestEmail.includes('@')) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    // Switch to step 2
+    const step1 = document.querySelector('.step1');
+    const step2 = document.querySelector('.step2');
+    if (step1) step1.classList.remove('active');
+    if (step2) step2.classList.add('active');
+    
+    // Update progress indicators
+    const step1Progress = document.getElementById('step1');
+    const step2Progress = document.getElementById('step2');
+    if (step1Progress) step1Progress.classList.remove('active');
+    if (step2Progress) step2Progress.classList.add('active');
+    
+    // Update summary with latest values
+    updateSummary();
+}
+
+function goBackToDetails() {
+    const step1 = document.querySelector('.step1');
+    const step2 = document.querySelector('.step2');
+    if (step2) step2.classList.remove('active');
+    if (step1) step1.classList.add('active');
+    
+    const step1Progress = document.getElementById('step1');
+    const step2Progress = document.getElementById('step2');
+    if (step2Progress) step2Progress.classList.remove('active');
+    if (step1Progress) step1Progress.classList.add('active');
+}
+
+// ==================== UPI PAYMENT FUNCTIONS ====================
+
+function showUPIPayment() {
+    const totalElement = document.getElementById('summaryTotal');
+    if (totalElement) {
+        currentUPIAmount = totalElement.innerText;
+    }
+    
+    const upiId = "khushinmasurkar28@oksbi";
+    const merchantName = "Swami Holiday Home";
+    const note = `Booking-${Date.now()}`;
+    
+    const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${currentUPIAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+    const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}&size=200`;
+    
+    const qrImage = document.getElementById('upiQRCode');
+    const upiAmountSpan = document.getElementById('upiAmount');
+    const upiSection = document.getElementById('upiSection');
+    
+    if (qrImage) qrImage.src = qrUrl;
+    if (upiAmountSpan) upiAmountSpan.textContent = currentUPIAmount;
+    if (upiSection) upiSection.style.display = 'block';
+}
+
+function copyUPIID() {
+    navigator.clipboard.writeText("khushinmasurkar28@oksbi");
+    alert("✅ UPI ID copied!\n\nAmount: ₹" + currentUPIAmount + "\nUPI ID: khushinmasurkar28@oksbi");
+}
+
+function confirmUPIPayment() {
+    saveBooking('upi');
+    alert(`✅ Booking Confirmed!\n\n📱 Amount: ₹${currentUPIAmount}\n💳 UPI ID: khushinmasurkar28@oksbi\n\n📧 Confirmation sent to your email.\n\nThank you! 🏖️`);
+    closeBookingModal();
+    const upiSection = document.getElementById('upiSection');
+    if (upiSection) upiSection.style.display = 'none';
+}
+
+function payAtVenue() {
+    saveBooking('venue');
+    alert("✅ Booking Confirmed!\n\n💰 Pay at check-in (Cash/Card/UPI).\n📍 Swami Holiday Home, Alibag\n\nWe look forward to hosting you! 🏖️");
+    closeBookingModal();
+}
+
+function saveBooking(paymentMethod) {
+    const roomTypeEl = document.getElementById('modalRoomType');
+    const numRoomsEl = document.getElementById('modalNumRooms');
+    const guestsEl = document.getElementById('modalGuests');
+    const checkInEl = document.getElementById('modalCheckIn');
+    const checkOutEl = document.getElementById('modalCheckOut');
+    const guestNameEl = document.getElementById('guestName');
+    const guestPhoneEl = document.getElementById('guestPhone');
+    const guestEmailEl = document.getElementById('guestEmail');
+    const guestPetEl = document.getElementById('guestPet');
+    const specialRequestsEl = document.getElementById('specialRequests');
+    const summaryTotalEl = document.getElementById('summaryTotal');
+    
+    const bookingData = {
+        id: 'SHH' + Date.now(),
+        roomType: roomTypeEl?.value || 'ac',
+        numRooms: numRoomsEl?.value || '1',
+        guests: guestsEl?.value || '2',
+        checkIn: checkInEl?.value || '',
+        checkOut: checkOutEl?.value || '',
+        guestName: guestNameEl?.value || '',
+        guestPhone: guestPhoneEl?.value || '',
+        guestEmail: guestEmailEl?.value || '',
+        pet: guestPetEl?.value || 'no',
+        specialRequests: specialRequestsEl?.value || '',
+        total: summaryTotalEl?.innerText || '0',
+        paymentMethod: paymentMethod,
+        bookingDate: new Date().toISOString()
+    };
+    
+    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    bookings.push(bookingData);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+}
+
+// ==================== ROOM PRICE UPDATE ====================
+
+function updateRoomPrices() {
+    let currentPrice = localStorage.getItem('acPrice');
+    
+    if (!currentPrice) {
+        currentPrice = "2500";
+    }
+    
+    const roomPrices = document.querySelectorAll('.room-price');
+    roomPrices.forEach(priceElement => {
+        priceElement.innerHTML = `₹${currentPrice} <span>/person</span>`;
+    });
+    
+    const modalRoomType = document.getElementById('modalRoomType');
+    if (modalRoomType) {
+        modalRoomType.innerHTML = `
+            <option value="ac">AC Room - ₹${currentPrice}/person</option>
+            <option value="pet">Pet Friendly Room - ₹${currentPrice}/person</option>
+        `;
+    }
+}
+
+// ==================== INITIALIZATION ====================
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateRoomPrices();
+    updateSummary();
+    
+    // Set min date for check-in
+    const today = new Date().toISOString().split('T')[0];
+    const checkInInput = document.getElementById('modalCheckIn');
+    const checkOutInput = document.getElementById('modalCheckOut');
+    if (checkInInput) checkInInput.min = today;
+    if (checkOutInput) checkOutInput.min = today;
+    
+    // Add event listeners for real-time summary update
+    const roomType = document.getElementById('modalRoomType');
+    const numRooms = document.getElementById('modalNumRooms');
+    const guests = document.getElementById('modalGuests');
+    const checkIn = document.getElementById('modalCheckIn');
+    const checkOut = document.getElementById('modalCheckOut');
+    
+    if (roomType) roomType.addEventListener('change', updateSummary);
+    if (numRooms) numRooms.addEventListener('change', updateSummary);
+    if (guests) guests.addEventListener('change', updateSummary);
+    if (checkIn) checkIn.addEventListener('change', updateSummary);
+    if (checkOut) checkOut.addEventListener('change', updateSummary);
+});
+
+// ==================== FLOATING BUTTON FUNCTIONS ====================
+
+const WHATSAPP_NUMBER = "918237141702";
+
+function openWhatsApp() {
+    const message = "Hello! I have a question about Swami Holiday Home.";
+    const encodedMessage = encodeURIComponent(message);
+    const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+    window.open(waLink, '_blank');
 }
 
 // ================ PROCESS BOOKING ================
@@ -406,6 +650,51 @@ function processBooking(event) {
     
     loadRoomAvailability();
     loadRooms();
+}
+// UPI Payment Functions
+
+function showUPIPayment() {
+    const totalAmount = document.getElementById('summaryTotal').innerText;
+    currentUPIAmount = totalAmount;
+    
+    // Generate QR code with amount
+    const upiId = "swamiholiday@okhdfcbank";
+    const upiLink = `upi://pay?pa=${upiId}&pn=Swami%20Holiday%20Home&am=${totalAmount}&cu=INR`;
+    const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}&size=180`;
+    
+    document.getElementById('upiQRCode').src = qrUrl;
+    document.getElementById('upiAmount').textContent = totalAmount;
+    document.getElementById('upiSection').style.display = 'block';
+}
+
+function copyUPIID() {
+    navigator.clipboard.writeText("swamiholiday@okhdfcbank");
+    alert("✅ UPI ID copied! Open any UPI app and send ₹" + currentUPIAmount);
+}
+
+function confirmUPIPayment() {
+    alert(`✅ Payment initiated!\n\n📱 Amount: ₹${currentUPIAmount}\n💳 UPI ID: swamiholiday@okhdfcbank\n\n📞 Our team will verify your payment.\n📧 Booking confirmation will be sent to your email.\n\nThank you for choosing Swami Holiday Home!`);
+    
+    // Complete the booking
+    document.getElementById('upiSection').style.display = 'none';
+    
+    // Trigger booking completion
+    if (typeof completeBooking === 'function') {
+        completeBooking();
+    } else {
+        closeBookingModal();
+    }
+}
+
+function payAtVenue() {
+    alert("✅ Booking confirmed!\n\n💰 Pay at check-in.\n📍 Swami Holiday Home, Alibag\n\nWe look forward to hosting you!");
+    
+    // Complete the booking
+    if (typeof completeBooking === 'function') {
+        completeBooking();
+    } else {
+        closeBookingModal();
+    }
 }
 
 // ================ WHATSAPP FUNCTION ================
@@ -934,9 +1223,6 @@ function setFacebookLink() {
 
 // ==================== BOOKING MODAL FUNCTIONS ====================
 
-let currentStep = 1;
-let selectedDates = { checkIn: null, checkOut: null };
-
 function openBookingModal(roomType = 'ac') {
     document.getElementById('bookingModal').style.display = 'flex';
     currentStep = 1;
@@ -1126,6 +1412,61 @@ function processMultiRoomBooking(event) {
     closeBookingModal();
     
     // Show payment modal
+    function showPaymentSection() {
+    // Validate all fields
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    const guestName = document.getElementById('guestName')?.value;
+    const guestPhone = document.getElementById('guestPhone')?.value;
+    const guestEmail = document.getElementById('guestEmail')?.value;
+    
+    if (!checkIn) {
+        alert('Please select check-in date');
+        return;
+    }
+    if (!checkOut) {
+        alert('Please select check-out date');
+        return;
+    }
+    if (!guestName) {
+        alert('Please enter your full name');
+        return;
+    }
+    if (!guestPhone || guestPhone.length !== 10) {
+        alert('Please enter a valid 10-digit phone number');
+        return;
+    }
+    if (!guestEmail || !guestEmail.includes('@')) {
+        alert('Please enter a valid email address');
+        return;
+    }
+    
+    // Hide step 1, show step 2
+    document.querySelector('.step1').style.display = 'none';
+    document.querySelector('.step2').style.display = 'block';
+    document.querySelector('.step2').classList.add('active');
+    
+    updateSummary();
+}
+
+function goBackToDetails() {
+    document.querySelector('.step2').style.display = 'none';
+    document.querySelector('.step1').style.display = 'block';
+    document.querySelector('.step2').classList.remove('active');
+}
+
+function closeBookingModal() {
+    const modal = document.getElementById('bookingModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+    // Reset to step 1
+    document.querySelector('.step1').style.display = 'block';
+    document.querySelector('.step2').style.display = 'none';
+    const upiSection = document.getElementById('upiSection');
+    if (upiSection) upiSection.style.display = 'none';
+}
+
     openPaymentModal(total, bookingData);
 }
 

@@ -1399,3 +1399,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-slide every 5 seconds
     setInterval(nextSlide, 5000);
 });
+
+// Auto-reply food order confirmation
+const EMAILJS_PUBLIC_KEY = "zelEUBjt8NTV7YMVY";        // From EmailJS → Integration
+const EMAILJS_SERVICE_ID = "service_us5kijb";     // From EmailJS → Email Services
+const EMAILJS_TEMPLATE_ID = "template_idss8nd";   // Your MAIN template ID

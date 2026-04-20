@@ -73,6 +73,66 @@
             font-weight: 600;
         }
         
+        /* Step visibility */
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+/* Progress step styles */
+.booking-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f5e6d3;
+}
+
+.progress-step {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    color: #8b8a88;
+    position: relative;
+}
+
+.progress-step.active {
+    color: #ff8a7a;
+    font-weight: 600;
+}
+
+.progress-step i {
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+/* Summary row styles */
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f5e6d3;
+}
+
+.summary-row.total {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #ff8a7a;
+    border-bottom: none;
+    padding-top: 15px;
+}
+
+.step2 {
+    display: none;
+}
+
+.step2.active {
+    display: block;
+}
+
         .status.available {
             color: #4caf50;
         }
@@ -124,26 +184,26 @@
         }
 
         .room-image {
-    height: 250px;
-    overflow: hidden;
-}
+            height: 250px;
+            overflow: hidden;
+        }
 
-.room-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s;
-}
+        .room-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
 
-.room-card:hover .room-image img {
-    transform: scale(1.05);
-}
+        .room-card:hover .room-image img {
+            transform: scale(1.05);
+        }
 
-@media (max-width: 768px) {
-    .room-image {
-        height: 200px;
-    }
-}
+        @media (max-width: 768px) {
+            .room-image {
+                height: 200px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -381,7 +441,7 @@
         </div>
     </footer>
 
-    <!-- Booking Modal -->
+<!-- Booking Modal -->
 <div class="booking-modal" id="bookingModal">
     <div class="booking-modal-content">
         <div class="booking-modal-header">
@@ -389,28 +449,25 @@
             <button class="modal-close" onclick="closeBookingModal()">&times;</button>
         </div>
         <div class="booking-modal-body">
+            <!-- Single Step Progress (removed Guest Details step) -->
             <div class="booking-progress">
-                <div class="progress-step active" id="step1">
+                <div class="progress-step active">
                     <i class="fas fa-calendar-alt"></i>
-                    <span>Select Dates</span>
+                    <span>Room Selection & Details</span>
                 </div>
-                <div class="progress-step" id="step2">
-                    <i class="fas fa-user"></i>
-                    <span>Guest Details</span>
-                </div>
-                <div class="progress-step" id="step3">
+                <div class="progress-step">
                     <i class="fas fa-credit-card"></i>
                     <span>Payment</span>
                 </div>
             </div>
             
-            <form id="bookingForm" onsubmit="processMultiRoomBooking(event)">
-                <!-- Step 1: Room Selection -->
+            <form id="bookingForm" onsubmit="event.preventDefault(); showPaymentSection();">
+                <!-- Room Selection & Guest Details (All in one) -->
                 <div class="step step1 active">
                     <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-bed"></i> Room Type</label>
-                            <select id="modalRoomType" onchange="updateMultiRoomSummary()">
+                            <select id="modalRoomType" onchange="updateSummary()">
                                 <option value="ac">AC Room - ₹2,500/person</option>
                                 <option value="pet">Pet Friendly Room - ₹2,500/person</option>
                             </select>
@@ -418,7 +475,7 @@
                         </div>
                         <div class="form-group">
                             <label><i class="fas fa-door-open"></i> Number of Rooms</label>
-                            <select id="modalNumRooms" onchange="updateMultiRoomSummary()">
+                            <select id="modalNumRooms" onchange="updateSummary()">
                                 <option value="1">1 Room</option>
                                 <option value="2">2 Rooms</option>
                                 <option value="3">3 Rooms</option>
@@ -430,7 +487,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-user-friends"></i> Guests per Room</label>
-                            <select id="modalGuests" onchange="updateMultiRoomSummary()">
+                            <select id="modalGuests" onchange="updateSummary()">
                                 <option value="1">1 Guest</option>
                                 <option value="2" selected>2 Guests</option>
                                 <option value="3">3 Guests</option>
@@ -439,42 +496,33 @@
                         </div>
                         <div class="form-group">
                             <label><i class="fas fa-calendar-plus"></i> Check-in Date</label>
-                            <input type="date" id="modalCheckIn" onchange="updateMultiRoomSummary()">
-                            <div class="error-message" id="checkInError"></div>
+                            <input type="date" id="modalCheckIn" onchange="updateSummary()">
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
-                        <input type="date" id="modalCheckOut" onchange="updateMultiRoomSummary()">
-                        <div class="error-message" id="checkOutError"></div>
-                    </div>
-                </div>
-                
-                <!-- Step 2: Guest Details -->
-                <div class="step step2">
                     <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
+                            <input type="date" id="modalCheckOut" onchange="updateSummary()">
+                        </div>
                         <div class="form-group">
                             <label><i class="fas fa-user"></i> Full Name *</label>
                             <input type="text" id="guestName" placeholder="Enter your full name">
-                            <div class="error-message" id="guestNameError"></div>
-                            <div class="help-text"><i class="fas fa-info-circle"></i> Only letters allowed</div>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-phone"></i> Phone Number *</label>
-                            <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
-                            <div class="error-message" id="guestPhoneError"></div>
-                            <div class="help-text"><i class="fas fa-info-circle"></i> Must start with 6,7,8 or 9</div>
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
+                            <label><i class="fas fa-phone"></i> Phone Number *</label>
+                            <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
+                        </div>
+                        <div class="form-group">
                             <label><i class="fas fa-envelope"></i> Email Address *</label>
                             <input type="email" id="guestEmail" placeholder="your@email.com">
-                            <div class="error-message" id="guestEmailError"></div>
-                            <div class="help-text"><i class="fas fa-info-circle"></i> e.g., name@domain.com</div>
                         </div>
+                    </div>
+                    
+                    <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-paw"></i> Bringing Pet?</label>
                             <select id="guestPet">
@@ -482,17 +530,15 @@
                                 <option value="yes">Yes</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> Special Requests</label>
+                            <textarea id="specialRequests" rows="2" placeholder="Any special requirements..."></textarea>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label><i class="fas fa-comment"></i> Special Requests</label>
-                        <textarea id="specialRequests" rows="3" placeholder="Any dietary preferences or special requirements..."></textarea>
-                    </div>
-                </div>
-                
-                <!-- Step 3: Payment -->
-                <div class="step step3">
-                    <div class="booking-summary">
+                    <!-- Summary Display -->
+                    <div class="booking-summary" style="margin: 20px 0; padding: 15px; background: #f5f1ea; border-radius: 12px;">
+                        <h4 style="color:#0a4d4c; margin-bottom:10px;">Booking Summary</h4>
                         <div class="summary-row">
                             <span>Room Type:</span>
                             <span id="summaryRoom">AC Room</span>
@@ -515,19 +561,69 @@
                         </div>
                         <div class="summary-row total">
                             <span>Total Amount:</span>
-                            <span>₹<span id="summaryTotal">5000</span></span>
+                            <span>₹<span id="summaryTotal">0</span></span>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label><i class="fas fa-credit-card"></i> Payment Method</label>
-                        <select id="paymentMethod">
-                            <option value="card">Credit/Debit Card</option>
-                            <option value="upi">UPI / Google Pay</option>
-                            <option value="netbanking">Net Banking</option>
-                        </select>
-                    </div>
+                    <button type="button" class="next-btn" onclick="showPaymentSection()" style="width:100%; padding:14px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-size:1rem; font-weight:600; cursor:pointer;">
+                        Proceed to Payment <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
+                
+                <!-- Payment Section (Hidden until Proceed clicked) -->
+                <div class="step step2" style="display: none;">
+                    <div class="upi-payment">
+                        <h4 style="color: #0a4d4c; margin-bottom: 15px;">
+                            <i class="fas fa-phone-alt"></i> Complete Payment
+                        </h4>
+                        
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <button type="button" onclick="showUPIPayment()" class="btn-upi" style="flex:1; background: #2196f3; color: white; padding: 14px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-qrcode"></i> Pay via UPI
+                            </button>
+                            <button type="button" onclick="payAtVenue()" class="btn-venue" style="flex:1; background: #4caf50; color: white; padding: 14px; border: none; border-radius: 50px; cursor: pointer; font-weight: 600;">
+                                <i class="fas fa-building"></i> Pay at Venue
+                            </button>
+                        </div>
+                        
+                        <!-- UPI QR Section -->
+                        <div id="upiSection" style="display: none; text-align: center; background: #f5f1ea; padding: 20px; border-radius: 16px;">
+                            <h4 style="color: #0a4d4c;">
+                                <i class="fas fa-qrcode"></i> Scan to Pay
+                            </h4>
+                            
+                            <div style="background: white; padding: 15px; border-radius: 12px; display: inline-block; margin: 10px 0;">
+                                <img id="upiQRCode" style="width: 200px; height: 200px;" alt="UPI QR Code">
+                            </div>
+                            
+                            <div style="background: white; padding: 12px; border-radius: 10px; margin: 10px 0;">
+                                <p style="margin: 0; color: #8b8a88;">UPI ID</p>
+                                <p style="font-size: 1.3rem; font-weight: bold; color: #0a4d4c; margin: 5px 0;">
+                                    khushinmasurkar28@oksbi
+                                </p>
+                            </div>
+                            
+                            <p><strong>Amount to Pay:</strong> ₹<span id="upiAmount" style="color: #ff8a7a; font-size: 1.5rem; font-weight: bold;">0</span></p>
+                            
+                            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+                                <button onclick="copyUPIID()" style="background: #0a4d4c; color: white; padding: 10px 20px; border: none; border-radius: 50px; cursor: pointer;">
+                                    <i class="fas fa-copy"></i> Copy UPI ID
+                                </button>
+                                <button onclick="confirmUPIPayment()" style="background: #4caf50; color: white; padding: 10px 20px; border: none; border-radius: 50px; cursor: pointer;">
+                                    <i class="fas fa-check-circle"></i> I have paid
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="back-btn" onclick="goBackToDetails()" style="width:100%; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; font-size:0.9rem; cursor:pointer; margin-top:15px;">
+                        <i class="fas fa-arrow-left"></i> Back to Details
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
                 
                 <!-- Navigation Buttons -->
                 <div style="display: flex; gap: 15px; margin-top: 25px;">
@@ -781,308 +877,115 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }, 8000);
 </script>
-<!-- Payment Modal with QR Scanner and Online Payment -->
-<style>
-    .payment-modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        z-index: 10000;
-        align-items: center;
-        justify-content: center;
-        backdrop-filter: blur(5px);
-    }
-    
-    .payment-modal.active {
-        display: flex;
-    }
-    
-    .payment-modal-content {
-        background: white;
-        border-radius: 20px;
-        max-width: 500px;
-        width: 90%;
-        max-height: 85vh;
-        overflow-y: auto;
-        padding: 25px;
-        position: relative;
-    }
-    
-    .payment-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    
-    .payment-header h3 {
-        color: #0a4d4c;
-        font-size: 1.5rem;
-    }
-    
-    .payment-options {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        margin: 20px 0;
-    }
-    
-    .payment-option {
-        background: #f5f1ea;
-        padding: 20px;
-        border-radius: 12px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s;
-        border: 2px solid transparent;
-    }
-    
-    .payment-option:hover {
-        border-color: #ff8a7a;
-        transform: translateY(-3px);
-    }
-    
-    .payment-option.selected {
-        border-color: #4caf50;
-        background: #e8f5e9;
-    }
-    
-    .payment-option i {
-        font-size: 2rem;
-        color: #ff8a7a;
-        margin-bottom: 10px;
-    }
-    
-    .payment-option h4 {
-        margin: 0;
-        color: #0a4d4c;
-    }
-    
-    .qr-section {
-        text-align: center;
-        margin: 20px 0;
-        padding: 20px;
-        background: #f5f1ea;
-        border-radius: 12px;
-    }
-    
-    .qr-code {
-        width: 200px;
-        height: 200px;
-        background: white;
-        margin: 15px auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .qr-code img {
-        width: 180px;
-        height: 180px;
-    }
-    
-    .upi-id {
-        background: white;
-        padding: 10px;
-        border-radius: 8px;
-        font-family: monospace;
-        font-size: 1rem;
-        margin: 10px 0;
-        border: 1px solid #ddd;
-    }
-    
-    .payment-summary {
-        background: #0a4d4c;
-        color: white;
-        padding: 15px;
-        border-radius: 12px;
-        margin: 20px 0;
-    }
-    
-    .pay-at-venue {
-        background: #ff8a7a;
-        color: white;
-        padding: 15px;
-        border-radius: 12px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s;
-        margin-top: 15px;
-    }
-    
-    .pay-at-venue:hover {
-        background: #ff6b5a;
-        transform: translateY(-2px);
-    }
-    
-    .confirm-payment {
-        background: #4caf50;
-        color: white;
-        width: 100%;
-        padding: 15px;
-        border: none;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        cursor: pointer;
-        margin-top: 15px;
-    }
-    
-    .close-payment {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #8b8a88;
-    }
-</style>
 
-<!-- Payment Modal -->
-<div class="payment-modal" id="paymentModal">
-    <div class="payment-modal-content">
-        <button class="close-payment" onclick="closePaymentModal()">&times;</button>
-        
-        <div class="payment-header">
-            <h3><i class="fas fa-credit-card"></i> Secure Payment</h3>
-            <p>Choose your preferred payment method</p>
-        </div>
-        
-        <div class="payment-options">
-            <div class="payment-option" onclick="selectPaymentMethod('online')">
-                <i class="fas fa-qrcode"></i>
-                <h4>Pay Online</h4>
-                <small>UPI / Card / NetBanking</small>
-            </div>
-            <div class="payment-option" onclick="selectPaymentMethod('venue')">
-                <i class="fas fa-building"></i>
-                <h4>Pay at Venue</h4>
-                <small>Cash / Card / UPI at check-in</small>
-            </div>
-        </div>
-        
-        <!-- Online Payment Section -->
-        <div id="onlinePaymentSection" style="display: none;">
-            <div class="qr-section">
-                <h4><i class="fas fa-qrcode"></i> Scan to Pay</h4>
-                <div class="qr-code" id="qrCodeContainer">
-                    <!-- QR Code will be generated here -->
-                    <canvas id="qrCanvas" width="180" height="180"></canvas>
-                </div>
-                <div class="upi-id">
-                    <strong>UPI ID:</strong> swamiholiday@okhdfcbank
-                </div>
-                <button class="confirm-payment" onclick="verifyPayment()">
-                    <i class="fas fa-check-circle"></i> I have made the payment
-                </button>
-            </div>
-        </div>
-        
-        <!-- Pay at Venue Section -->
-        <div id="venuePaymentSection" style="display: none;">
-            <div class="pay-at-venue" onclick="confirmVenueBooking()">
-                <i class="fas fa-calendar-check"></i>
-                <h4>Confirm Booking - Pay at Check-in</h4>
-                <p>No advance payment required! Pay when you arrive.</p>
-                <small>✅ Booking will be confirmed immediately</small>
-            </div>
-            
-            <div class="payment-summary">
-                <h4>Booking Summary</h4>
-                <p id="paymentTotal">Total: ₹0</p>
-                <p>Pay at: Swami Holiday Home, Alibag</p>
-                <p>Payment methods accepted: Cash, Card, UPI</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<!-- UPI Payment Functions -->
 <script>
-    let selectedPaymentMethod = null;
-    let currentBookingAmount = 0;
-    let currentBookingData = null;
-    
-    // Open payment modal
-    function openPaymentModal(amount, bookingData) {
-        currentBookingAmount = amount;
-        currentBookingData = bookingData;
-        document.getElementById('paymentModal').classList.add('active');
-        document.getElementById('paymentTotal').innerHTML = `Total: ₹${amount}`;
-        
-        // Generate QR Code for UPI payment
-        const upiString = `upi://pay?pa=swamiholiday@okhdfcbank&pn=Swami%20Holiday%20Home&am=${amount}&cu=INR`;
-        const qrContainer = document.getElementById('qrCodeContainer');
-        qrContainer.innerHTML = '';
-        new QRCode(qrContainer, {
-            text: upiString,
-            width: 180,
-            height: 180,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
+// ============ UPI PAYMENT FUNCTIONS ============
+let currentUPIAmount = 0;
+
+function showUPIPayment() {
+    // Get total amount from summary
+    const totalElement = document.getElementById('summaryTotal');
+    if (totalElement) {
+        currentUPIAmount = totalElement.innerText;
     }
     
-    function closePaymentModal() {
-        document.getElementById('paymentModal').classList.remove('active');
-        document.getElementById('onlinePaymentSection').style.display = 'none';
-        document.getElementById('venuePaymentSection').style.display = 'none';
+    // Your UPI ID
+    const upiId = "khushinmasurkar28@oksbi";
+    const merchantName = "Swami Holiday Home";
+    const note = `Booking-${Date.now()}`;
+    
+    // Create UPI payment link
+    const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(merchantName)}&am=${currentUPIAmount}&cu=INR&tn=${encodeURIComponent(note)}`;
+    
+    // Generate QR code using free API
+    const qrUrl = `https://quickchart.io/qr?text=${encodeURIComponent(upiLink)}&size=200`;
+    
+    document.getElementById('upiQRCode').src = qrUrl;
+    document.getElementById('upiAmount').textContent = currentUPIAmount;
+    document.getElementById('upiSection').style.display = 'block';
+}
+
+function copyUPIID() {
+    navigator.clipboard.writeText("khushinmasurkar28@oksbi");
+    alert("✅ UPI ID copied!\n\nOpen Google Pay, PhonePe, or Paytm and send ₹" + currentUPIAmount + " to:\n\nkhushinmasurkar28@oksbi\n\nThen click 'I have paid' to confirm your booking.");
+}
+
+function confirmUPIPayment() {
+    alert(`✅ Payment received!\n\n📱 Amount: ₹${currentUPIAmount}\n💳 UPI ID: khushinmasurkar28@oksbi\n\n📞 Our team will verify your payment.\n📧 Booking confirmation will be sent to your email.\n\nThank you for choosing Swami Holiday Home! 🏖️`);
+    
+    // Hide UPI section
+    document.getElementById('upiSection').style.display = 'none';
+    
+    // Complete the booking
+    completeBookingAfterPayment();
+}
+
+function payAtVenue() {
+    alert("✅ Booking confirmed!\n\n💰 Pay at check-in (Cash/Card/UPI).\n📍 Swami Holiday Home, Alibag\n\nWe look forward to hosting you! 🏖️");
+    
+    // Complete the booking
+    completeBookingAfterPayment();
+}
+
+function completeBookingAfterPayment() {
+    // Get all booking details
+    const roomType = document.getElementById('modalRoomType')?.value || 'ac';
+    const numRooms = document.getElementById('modalNumRooms')?.value || '1';
+    const guests = document.getElementById('modalGuests')?.value || '2';
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    const guestName = document.getElementById('guestName')?.value;
+    const guestPhone = document.getElementById('guestPhone')?.value;
+    const guestEmail = document.getElementById('guestEmail')?.value;
+    const guestPet = document.getElementById('guestPet')?.value || 'no';
+    const specialRequests = document.getElementById('specialRequests')?.value || '';
+    
+    // Get price from localStorage
+    let pricePerPerson = parseInt(localStorage.getItem('acPrice')) || 2500;
+    
+    // Calculate nights
+    let nights = 1;
+    if (checkIn && checkOut) {
+        const start = new Date(checkIn);
+        const end = new Date(checkOut);
+        nights = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
     }
     
-    function selectPaymentMethod(method) {
-        selectedPaymentMethod = method;
-        document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
-        
-        if (method === 'online') {
-            document.getElementById('onlinePaymentSection').style.display = 'block';
-            document.getElementById('venuePaymentSection').style.display = 'none';
-        } else {
-            document.getElementById('onlinePaymentSection').style.display = 'none';
-            document.getElementById('venuePaymentSection').style.display = 'block';
-        }
-    }
+    // Calculate total
+    const total = pricePerPerson * parseInt(guests) * nights * parseInt(numRooms);
+    const bookingId = "SHH" + Date.now();
     
-    function verifyPayment() {
-        // Simulate payment verification
-        alert("✅ Payment verification initiated!\n\n📱 Please complete the payment using the QR code.\n\n📧 A confirmation email will be sent after verification.\n\n📞 For support: +91 91460 54013");
-        
-        // Here you would integrate with Razorpay or other payment gateway
-        // For demo, we'll show success
-        setTimeout(() => {
-            const confirm = confirm("Have you completed the payment?");
-            if (confirm) {
-                alert("🎉 Payment successful! Your booking is confirmed.\n\nBooking ID: " + currentBookingData?.id);
-                closePaymentModal();
-                // Save booking
-                saveBookingToLocalStorage(currentBookingData);
-            }
-        }, 1000);
-    }
+    const bookingData = {
+        id: bookingId,
+        roomType: roomType,
+        numRooms: numRooms,
+        guests: guests,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        guestName: guestName,
+        guestPhone: guestPhone,
+        guestEmail: guestEmail,
+        pet: guestPet,
+        specialRequests: specialRequests,
+        total: total,
+        nights: nights,
+        paymentStatus: currentUPIAmount > 0 ? 'pending_verification' : 'pay_at_venue',
+        bookingDate: new Date().toISOString()
+    };
     
-    function confirmVenueBooking() {
-        alert("✅ Booking Confirmed - Pay at Venue!\n\n📅 Your booking has been reserved.\n💰 Payment will be collected at check-in.\n📍 Address: Puro Aali, Sasawane Beach Road, Alibag\n\n📞 For any changes: +91 91460 54013");
-        closePaymentModal();
-        saveBookingToLocalStorage(currentBookingData);
-    }
+    // Save to localStorage
+    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+    bookings.push(bookingData);
+    localStorage.setItem('bookings', JSON.stringify(bookings));
     
-    function saveBookingToLocalStorage(booking) {
-        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-        bookings.push(booking);
-        localStorage.setItem('bookings', JSON.stringify(bookings));
-        showBookingConfirmation(booking);
-    }
+    // Close modal and reset
+    closeBookingModal();
     
-    function showBookingConfirmation(booking) {
-        alert(`🎉 Booking Confirmed!\n\nBooking ID: ${booking.id}\nName: ${booking.guestName}\nCheck-in: ${booking.checkIn}\nCheck-out: ${booking.checkOut}\nTotal: ₹${booking.total}\n\nWe look forward to hosting you! 🏖️`);
-    }
+    // Reset UPI section for next time
+    document.getElementById('upiSection').style.display = 'none';
+    currentUPIAmount = 0;
+}
 </script>
 <script>
     function updateRoomPrices() {

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - Swami Holiday Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #0a4d4c, #1e7a76);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #0a4d4c, #1e7a76);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .login-header i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .login-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid #f5e6d3;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #4a4a48;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #ff8a7a;
+            border-bottom: 3px solid #ff8a7a;
+        }
+
+        .login-body {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #0a4d4c;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .input-group label i {
+            color: #ff8a7a;
+            margin-right: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #f5e6d3;
+            border-radius: 12px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .input-group input:focus {
+            border-color: #ff8a7a;
+        }
+
+        .input-group input.error {
+            border-color: #f44336;
+            background: #fff5f5;
+        }
+
+        .input-group input.success {
+            border-color: #4caf50;
+            background: #f1f8e9;
+        }
+
+        .error-msg {
+            color: #f44336;
+            font-size: 0.7rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #ff8a7a;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #ff6b5a;
+        }
+
+        .success-msg {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-msg.show {
+            display: block;
+        }
+
+        .info-text {
+            font-size: 0.7rem;
+            color: #8b8a88;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <i class="fas fa-umbrella-beach"></i>
+            <h1>Swami Holiday Home</h1>
+            <p>Welcome to Alibag</p>
+        </div>
+
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+            <button class="tab-btn" onclick="switchTab('register')">Register</button>
+        </div>
+
+        <div class="login-body">
+            <!-- Success Message -->
+            <div id="successMsg" class="success-msg"></div>
+
+            <!-- LOGIN TAB -->
+            <div id="loginTab" class="tab-content active">
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <label><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="your@email.com">
+                        <div class="error-msg" id="loginEmailError">Please enter a valid email (e.g., name@domain.com)</div>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password">
+                        <div class="error-msg" id="loginPasswordError">Password is required</div>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+            </div>
+
+            <!-- REGISTER TAB -->
+            <div id="registerTab" class="tab-content">
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <!-- Full Name - No numbers allowed -->
+                    <div class="input-group">
+                        <label><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="regName" placeholder="Enter your full name">
+                        <div class="error-msg" id="regNameError">Only letters and spaces allowed (no numbers or special characters)</div>
+                        <div class="info-text">✓ Only alphabets and spaces</div>
+                    </div>
+
+                    <!-- Email - Must be valid format -->
+                    <div class="input-group">
+                        <label><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" id="regEmail" placeholder="your@email.com">
+                        <div class="error-msg" id="regEmailError">Please enter a valid email (e.g., name@domain.com)</div>
+                    </div>
+
+                    <!-- Phone - Exactly 10 digits, starts with 6/7/8/9 -->
+                    <div class="input-group">
+                        <label><i class="fas fa-phone"></i> Phone Number</label>
+                        <input type="tel" id="regPhone" placeholder="9876543210" maxlength="10">
+                        <div class="error-msg" id="regPhoneError">Enter valid 10-digit mobile number (starts with 6,7,8,9)</div>
+                        <div class="info-text">✓ 10 digits only ✓ Must start with 6,7,8,9</div>
+                    </div>
+
+                    <!-- Password - Min 4 characters -->
+                    <div class="input-group">
+                        <label><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="regPassword" placeholder="Minimum 4 characters">
+                        <div class="error-msg" id="regPasswordError">Password must be at least 4 characters</div>
+                        <div class="info-text">✓ Minimum 4 characters</div>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div class="input-group">
+                        <label><i class="fas fa-check-circle"></i> Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Re-enter your password">
+                        <div class="error-msg" id="regConfirmError">Passwords do not match</div>
+                    </div>
+
+                    <button type="submit" class="login-btn">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check if already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true') {
+            window.location.href = 'index.html';
+        }
+
+        // Switch between Login and Register tabs
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (tab === 'login') {
+                document.querySelector('.tab-btn:first-child').classList.add('active');
+                document.getElementById('loginTab').classList.add('active');
+                document.getElementById('registerTab').classList.remove('active');
+            } else {
+                document.querySelector('.tab-btn:last-child').classList.add('active');
+                document.getElementById('registerTab').classList.add('active');
+                document.getElementById('loginTab').classList.remove('active');
+            }
+            document.getElementById('successMsg').classList.remove('show');
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMsg');
+            successDiv.innerHTML = '<i class="fas fa-check-circle"></i> ' + message;
+            successDiv.classList.add('show');
+            setTimeout(() => {
+                successDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        // ========== VALIDATION FUNCTIONS ==========
+
+        // Name validation: Only letters and spaces (no numbers, no special characters)
+        function isValidName(name) {
+            const nameRegex = /^[A-Za-z\s]+$/;
+            return nameRegex.test(name);
+        }
+
+        // Email validation: Standard email format
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Phone validation: Exactly 10 digits, starts with 6/7/8/9
+        function isValidPhone(phone) {
+            const phoneRegex = /^[6-9][0-9]{9}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // Password validation: Minimum 4 characters
+        function isValidPassword(password) {
+            return password && password.length >= 4;
+        }
+
+        // ========== LOGIN HANDLER ==========
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            let isValid = true;
+            
+            // Email validation
+            if (!email || !isValidEmail(email)) {
+                document.getElementById('loginEmail').classList.add('error');
+                document.getElementById('loginEmailError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('loginEmail').classList.remove('error');
+                document.getElementById('loginEmailError').classList.remove('show');
+            }
+            
+            // Password validation
+            if (!password) {
+                document.getElementById('loginPassword').classList.add('error');
+                document.getElementById('loginPasswordError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('loginPassword').classList.remove('error');
+                document.getElementById('loginPasswordError').classList.remove('show');
+            }
+            
+            if (!isValid) return;
+            
+            // Get users from localStorage
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            
+            // Find user
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = 'index.html';
+            } else {
+                alert('Invalid email or password. Please register first.');
+            }
+        }
+
+        // ========== REGISTER HANDLER ==========
+        function handleRegister(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            let isValid = true;
+            
+            // === NAME VALIDATION ===
+            if (!name) {
+                document.getElementById('regName').classList.add('error');
+                document.getElementById('regNameError').classList.add('show');
+                isValid = false;
+            } else if (!isValidName(name)) {
+                document.getElementById('regName').classList.add('error');
+                document.getElementById('regNameError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('regName').classList.remove('error');
+                document.getElementById('regNameError').classList.remove('show');
+                document.getElementById('regName').classList.add('success');
+            }
+            
+            // === EMAIL VALIDATION ===
+            if (!email) {
+                document.getElementById('regEmail').classList.add('error');
+                document.getElementById('regEmailError').classList.add('show');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                document.getElementById('regEmail').classList.add('error');
+                document.getElementById('regEmailError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('regEmail').classList.remove('error');
+                document.getElementById('regEmailError').classList.remove('show');
+                document.getElementById('regEmail').classList.add('success');
+            }
+            
+            // === PHONE VALIDATION ===
+            if (!phone) {
+                document.getElementById('regPhone').classList.add('error');
+                document.getElementById('regPhoneError').classList.add('show');
+                isValid = false;
+            } else if (!isValidPhone(phone)) {
+                document.getElementById('regPhone').classList.add('error');
+                document.getElementById('regPhoneError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('regPhone').classList.remove('error');
+                document.getElementById('regPhoneError').classList.remove('show');
+                document.getElementById('regPhone').classList.add('success');
+            }
+            
+            // === PASSWORD VALIDATION ===
+            if (!password) {
+                document.getElementById('regPassword').classList.add('error');
+                document.getElementById('regPasswordError').classList.add('show');
+                isValid = false;
+            } else if (!isValidPassword(password)) {
+                document.getElementById('regPassword').classList.add('error');
+                document.getElementById('regPasswordError').classList.add('show');
+                isValid = false;
+            } else {
+                document.getElementById('regPassword').classList.remove('error');
+                document.getElementById('regPasswordError').classList.remove('show');
+                document.getElementById('regPassword').classList.add('success');
+            }
+            
+            // === CONFIRM PASSWORD VALIDATION ===
+            if (password !== confirmPassword) {
+                document.getElementById('regConfirmPassword').classList.add('error');
+                document.getElementById('regConfirmError').classList.add('show');
+                isValid = false;
+            } else if (confirmPassword) {
+                document.getElementById('regConfirmPassword').classList.remove('error');
+                document.getElementById('regConfirmError').classList.remove('show');
+                document.getElementById('regConfirmPassword').classList.add('success');
+            }
+            
+            if (!isValid) return;
+            
+            // Check if email already exists
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.email === email)) {
+                alert('This email is already registered. Please login.');
+                switchTab('login');
+                document.getElementById('loginEmail').value = email;
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                name: name,
+                email: email,
+                phone: phone,
+                password: password,
+                registeredDate: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            showSuccess('Account created successfully! Please login.');
+            
+            // Clear form
+            document.getElementById('regName').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regPhone').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regConfirmPassword').value = '';
+            
+            // Remove success classes
+            document.querySelectorAll('#registerTab input').forEach(input => {
+                input.classList.remove('success');
+            });
+            
+            // Switch to login tab after 2 seconds
+            setTimeout(() => {
+                switchTab('login');
+                document.getElementById('loginEmail').value = email;
+            }, 2000);
+        }
+
+        // ========== REAL-TIME VALIDATION (while typing) ==========
+        
+        // Real-time Name validation
+        document.getElementById('regName').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value && isValidName(value)) {
+                this.classList.remove('error');
+                this.classList.add('success');
+                document.getElementById('regNameError').classList.remove('show');
+            } else if (value) {
+                this.classList.remove('success');
+                this.classList.add('error');
+                document.getElementById('regNameError').classList.add('show');
+            } else {
+                this.classList.remove('success', 'error');
+            }
+        });
+        
+        // Real-time Email validation
+        document.getElementById('regEmail').addEventListener('input', function() {
+            const value = this.value.trim();
+            if (value && isValidEmail(value)) {
+                this.classList.remove('error');
+                this.classList.add('success');
+                document.getElementById('regEmailError').classList.remove('show');
+            } else if (value) {
+                this.classList.remove('success');
+                this.classList.add('error');
+                document.getElementById('regEmailError').classList.add('show');
+            } else {
+                this.classList.remove('success', 'error');
+            }
+        });
+        
+        // Real-time Phone validation
+        document.getElementById('regPhone').addEventListener('input', function() {
+            let value = this.value.trim();
+            // Only allow numbers
+            value = value.replace(/[^0-9]/g, '');
+            this.value = value;
+            
+            if (value && isValidPhone(value)) {
+                this.classList.remove('error');
+                this.classList.add('success');
+                document.getElementById('regPhoneError').classList.remove('show');
+            } else if (value) {
+                this.classList.remove('success');
+                this.classList.add('error');
+                document.getElementById('regPhoneError').classList.add('show');
+            } else {
+                this.classList.remove('success', 'error');
+            }
+        });
+        
+        // Real-time Password validation
+        document.getElementById('regPassword').addEventListener('input', function() {
+            const value = this.value;
+            if (value && isValidPassword(value)) {
+                this.classList.remove('error');
+                this.classList.add('success');
+                document.getElementById('regPasswordError').classList.remove('show');
+            } else if (value) {
+                this.classList.remove('success');
+                this.classList.add('error');
+                document.getElementById('regPasswordError').classList.add('show');
+            } else {
+                this.classList.remove('success', 'error');
+            }
+            
+            // Also check confirm password if it has value
+            const confirmField = document.getElementById('regConfirmPassword');
+            if (confirmField.value) {
+                if (value === confirmField.value) {
+                    confirmField.classList.remove('error');
+                    confirmField.classList.add('success');
+                    document.getElementById('regConfirmError').classList.remove('show');
+                } else {
+                    confirmField.classList.remove('success');
+                    confirmField.classList.add('error');
+                    document.getElementById('regConfirmError').classList.add('show');
+                }
+            }
+        });
+        
+        // Real-time Confirm Password validation
+        document.getElementById('regConfirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('regPassword').value;
+            const value = this.value;
+            
+            if (value && password === value) {
+                this.classList.remove('error');
+                this.classList.add('success');
+                document.getElementById('regConfirmError').classList.remove('show');
+            } else if (value) {
+                this.classList.remove('success');
+                this.classList.add('error');
+                document.getElementById('regConfirmError').classList.add('show');
+            } else {
+                this.classList.remove('success', 'error');
+            }
+        });
+        
+        // Clear login errors when typing
+        document.getElementById('loginEmail').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('loginEmailError').classList.remove('show');
+        });
+        
+        document.getElementById('loginPassword').addEventListener('input', function() {
+            this.classList.remove('error');
+            document.getElementById('loginPasswordError').classList.remove('show');
+        });
+    </script>
+</body>
+</html>

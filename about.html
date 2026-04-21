@@ -292,6 +292,19 @@
     </style>
 </head>
 <body>
+    <script>
+    // Check if user is logged in
+    if (!localStorage.getItem('isLoggedIn')) {
+        window.location.href = 'login.html';
+    }
+    
+    // Logout function
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+</script>
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo" onclick="window.location.href='index.html'">
@@ -305,6 +318,7 @@
                 <li><a href="facilities.html" class="nav-link">Facilities</a></li>
                 <li><a href="nearby.html" class="nav-link">Nearby</a></li>
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="javascript:void(0)" onclick="logout()" class="nav-link">🚪 Logout</a></li>
             </ul>
             <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
                 <span></span><span></span><span></span>

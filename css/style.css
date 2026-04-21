@@ -1372,3 +1372,23 @@ body:not(.carousel-container) button:not(.carousel-btn):not(.floating-book) {
         font-size: 1rem;
     }
 }
+
+/* Input validation styles */
+input:invalid {
+    border-color: #f44336;
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 0.7rem;
+    margin-top: 5px;
+    display: block;
+}
+
+input.valid {
+    border-color: #4caf50;
+}
+
+input.invalid {
+    border-color: #f44336;
+}

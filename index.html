@@ -151,6 +151,131 @@
             color: #ff8a7a;
         }
         
+        /* Booking Modal Styles */
+.booking-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.booking-modal-content {
+    background: white;
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 20px;
+}
+
+.booking-modal-header {
+    background: #0a4d4c;
+    color: white;
+    padding: 20px;
+    border-radius: 20px 20px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
+.booking-modal-body {
+    padding: 25px;
+}
+
+.booking-progress {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.progress-step {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    color: #8b8a88;
+    border-bottom: 3px solid #f5e6d3;
+}
+
+.progress-step.active {
+    color: #ff8a7a;
+    border-bottom-color: #ff8a7a;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #0a4d4c;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #f5e6d3;
+    border-radius: 8px;
+    font-family: inherit;
+}
+
+.step2 {
+    display: none;
+}
+
+.booking-summary {
+    background: #f5f1ea;
+    padding: 15px;
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0dbd1;
+}
+
+.summary-row.total {
+    font-weight: 700;
+    color: #ff8a7a;
+    font-size: 1.2rem;
+    border-bottom: none;
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 0.7rem;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+
         @media (max-width: 768px) {
             .features-grid {
                 grid-template-columns: 1fr;
@@ -169,7 +294,7 @@
                 <div class="logo-text"><h1>Swami Holiday Home</h1><p>Sasawane Beach, Alibag</p></div>
             </div>
             <ul class="nav-menu">
-    <li><a href="index.html" class="nav-link">Home</a></li>
+    <li><a href="index.html" class="nav-link active">Home</a></li>
     <li><a href="about.html" class="nav-link">About</a></li>
     <li><a href="rooms.html" class="nav-link">Rooms</a></li>
     <li><a href="facilities.html" class="nav-link">Facilities</a></li>
@@ -430,38 +555,33 @@
 
 <!-- Booking Modal -->
 <div class="booking-modal" id="bookingModal">
-    <div class="booking-modal-content">
-        <div class="booking-modal-header">
-            <h3><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
-            <button class="modal-close" onclick="closeBookingModal()">&times;</button>
-        </div>
-        <div class="booking-modal-body">
-            <div class="booking-progress">
-                <div class="progress-step active" id="step1">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Select Dates & Rooms</span>
-                </div>
-                <div class="progress-step" id="step2">
-                    <i class="fas fa-user"></i>
-                    <span>Guest Details</span>
-                </div>
+        <div class="booking-modal-content">
+            <div class="booking-modal-header">
+                <h3><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
+                <button class="modal-close" onclick="closeBookingModal()">&times;</button>
             </div>
-            
-            <form id="bookingForm" onsubmit="processBooking(event)">
-                <!-- Step 1: Room Selection -->
-                <div class="step step1 active">
+            <div class="booking-modal-body">
+                <div class="booking-progress">
+                    <div class="progress-step active" id="step1Progress">
+                        <i class="fas fa-calendar-alt"></i> Room & Details
+                    </div>
+                    <div class="progress-step" id="step2Progress">
+                        <i class="fas fa-credit-card"></i> Payment
+                    </div>
+                </div>
+                
+                <div id="step1">
                     <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-bed"></i> Room Type</label>
-                            <select id="modalRoomType" onchange="updateBookingSummary()">
+                            <select id="modalRoomType">
                                 <option value="ac">AC Room - ₹2,500/person</option>
                                 <option value="pet">Pet Friendly Room - ₹2,500/person</option>
                             </select>
-                            <div class="help-text"><i class="fas fa-info-circle"></i> All meals included</div>
                         </div>
                         <div class="form-group">
                             <label><i class="fas fa-door-open"></i> Number of Rooms</label>
-                            <select id="modalNumRooms" onchange="updateBookingSummary()">
+                            <select id="modalNumRooms">
                                 <option value="1">1 Room</option>
                                 <option value="2">2 Rooms</option>
                                 <option value="3">3 Rooms</option>
@@ -473,7 +593,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-user-friends"></i> Guests per Room</label>
-                            <select id="modalGuests" onchange="updateBookingSummary()">
+                            <select id="modalGuests">
                                 <option value="1">1 Guest</option>
                                 <option value="2" selected>2 Guests</option>
                                 <option value="3">3 Guests</option>
@@ -482,42 +602,38 @@
                         </div>
                         <div class="form-group">
                             <label><i class="fas fa-calendar-plus"></i> Check-in Date</label>
-                            <input type="date" id="modalCheckIn" onchange="updateBookingSummary()">
+                            <input type="date" id="modalCheckIn">
                             <div class="error-message" id="checkInError"></div>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
-                        <input type="date" id="modalCheckOut" onchange="updateBookingSummary()">
-                        <div class="error-message" id="checkOutError"></div>
-                    </div>
-                </div>
-                
-                <!-- Step 2: Guest Details (No Payment) -->
-                <div class="step step2">
                     <div class="form-row">
                         <div class="form-group">
-                            <label><i class="fas fa-user"></i> Full Name *</label>
-                            <input type="text" id="guestName" placeholder="Enter your full name">
-                            <div class="error-message" id="guestNameError"></div>
-                            <div class="help-text"><i class="fas fa-info-circle"></i> Only letters allowed</div>
+                            <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
+                            <input type="date" id="modalCheckOut">
+                            <div class="error-message" id="checkOutError"></div>
                         </div>
                         <div class="form-group">
-                            <label><i class="fas fa-phone"></i> Phone Number *</label>
-                            <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
-                            <div class="error-message" id="guestPhoneError"></div>
-                            <div class="help-text"><i class="fas fa-info-circle"></i> Must start with 6,7,8 or 9</div>
+                            <label><i class="fas fa-user"></i> Full Name</label>
+                            <input type="text" id="guestName" placeholder="Enter your full name">
+                            <div class="error-message" id="guestNameError"></div>
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group">
-                            <label><i class="fas fa-envelope"></i> Email Address *</label>
+                            <label><i class="fas fa-phone"></i> Phone Number</label>
+                            <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
+                            <div class="error-message" id="guestPhoneError"></div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email Address</label>
                             <input type="email" id="guestEmail" placeholder="your@email.com">
                             <div class="error-message" id="guestEmailError"></div>
-                            <div class="help-text"><i class="fas fa-info-circle"></i> e.g., name@domain.com</div>
                         </div>
+                    </div>
+                    
+                    <div class="form-row">
                         <div class="form-group">
                             <label><i class="fas fa-paw"></i> Bringing Pet?</label>
                             <select id="guestPet">
@@ -525,15 +641,14 @@
                                 <option value="yes">Yes</option>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-comment"></i> Special Requests</label>
+                            <textarea id="specialRequests" rows="2" placeholder="Any special requirements..."></textarea>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label><i class="fas fa-comment"></i> Special Requests</label>
-                        <textarea id="specialRequests" rows="3" placeholder="Any dietary preferences or special requirements..."></textarea>
-                    </div>
-                    
-                    <!-- Booking Summary moved to Step 2 -->
                     <div class="booking-summary">
+                        <h4>Booking Summary</h4>
                         <div class="summary-row">
                             <span>Room Type:</span>
                             <span id="summaryRoom">AC Room</span>
@@ -556,42 +671,81 @@
                         </div>
                         <div class="summary-row total">
                             <span>Total Amount:</span>
-                            <span>₹<span id="summaryTotal">5000</span></span>
+                            <span>₹<span id="summaryTotal">0</span></span>
                         </div>
                     </div>
+                    
+                    <button class="next-btn" onclick="validateAndGoToPayment()" style="width:100%; padding:14px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-size:1rem; font-weight:600; cursor:pointer;">
+                        Continue to Payment <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
                 
-                <!-- Navigation Buttons -->
-                <div style="display: flex; gap: 15px; margin-top: 25px;">
-                    <button type="button" id="prevBtn" class="prev-btn" onclick="prevStep()" style="display: none; flex:1; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
-                        <i class="fas fa-arrow-left"></i> Previous
-                    </button>
-                    <button type="button" id="nextBtn" class="next-btn" onclick="nextStep()" style="flex:1; padding:12px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
-                        Next <i class="fas fa-arrow-right"></i>
-                    </button>
-                    <button type="submit" id="submitBtn" class="submit-btn" style="display: none; flex:1; padding:12px; background:#4caf50; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
-                        <i class="fas fa-check-circle"></i> Confirm Booking
+                <div id="step2" class="step2" style="display: none;">
+                    <div class="booking-summary">
+                        <h4>Booking Summary</h4>
+                        <div class="summary-row">
+                            <span>Room Type:</span>
+                            <span id="summaryRoom2">AC Room</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Number of Rooms:</span>
+                            <span id="summaryRooms2">1</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Guests:</span>
+                            <span id="summaryGuests2">2</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Check-in/out:</span>
+                            <span id="summaryDates2">Not selected</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Nights:</span>
+                            <span id="summaryNights2">1</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total Amount:</span>
+                            <span>₹<span id="summaryTotal2">0</span></span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin: 20px 0;">
+                        <button onclick="initiateRazorpayPayment()" style="flex:1; background:#2196f3; color:white; padding:14px; border:none; border-radius:50px; cursor:pointer; font-weight:600;">
+                            <i class="fas fa-credit-card"></i> Pay with Razorpay
+                        </button>
+                        <button onclick="payAtVenue()" style="flex:1; background:#4caf50; color:white; padding:14px; border:none; border-radius:50px; cursor:pointer; font-weight:600;">
+                            <i class="fas fa-building"></i> Pay at Venue
+                        </button>
+                    </div>
+                    
+                    <button class="back-btn" onclick="goBackToDetails()" style="width:100%; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; cursor:pointer;">
+                        <i class="fas fa-arrow-left"></i> Back to Details
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- Confirmation Modal -->
-<div class="booking-modal" id="confirmModal">
-    <div class="booking-modal-content" style="max-width:450px;">
-        <div class="booking-modal-header" style="background: #4caf50;">
-            <h3><i class="fas fa-check-circle"></i> Booking Confirmed!</h3>
-            <button class="modal-close" onclick="closeConfirmModal()">&times;</button>
-        </div>
-        <div class="booking-modal-body" style="text-align:center;">
-            <i class="fas fa-check-circle" style="font-size:5rem; color:#4caf50; margin:20px 0;"></i>
-            <h4>Thank You, <span id="confirmGuestName">Guest</span>!</h4>
-            <div id="confirmDetails" style="background:#f5f1ea; padding:20px; border-radius:12px; margin:20px 0; text-align:left;"></div>
-            <button onclick="closeConfirmModal()" style="background:#0a4d4c; color:white; border:none; padding:12px 30px; border-radius:50px; font-size:1rem; font-weight:600; cursor:pointer;">Close</button>
-        </div>
+    <div class="floating-container">
+        <button class="floating-btn btn-wa" onclick="openWhatsApp()">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+        </button>
+        <button class="floating-btn btn-book" onclick="openBookingModal()">
+            <i class="fas fa-calendar-check"></i> Book Now
+        </button>
     </div>
+
+    <!-- Navigation Buttons -->
+<div style="display: flex; gap: 15px; margin-top: 25px;">
+    <button type="button" id="prevBtn" class="prev-btn" onclick="goBackToDetails()" style="display: none; flex:1; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+        <i class="fas fa-arrow-left"></i> Previous
+    </button>
+    <button type="button" id="nextBtn" class="next-btn" onclick="validateAndGoToPayment()" style="flex:1; padding:12px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+        Next <i class="fas fa-arrow-right"></i>
+    </button>
+    <button type="button" id="submitBtn" class="submit-btn" onclick="payAtVenue()" style="display: none; flex:1; padding:12px; background:#4caf50; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
+        <i class="fas fa-lock"></i> Confirm Booking
+    </button>
 </div>
 
     <!-- Booking Modal (include from previous files) -->
@@ -1141,6 +1295,267 @@
     localStorage.setItem('roomPrice', currentPrice);
     
     console.log('Price saved to localStorage: ₹' + currentPrice);
+</script>
+<script>
+// ============ BOOKING MODAL FUNCTIONS (for all pages) ============
+
+// Initialize localStorage if not exists
+if (!localStorage.getItem('rooms')) {
+    localStorage.setItem('rooms', JSON.stringify([
+        { number: '101', status: 'available', guest: null },
+        { number: '102', status: 'available', guest: null },
+        { number: '103', status: 'available', guest: null },
+        { number: '104', status: 'available', guest: null }
+    ]));
+}
+if (!localStorage.getItem('prices')) {
+    localStorage.setItem('prices', JSON.stringify({ ac: 2500 }));
+    localStorage.setItem('acPrice', '2500');
+}
+if (!localStorage.getItem('bookings')) {
+    localStorage.setItem('bookings', JSON.stringify([]));
+}
+
+function openBookingModal() {
+    const modal = document.getElementById('bookingModal');
+    if (modal) modal.style.display = 'flex';
+    
+    // Reset to step 1
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step1Progress = document.getElementById('step1Progress');
+    const step2Progress = document.getElementById('step2Progress');
+    
+    if (step1) step1.style.display = 'block';
+    if (step2) step2.style.display = 'none';
+    if (step1Progress) step1Progress.classList.add('active');
+    if (step2Progress) step2Progress.classList.remove('active');
+    
+    // Clear form
+    const guestName = document.getElementById('guestName');
+    const guestPhone = document.getElementById('guestPhone');
+    const guestEmail = document.getElementById('guestEmail');
+    const specialRequests = document.getElementById('specialRequests');
+    if (guestName) guestName.value = '';
+    if (guestPhone) guestPhone.value = '';
+    if (guestEmail) guestEmail.value = '';
+    if (specialRequests) specialRequests.value = '';
+    
+    // Clear errors
+    document.querySelectorAll('.error-message').forEach(el => el.innerHTML = '');
+    
+    // Set min dates
+    const today = new Date().toISOString().split('T')[0];
+    const checkIn = document.getElementById('modalCheckIn');
+    const checkOut = document.getElementById('modalCheckOut');
+    if (checkIn) checkIn.min = today;
+    if (checkOut) checkOut.min = today;
+    
+    updateSummary();
+}
+
+function closeBookingModal() {
+    const modal = document.getElementById('bookingModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function updateSummary() {
+    const numRooms = parseInt(document.getElementById('modalNumRooms')?.value || '1');
+    const guests = parseInt(document.getElementById('modalGuests')?.value || '2');
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    const pricePerPerson = parseInt(localStorage.getItem('acPrice')) || 2500;
+    
+    let nights = 1;
+    if (checkIn && checkOut) {
+        nights = Math.max(1, Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)));
+    }
+    const total = pricePerPerson * guests * nights * numRooms;
+    
+    const summaryRoom = document.getElementById('summaryRoom');
+    const summaryRooms = document.getElementById('summaryRooms');
+    const summaryGuests = document.getElementById('summaryGuests');
+    const summaryDates = document.getElementById('summaryDates');
+    const summaryNights = document.getElementById('summaryNights');
+    const summaryTotal = document.getElementById('summaryTotal');
+    
+    if (summaryRoom) summaryRoom.textContent = document.getElementById('modalRoomType')?.value === 'ac' ? 'AC Room' : 'Pet Friendly Room';
+    if (summaryRooms) summaryRooms.textContent = numRooms;
+    if (summaryGuests) summaryGuests.textContent = guests;
+    if (summaryDates) summaryDates.textContent = (checkIn && checkOut) ? `${checkIn} to ${checkOut}` : 'Not selected';
+    if (summaryNights) summaryNights.textContent = nights;
+    if (summaryTotal) summaryTotal.textContent = total;
+}
+
+function validateAndGoToPayment() {
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    const guestName = document.getElementById('guestName')?.value?.trim();
+    const guestPhone = document.getElementById('guestPhone')?.value?.trim();
+    const guestEmail = document.getElementById('guestEmail')?.value?.trim();
+    
+    let isValid = true;
+    
+    // Clear previous errors
+    document.getElementById('checkInError').innerHTML = '';
+    document.getElementById('checkOutError').innerHTML = '';
+    document.getElementById('guestNameError').innerHTML = '';
+    document.getElementById('guestPhoneError').innerHTML = '';
+    document.getElementById('guestEmailError').innerHTML = '';
+    
+    // Check-in validation
+    if (!checkIn) {
+        document.getElementById('checkInError').innerHTML = 'Please select check-in date';
+        isValid = false;
+    }
+    
+    // Check-out validation
+    if (!checkOut) {
+        document.getElementById('checkOutError').innerHTML = 'Please select check-out date';
+        isValid = false;
+    }
+    
+    // CHECK-OUT MUST BE AFTER CHECK-IN (THIS WAS MISSING)
+    if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
+        document.getElementById('checkOutError').innerHTML = 'Check-out date must be AFTER check-in date';
+        isValid = false;
+    }
+    
+    // Name validation
+    if (!guestName) {
+        document.getElementById('guestNameError').innerHTML = 'Please enter your name';
+        isValid = false;
+    } else if (guestName.length < 3) {
+        document.getElementById('guestNameError').innerHTML = 'Name must be at least 3 characters';
+        isValid = false;
+    }
+    
+    // Phone validation
+    if (!guestPhone) {
+        document.getElementById('guestPhoneError').innerHTML = 'Please enter phone number';
+        isValid = false;
+    } else if (!/^[6-9]\d{9}$/.test(guestPhone)) {
+        document.getElementById('guestPhoneError').innerHTML = 'Enter 10-digit number starting with 6,7,8,9';
+        isValid = false;
+    }
+    
+    // Email validation
+    if (!guestEmail) {
+        document.getElementById('guestEmailError').innerHTML = 'Please enter email address';
+        isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) {
+        document.getElementById('guestEmailError').innerHTML = 'Enter a valid email address';
+        isValid = false;
+    }
+    
+    if (isValid) {
+        // Copy to step 2
+        document.getElementById('summaryRoom2').innerText = document.getElementById('summaryRoom').innerText;
+        document.getElementById('summaryRooms2').innerText = document.getElementById('summaryRooms').innerText;
+        document.getElementById('summaryGuests2').innerText = document.getElementById('summaryGuests').innerText;
+        document.getElementById('summaryDates2').innerText = document.getElementById('summaryDates').innerText;
+        document.getElementById('summaryNights2').innerText = document.getElementById('summaryNights').innerText;
+        document.getElementById('summaryTotal2').innerText = document.getElementById('summaryTotal').innerText;
+        
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+        document.getElementById('step1Progress').classList.remove('active');
+        document.getElementById('step2Progress').classList.add('active');
+    }
+}
+
+function goBackToDetails() {
+    document.getElementById('step2').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('step2Progress').classList.remove('active');
+    document.getElementById('step1Progress').classList.add('active');
+}
+
+function payAtVenue() {
+    const numRooms = parseInt(document.getElementById('modalNumRooms')?.value || '1');
+    const guestName = document.getElementById('guestName')?.value?.trim();
+    const guestPhone = document.getElementById('guestPhone')?.value?.trim();
+    const guestEmail = document.getElementById('guestEmail')?.value?.trim();
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    const total = document.getElementById('summaryTotal2')?.innerText || document.getElementById('summaryTotal')?.innerText;
+    
+    // Update room status in localStorage
+    let rooms = JSON.parse(localStorage.getItem('rooms'));
+    let booked = 0;
+    for (let i = 0; i < rooms.length && booked < numRooms; i++) {
+        if (rooms[i].status === 'available') {
+            rooms[i].status = 'occupied';
+            rooms[i].guest = guestName;
+            rooms[i].checkIn = checkIn;
+            rooms[i].checkOut = checkOut;
+            booked++;
+        }
+    }
+    localStorage.setItem('rooms', JSON.stringify(rooms));
+    
+    // Save booking
+    let bookings = JSON.parse(localStorage.getItem('bookings'));
+    bookings.push({
+        id: 'SHH' + Date.now(),
+        numRooms: numRooms,
+        guestName: guestName,
+        guestPhone: guestPhone,
+        guestEmail: guestEmail,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        total: total,
+        bookingDate: new Date().toISOString()
+    });
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+    
+    alert(`✅ Booking Confirmed!\n\nRooms Booked: ${booked}\nGuest: ${guestName}\nCheck-in: ${checkIn}\nCheck-out: ${checkOut}\nTotal: ₹${total}\n\n💰 Pay at check-in (Cash/Card/UPI)`);
+    
+    closeBookingModal();
+    
+    // Refresh rooms display if on rooms page
+    if (typeof loadRooms === 'function') loadRooms();
+    if (typeof loadAvailability === 'function') loadAvailability();
+}
+
+function initiateRazorpayPayment() {
+    const total = document.getElementById('summaryTotal2')?.innerText || document.getElementById('summaryTotal')?.innerText;
+    alert(`🔧 Razorpay integration coming soon!\n\nTotal Amount: ₹${total}\n\nYou will be redirected to payment gateway.`);
+}
+
+// Real-time input filters
+document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('guestName');
+    const phoneInput = document.getElementById('guestPhone');
+    
+    if (nameInput) {
+        nameInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+        });
+    }
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+    }
+    
+    // Set min dates
+    const today = new Date().toISOString().split('T')[0];
+    const checkIn = document.getElementById('modalCheckIn');
+    const checkOut = document.getElementById('modalCheckOut');
+    if (checkIn) checkIn.min = today;
+    if (checkOut) checkOut.min = today;
+    
+    // Add event listeners for summary update
+    const roomType = document.getElementById('modalRoomType');
+    const numRooms = document.getElementById('modalNumRooms');
+    const guests = document.getElementById('modalGuests');
+    if (roomType) roomType.addEventListener('change', updateSummary);
+    if (numRooms) numRooms.addEventListener('change', updateSummary);
+    if (guests) guests.addEventListener('change', updateSummary);
+    if (checkIn) checkIn.addEventListener('change', updateSummary);
+    if (checkOut) checkOut.addEventListener('change', updateSummary);
+});
 </script>
 </body>
 </html>

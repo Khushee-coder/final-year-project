@@ -491,9 +491,6 @@
                 <span class="meal-tag"><i class="fas fa-check-circle"></i> Non-Veg Thali</span>
                 <span class="meal-tag"><i class="fas fa-check-circle"></i> Local Specialties</span>
             </div>
-            <div class="price-highlight">
-                <i class="fas fa-tag"></i> ₹2,500 per person (All Meals Included)
-            </div>
         </div>
 
         <!-- Vegetarian Section -->
@@ -502,47 +499,6 @@
     <span class="veg-badge">Pure Veg</span>
 </h2>
 <div class="food-grid" id="vegFoodGrid">
-    <!-- Hardcoded for now - will be dynamic -->
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/vegthali.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Veg Thali</div>
-            <div class="food-desc">Rice, dal, sabzi, roti, salad, sweet</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/dal rice.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Dal Rice</div>
-            <div class="food-desc">Comfort food with ghee and papad</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/Matar-Paneer-1.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Matar Paneer</div>
-            <div class="food-desc">Cottage cheese in rich tomato gravy</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/dry sabzi.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Dry Sabzi</div>
-            <div class="food-desc">Seasonal vegetable stir-fry</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/Dahi-Salad-Recipe.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Sweet Salad</div>
-            <div class="food-desc">Fresh fruits with honey and nuts</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
 </div>
 
 <!-- Non-Vegetarian Section -->
@@ -551,46 +507,6 @@
     <span class="nonveg-badge">Contains Meat</span>
 </h2>
 <div class="food-grid" id="nonVegFoodGrid">
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/fish curry.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Fish Curry Rice</div>
-            <div class="food-desc">Fresh catch with coastal spices</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/chicken_thali_featured.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Chicken Thali</div>
-            <div class="food-desc">Chicken curry, rice, roti, salad</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/Prawn-Masala-450x450.jpeg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Prawns Masala</div>
-            <div class="food-desc">Spicy prawn gravy with rice</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/sol kadhi.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Sol Kadhi</div>
-            <div class="food-desc">Kokam and coconut drink</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
-    <div class="food-card">
-        <div class="food-image" style="background-image: url('images/kokani.jpg'); background-size: cover; background-position: center;"></div>
-        <div class="food-info">
-            <div class="food-name">Kokani Special</div>
-            <div class="food-desc">Chef's special seafood delicacy</div>
-            <div class="food-price">Included in Package</div>
-        </div>
-    </div>
 </div>
 
         <!-- Important Information Note -->
@@ -874,52 +790,35 @@
 </div>
 
     <!-- Secret Admin Access - Press A+D+M+I+N in sequence -->
-    <script>
-        // Secret code to open admin panel
-        let pressedKeys = '';
-        const secretCode = 'admin';
-        
-        document.addEventListener('keydown', function(e) {
-            // Convert to lowercase to make it case-insensitive
-            pressedKeys += e.key.toLowerCase();
-            
-            // Keep only last 10 characters
-            if (pressedKeys.length > 10) {
-                pressedKeys = pressedKeys.slice(-10);
-            }
-            
-            // Check if the secret code is in the pressed keys
-            if (pressedKeys.includes(secretCode)) {
-                window.location.href = 'admin.html';
-                pressedKeys = ''; // Reset after triggering
-            }
-        });
-    </script>
-
-    <script src="js/script.js"></script>
-    <script>
-    // Auto-detect and set Facebook link
-    document.addEventListener('DOMContentLoaded', function() {
-        const facebookLink = document.getElementById('facebookLink');
-        if (facebookLink) {
-            // Search for the Facebook page
-            fetch('https://graph.facebook.com/search?q=Swami+Holiday+Home&type=page&limit=1')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.data && data.data.length > 0) {
-                        facebookLink.href = `https://facebook.com/${data.data[0].id}`;
-                    } else {
-                        // Fallback to search page if not found
-                        facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
-                    }
-                })
-                .catch(() => {
-                    // Fallback if API fails
-                    facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
-                });
+<script>
+    // Secret code to open admin panel
+    let pressedKeys = '';
+    const secretCode = 'admin';
+    
+    document.addEventListener('keydown', function(e) {
+        pressedKeys += e.key.toLowerCase();
+        if (pressedKeys.length > 10) {
+            pressedKeys = pressedKeys.slice(-10);
+        }
+        if (pressedKeys.includes(secretCode)) {
+            window.location.href = 'admin.html';
+            pressedKeys = '';
         }
     });
 </script>
+
+<script src="js/script.js"></script>
+
+<script>
+// Auto-detect and set Facebook link
+document.addEventListener('DOMContentLoaded', function() {
+    const facebookLink = document.getElementById('facebookLink');
+    if (facebookLink) {
+        facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
+    }
+});
+</script>
+
 <!-- Floating Action Buttons - Simple WhatsApp -->
 <style>
     .floating-container {
@@ -1070,7 +969,7 @@
 </div>
 
 <script>
-    const WHATSAPP_NUMBER = "918237141702"; // Admin's WhatsApp number
+    const WHATSAPP_NUMBER = "918237141702";
     
     function openWhatsApp() {
         const message = "Hello! I have a question about Swami Holiday Home.";
@@ -1079,7 +978,6 @@
         window.open(waLink, '_blank');
     }
     
-    // Auto-hide preview after 8 seconds
     setTimeout(() => {
         const preview = document.getElementById('waPreview');
         if (preview) {
@@ -1090,43 +988,29 @@
         }
     }, 8000);
 </script>
-<script>
-    function displayVegFoodInFacilities() {
-        let items = JSON.parse(localStorage.getItem('vegFoodItems') || '[]');
-        let foodListDiv = document.getElementById('foodList');
-        
-        if (!foodListDiv) return;
-        
-        if (items.length === 0) {
-            foodListDiv.innerHTML = '<p>No veg food items added yet</p>';
-            return;
-        }
-        
-        foodListDiv.innerHTML = '';
-        
-        for (let i = 0; i < items.length; i++) {
-            foodListDiv.innerHTML += `
-                <div style="margin: 10px 0; padding: 10px; border: 1px solid #ddd; border-radius: 8px;">
-                    <img src="${items[i].image}" style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px;" onerror="this.src='https://via.placeholder.com/300x150?text=No+Image'">
-                    <p style="margin-top: 8px;"><strong>${items[i].name}</strong></p>
-                </div>
-            `;
-        }
-    }
-    
-    // Load veg food items when page opens
-    displayVegFoodInFacilities();
-    
-    // Reload when page becomes visible (after admin panel)
-    document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) {
-            displayVegFoodInFacilities();
-        }
-    });
-</script>
-<script>
-// ============ BOOKING MODAL FUNCTIONS (for all pages) ============
 
+<!-- Food Items Loader - FIXED VERSION -->
+<!-- Food Items Loader - Calls the function from script.js -->
+<script>
+// Load food items when page loads using the function from script.js
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof loadFoodItems === 'function') {
+        loadFoodItems();
+    } else {
+        console.error('loadFoodItems function not found');
+    }
+});
+
+// Reload when page becomes visible (after admin panel)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden && typeof loadFoodItems === 'function') {
+        loadFoodItems();
+    }
+});
+</script>
+
+<!-- ============ BOOKING MODAL FUNCTIONS ============ -->
+<script>
 // Initialize localStorage if not exists
 if (!localStorage.getItem('rooms')) {
     localStorage.setItem('rooms', JSON.stringify([
@@ -1148,7 +1032,6 @@ function openBookingModal() {
     const modal = document.getElementById('bookingModal');
     if (modal) modal.style.display = 'flex';
     
-    // Reset to step 1
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const step1Progress = document.getElementById('step1Progress');
@@ -1159,7 +1042,6 @@ function openBookingModal() {
     if (step1Progress) step1Progress.classList.add('active');
     if (step2Progress) step2Progress.classList.remove('active');
     
-    // Clear form
     const guestName = document.getElementById('guestName');
     const guestPhone = document.getElementById('guestPhone');
     const guestEmail = document.getElementById('guestEmail');
@@ -1169,10 +1051,8 @@ function openBookingModal() {
     if (guestEmail) guestEmail.value = '';
     if (specialRequests) specialRequests.value = '';
     
-    // Clear errors
     document.querySelectorAll('.error-message').forEach(el => el.innerHTML = '');
     
-    // Set min dates
     const today = new Date().toISOString().split('T')[0];
     const checkIn = document.getElementById('modalCheckIn');
     const checkOut = document.getElementById('modalCheckOut');
@@ -1224,32 +1104,24 @@ function validateAndGoToPayment() {
     
     let isValid = true;
     
-    // Clear previous errors
     document.getElementById('checkInError').innerHTML = '';
     document.getElementById('checkOutError').innerHTML = '';
     document.getElementById('guestNameError').innerHTML = '';
     document.getElementById('guestPhoneError').innerHTML = '';
     document.getElementById('guestEmailError').innerHTML = '';
     
-    // Check-in validation
     if (!checkIn) {
         document.getElementById('checkInError').innerHTML = 'Please select check-in date';
         isValid = false;
     }
-    
-    // Check-out validation
     if (!checkOut) {
         document.getElementById('checkOutError').innerHTML = 'Please select check-out date';
         isValid = false;
     }
-    
-    // CHECK-OUT MUST BE AFTER CHECK-IN (THIS WAS MISSING)
     if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
         document.getElementById('checkOutError').innerHTML = 'Check-out date must be AFTER check-in date';
         isValid = false;
     }
-    
-    // Name validation
     if (!guestName) {
         document.getElementById('guestNameError').innerHTML = 'Please enter your name';
         isValid = false;
@@ -1257,8 +1129,6 @@ function validateAndGoToPayment() {
         document.getElementById('guestNameError').innerHTML = 'Name must be at least 3 characters';
         isValid = false;
     }
-    
-    // Phone validation
     if (!guestPhone) {
         document.getElementById('guestPhoneError').innerHTML = 'Please enter phone number';
         isValid = false;
@@ -1266,8 +1136,6 @@ function validateAndGoToPayment() {
         document.getElementById('guestPhoneError').innerHTML = 'Enter 10-digit number starting with 6,7,8,9';
         isValid = false;
     }
-    
-    // Email validation
     if (!guestEmail) {
         document.getElementById('guestEmailError').innerHTML = 'Please enter email address';
         isValid = false;
@@ -1277,7 +1145,6 @@ function validateAndGoToPayment() {
     }
     
     if (isValid) {
-        // Copy to step 2
         document.getElementById('summaryRoom2').innerText = document.getElementById('summaryRoom').innerText;
         document.getElementById('summaryRooms2').innerText = document.getElementById('summaryRooms').innerText;
         document.getElementById('summaryGuests2').innerText = document.getElementById('summaryGuests').innerText;
@@ -1308,7 +1175,6 @@ function payAtVenue() {
     const checkOut = document.getElementById('modalCheckOut')?.value;
     const total = document.getElementById('summaryTotal2')?.innerText || document.getElementById('summaryTotal')?.innerText;
     
-    // Update room status in localStorage
     let rooms = JSON.parse(localStorage.getItem('rooms'));
     let booked = 0;
     for (let i = 0; i < rooms.length && booked < numRooms; i++) {
@@ -1322,7 +1188,6 @@ function payAtVenue() {
     }
     localStorage.setItem('rooms', JSON.stringify(rooms));
     
-    // Save booking
     let bookings = JSON.parse(localStorage.getItem('bookings'));
     bookings.push({
         id: 'SHH' + Date.now(),
@@ -1341,7 +1206,6 @@ function payAtVenue() {
     
     closeBookingModal();
     
-    // Refresh rooms display if on rooms page
     if (typeof loadRooms === 'function') loadRooms();
     if (typeof loadAvailability === 'function') loadAvailability();
 }
@@ -1367,14 +1231,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Set min dates
     const today = new Date().toISOString().split('T')[0];
     const checkIn = document.getElementById('modalCheckIn');
     const checkOut = document.getElementById('modalCheckOut');
     if (checkIn) checkIn.min = today;
     if (checkOut) checkOut.min = today;
     
-    // Add event listeners for summary update
     const roomType = document.getElementById('modalRoomType');
     const numRooms = document.getElementById('modalNumRooms');
     const guests = document.getElementById('modalGuests');

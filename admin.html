@@ -194,22 +194,66 @@
             loadFoodOrders();
         }
         
-        // ================ VEG FOOD FROM DATABASE ================
-        async function loadVegFoodFromDB() {
-            try {
-                const response = await fetch(`${API_BASE_URL}/food-items`);
-                const data = await response.json();
-                if (data.success) {
-                    const vegItems = data.veg || [];
-                    displayVegItems(vegItems);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('vegFoodItemsList').innerHTML = '<p>Error loading. Make sure backend is running.</p>';
-            }
+        // ================ BOOKINGS ================
+        function loadBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            document.getElementById('totalBookings').textContent = bookings.length;
+            let totalRevenue = 0;
+            let html = '';
+            bookings.forEach(b => {
+                totalRevenue += b.total || 0;
+                html += `<tr><td>${b.id}</td><td>${b.guestName}</td><td>${b.guestPhone}</td><td>${b.numRooms || 1}</td><td>${b.checkIn}</td><td>${b.checkOut}</td><td>₹${b.total}</td><td><button class="btn-danger" onclick="deleteBooking('${b.id}')">Delete</button></td></tr>`;
+            });
+            document.getElementById('bookingsTable').innerHTML = html || '<tr><td colspan="8">No bookings yet</td></tr>';
+            document.getElementById('totalRevenue').textContent = `₹${totalRevenue}`;
         }
         
-        function displayVegItems(items) {
+        function deleteBooking(id) {
+            let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+            bookings = bookings.filter(b => b.id !== id);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            loadBookings();
+        }
+        
+        // ================ ENQUIRIES ================
+        function loadEnquiries() {
+            const enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
+            document.getElementById('totalEnquiries').textContent = enquiries.length;
+            const container = document.getElementById('enquiriesList');
+            if (enquiries.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;">No enquiries yet</div>';
+                return;
+            }
+            let html = '';
+            enquiries.forEach(e => {
+                html += `<div style="background:#f5f1ea;padding:15px;margin-bottom:10px;border-radius:8px;">
+                    <strong>${e.name}</strong> (${e.email})<br>
+                    <strong>Subject:</strong> ${e.subject}<br>
+                    <strong>Message:</strong> ${e.message}<br>
+                    <small>${new Date(e.date).toLocaleString()}</small><br>
+                    <button class="btn-danger" onclick="deleteEnquiry('${e.id}')" style="margin-top:10px;">Delete</button>
+                </div>`;
+            });
+            container.innerHTML = html;
+        }
+        
+        function deleteEnquiry(id) {
+            let enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
+            enquiries = enquiries.filter(e => e.id !== id);
+            localStorage.setItem('enquiries', JSON.stringify(enquiries));
+            loadEnquiries();
+        }
+        
+        // ================ ROOMS ================
+        function loadRooms() {
+            const rooms = JSON.parse(localStorage.getItem('rooms')) || [
+                { number: '101', type: 'AC', status: 'available', guest: null },
+                { number: '102', type: 'AC', status: 'available', guest: null },
+                { number: '103', type: 'AC', status: 'available', guest: null },
+                { number: '104', type: 'AC', status: 'available', guest: null }
+            ];
+            let available = rooms.filter(r => r.status === 'available').length;
+            document.getElementById('availableRooms').textContent = available;
             let html = '';
             items.forEach((item, i) => {
                 html += `<div class="admin-item-group" data-id="${item.id}">

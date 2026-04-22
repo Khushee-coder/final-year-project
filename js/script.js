@@ -172,8 +172,84 @@ function loadFacilities() {
     `).join('');
 }
 
-function loadFoodItems() {
-    // Load Veg Items
+async function loadFoodItems() {
+    console.log("Loading food items from database...");
+    
+    try {
+        const response = await fetch('http://localhost:5000/api/food-items');
+        const data = await response.json();
+        
+        if (data.success) {
+            const allVeg = data.veg || [];
+            const allNonVeg = data.nonVeg || [];
+            
+            // Display veg items (free items - price = 0)
+            const vegContainer = document.getElementById('vegFoodGrid');
+            if (vegContainer) {
+                const freeVeg = allVeg.filter(item => item.price === 0);
+                if (freeVeg.length === 0) {
+                    vegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No vegetarian items added yet.</p>';
+                } else {
+                    vegContainer.innerHTML = freeVeg.map(item => {
+                        let imageUrl = item.image_url || '';
+                        if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
+                            imageUrl = '/images/' + imageUrl;
+                        }
+                        if (!imageUrl) {
+                            imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
+                        }
+                        return `
+                            <div class="food-card">
+                                <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>
+                                <div class="food-info">
+                                    <div class="food-name">${escapeHtml(item.name)}</div>
+                                    <div class="food-desc">${escapeHtml(item.description || 'Delicious meal included in your package')}</div>
+                                    <div class="food-price">Included in Package</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+            
+            // Display non-veg items
+            const nonVegContainer = document.getElementById('nonVegFoodGrid');
+            if (nonVegContainer) {
+                const freeNonVeg = allNonVeg.filter(item => item.price === 0);
+                if (freeNonVeg.length === 0) {
+                    nonVegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No non-vegetarian items added yet.</p>';
+                } else {
+                    nonVegContainer.innerHTML = freeNonVeg.map(item => {
+                        let imageUrl = item.image_url || '';
+                        if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
+                            imageUrl = '/images/' + imageUrl;
+                        }
+                        if (!imageUrl) {
+                            imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
+                        }
+                        return `
+                            <div class="food-card">
+                                <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>
+                                <div class="food-info">
+                                    <div class="food-name">${escapeHtml(item.name)}</div>
+                                    <div class="food-desc">${escapeHtml(item.description || 'Delicious meal included in your package')}</div>
+                                    <div class="food-price">Included in Package</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error loading food items from database:', error);
+        // Fallback to localStorage
+        loadFoodItemsFromLocal();
+    }
+}
+
+function loadFoodItemsFromLocal() {
+    // Load Veg Items from localStorage
     const vegItems = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
     const vegContainer = document.getElementById('vegFoodGrid');
     
@@ -182,28 +258,13 @@ function loadFoodItems() {
             vegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No vegetarian items added yet.</p>';
         } else {
             vegContainer.innerHTML = vegItems.map(item => {
-                let imageUrl = item.image || '';
-                
-                // Case 1: Empty URL - use local image with same name
-                if (!imageUrl || imageUrl === '') {
-                    imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
-                }
-                // Case 2: Google search URL (contains google.com/imgres) - extract actual image URL or use fallback
-                else if (imageUrl.includes('google.com/imgres') || imageUrl.includes('google.com/search')) {
-                    // Try to extract the imgurl parameter
-                    const match = imageUrl.match(/imgurl=([^&]+)/);
-                    if (match && match[1]) {
-                        imageUrl = decodeURIComponent(match[1]);
-                    } else {
-                        imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
-                    }
-                }
-                // Case 3: Local path (no http) - add images/ folder
-                else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('https')) {
+                let imageUrl = item.image;
+                if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('https') && !imageUrl.startsWith('data:')) {
                     imageUrl = 'images/' + imageUrl;
                 }
-                // Case 4: Already a valid URL - keep as is
-                
+                if (!imageUrl || imageUrl === '') {
+                    imageUrl = 'https://placehold.co/300x200?text=Food+Image';
+                }
                 return `
                     <div class="food-card">
                         <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>
@@ -218,7 +279,7 @@ function loadFoodItems() {
         }
     }
     
-    // Load Non-Veg Items
+    // Load Non-Veg Items from localStorage
     const nonVegItems = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
     const nonVegContainer = document.getElementById('nonVegFoodGrid');
     
@@ -227,23 +288,13 @@ function loadFoodItems() {
             nonVegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No non-vegetarian items added yet.</p>';
         } else {
             nonVegContainer.innerHTML = nonVegItems.map(item => {
-                let imageUrl = item.image || '';
-                
-                if (!imageUrl || imageUrl === '') {
-                    imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
-                }
-                else if (imageUrl.includes('google.com/imgres') || imageUrl.includes('google.com/search')) {
-                    const match = imageUrl.match(/imgurl=([^&]+)/);
-                    if (match && match[1]) {
-                        imageUrl = decodeURIComponent(match[1]);
-                    } else {
-                        imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
-                    }
-                }
-                else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('https')) {
+                let imageUrl = item.image;
+                if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('https') && !imageUrl.startsWith('data:')) {
                     imageUrl = 'images/' + imageUrl;
                 }
-                
+                if (!imageUrl || imageUrl === '') {
+                    imageUrl = 'https://placehold.co/300x200?text=Food+Image';
+                }
                 return `
                     <div class="food-card">
                         <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>
@@ -260,6 +311,7 @@ function loadFoodItems() {
 }
 
 function escapeHtml(text) {
+    if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;

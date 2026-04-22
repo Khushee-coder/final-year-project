@@ -34,26 +34,28 @@ function initializeDatabase() {
     }
     
     // Initialize Veg Food
-    if (!localStorage.getItem('vegFoodItems')) {
-        const defaultVeg = [
-            { name: 'Veg Thali', price: 0, image: '' },
-            { name: 'Dal Rice', price: 0, image: '' },
-            { name: 'Matar Paneer', price: 0, image: '' },
-            { name: 'Dry Sabzi', price: 0, image: '' },
-            { name: 'Sweet Salad', price: 0, image: '' }
-        ];
-        localStorage.setItem('vegFoodItems', JSON.stringify(defaultVeg));
-    }
-    
-    // Initialize Non-Veg Food
-    if (!localStorage.getItem('nonVegFoodItems')) {
-        const defaultNonVeg = [
-            { name: 'Fish Curry Rice', price: 0, image: '' },
-            { name: 'Chicken Thali', price: 0, image: '' },
-            { name: 'Prawns Masala', price: 0, image: '' }
-        ];
-        localStorage.setItem('nonVegFoodItems', JSON.stringify(defaultNonVeg));
-    }
+if (!localStorage.getItem('vegFoodItems')) {
+    const defaultVeg = [
+        { name: 'Veg Thali', price: 0, image: 'vegthali.jpg' },
+        { name: 'Dal Rice', price: 0, image: 'dal rice.jpg' },
+        { name: 'Matar Paneer', price: 0, image: 'Matar-Paneer-1.jpg' },
+        { name: 'Dry Sabzi', price: 0, image: 'dry sabzi.jpg' },
+        { name: 'Sweet Salad', price: 0, image: 'Dahi-Salad-Recipe.jpg' }
+    ];
+    localStorage.setItem('vegFoodItems', JSON.stringify(defaultVeg));
+}
+
+// Initialize Non-Veg Food
+if (!localStorage.getItem('nonVegFoodItems')) {
+    const defaultNonVeg = [
+        { name: 'Fish Curry Rice', price: 0, image: 'fish curry.jpg' },
+        { name: 'Chicken Thali', price: 0, image: 'chicken_thali_featured.jpg' },
+        { name: 'Prawns Masala', price: 0, image: 'Prawn-Masala-450x450.jpeg' },
+        { name: 'Sol Kadhi', price: 0, image: 'sol kadhi.jpg' },
+        { name: 'Kokani Special', price: 0, image: 'kokani.jpg' }
+    ];
+    localStorage.setItem('nonVegFoodItems', JSON.stringify(defaultNonVeg));
+}
     
     // Initialize Facilities
     if (!localStorage.getItem('facilities')) {
@@ -180,17 +182,31 @@ function loadFoodItems() {
             vegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No vegetarian items added yet.</p>';
         } else {
             vegContainer.innerHTML = vegItems.map(item => {
-                let imageUrl = item.image;
-                if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('https') && !imageUrl.startsWith('data:')) {
+                let imageUrl = item.image || '';
+                
+                // Case 1: Empty URL - use local image with same name
+                if (!imageUrl || imageUrl === '') {
+                    imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
+                }
+                // Case 2: Google search URL (contains google.com/imgres) - extract actual image URL or use fallback
+                else if (imageUrl.includes('google.com/imgres') || imageUrl.includes('google.com/search')) {
+                    // Try to extract the imgurl parameter
+                    const match = imageUrl.match(/imgurl=([^&]+)/);
+                    if (match && match[1]) {
+                        imageUrl = decodeURIComponent(match[1]);
+                    } else {
+                        imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
+                    }
+                }
+                // Case 3: Local path (no http) - add images/ folder
+                else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('https')) {
                     imageUrl = 'images/' + imageUrl;
                 }
-                if (!imageUrl || imageUrl === '') {
-                    imageUrl = 'https://placehold.co/300x200?text=Food+Image';
-                }
+                // Case 4: Already a valid URL - keep as is
                 
                 return `
                     <div class="food-card">
-                        <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; height: 150px; border-radius: 12px;"></div>
+                        <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>
                         <div class="food-info">
                             <div class="food-name">${escapeHtml(item.name)}</div>
                             <div class="food-desc">Delicious meal included in your package</div>
@@ -211,17 +227,26 @@ function loadFoodItems() {
             nonVegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No non-vegetarian items added yet.</p>';
         } else {
             nonVegContainer.innerHTML = nonVegItems.map(item => {
-                let imageUrl = item.image;
-                if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('https') && !imageUrl.startsWith('data:')) {
-                    imageUrl = 'images/' + imageUrl;
-                }
+                let imageUrl = item.image || '';
+                
                 if (!imageUrl || imageUrl === '') {
-                    imageUrl = 'https://placehold.co/300x200?text=Food+Image';
+                    imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
+                }
+                else if (imageUrl.includes('google.com/imgres') || imageUrl.includes('google.com/search')) {
+                    const match = imageUrl.match(/imgurl=([^&]+)/);
+                    if (match && match[1]) {
+                        imageUrl = decodeURIComponent(match[1]);
+                    } else {
+                        imageUrl = 'images/' + item.name.toLowerCase().replace(/ /g, '') + '.jpg';
+                    }
+                }
+                else if (!imageUrl.startsWith('http') && !imageUrl.startsWith('https')) {
+                    imageUrl = 'images/' + imageUrl;
                 }
                 
                 return `
                     <div class="food-card">
-                        <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; height: 150px; border-radius: 12px;"></div>
+                        <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>
                         <div class="food-info">
                             <div class="food-name">${escapeHtml(item.name)}</div>
                             <div class="food-desc">Delicious meal included in your package</div>

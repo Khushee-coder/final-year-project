@@ -793,7 +793,7 @@ async function initiateRazorpayPayment() {
     const totalAmount = document.getElementById('summaryTotal2')?.innerText || document.getElementById('summaryTotal')?.innerText;
     const bookingData = getBookingDataFromForm();
     
-    // Validate before proceeding
+    // Validate
     if (!bookingData.checkIn || !bookingData.checkOut) {
         alert('Please select check-in and check-out dates');
         return;
@@ -804,37 +804,61 @@ async function initiateRazorpayPayment() {
     }
     
     try {
-        // 1. Create order on backend
-        const orderResponse = await fetch(`${API_BASE_URL}/payments/create-order`, {
+        // STEP 1: Create booking first
+        const bookingResponse = await fetch(`${API_BASE_URL}/bookings/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ booking_id: bookingData.id, amount: totalAmount })
+            body: JSON.stringify({
+                room_id: 1,  // Change this to actual room_id
+                guest_name: bookingData.guestName,
+                guest_phone: bookingData.guestPhone,
+                guest_email: bookingData.guestEmail,
+                guests: parseInt(bookingData.guests),
+                check_in: bookingData.checkIn,
+                check_out: bookingData.checkOut,
+                total_amount: parseInt(totalAmount)
+            })
         });
-        const order = await orderResponse.json();
         
-        if (!order.success) {
-            alert('Failed to create payment order. Please try again.');
+        const bookingResult = await bookingResponse.json();
+        
+        if (!bookingResult.success) {
+            alert('Failed to create booking: ' + bookingResult.message);
             return;
         }
         
-        // 2. Open Razorpay checkout
+        const bookingId = bookingResult.booking_id;
+        
+        // STEP 2: Create Razorpay order using the actual booking_id
+        const orderResponse = await fetch(`${API_BASE_URL}/payments/create-order`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ booking_id: bookingId, amount: totalAmount })
+        });
+        
+        const order = await orderResponse.json();
+        
+        if (!order.success) {
+            alert('Failed to create payment order: ' + order.message);
+            return;
+        }
+        
+        // STEP 3: Open Razorpay checkout
         const options = {
             key: order.key_id,
             amount: order.amount,
             currency: order.currency,
             order_id: order.order_id,
             name: 'Swami Holiday Home',
-            description: `Booking ID: ${bookingData.id}`,
+            description: `Booking ID: ${bookingId}`,
             prefill: {
                 name: bookingData.guestName,
                 email: bookingData.guestEmail,
                 contact: bookingData.guestPhone
             },
-            theme: {
-                color: '#ff8a7a'
-            },
+            theme: { color: '#ff8a7a' },
             handler: async (response) => {
-                // 3. Verify payment
+                // STEP 4: Verify payment
                 const verifyResponse = await fetch(`${API_BASE_URL}/payments/verify`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -842,18 +866,16 @@ async function initiateRazorpayPayment() {
                         razorpay_order_id: response.razorpay_order_id,
                         razorpay_payment_id: response.razorpay_payment_id,
                         razorpay_signature: response.razorpay_signature,
-                        booking_id: bookingData.id
+                        booking_id: bookingId
                     })
                 });
                 const result = await verifyResponse.json();
+                
                 if (result.success) {
-                    // Save to localStorage as backup
-                    saveBookingToLocalStorage(bookingData, 'razorpay');
-                    sendBookingToBackend(bookingData, 'razorpay');
-                    alert('✅ Payment Successful! Booking Confirmed!\n\nBooking ID: ' + bookingData.id);
+                    alert('✅ Payment Successful! Booking Confirmed!');
                     closeBookingModal();
                 } else {
-                    alert('Payment verification failed. Please contact support.');
+                    alert('Payment verification failed');
                 }
             }
         };
@@ -862,8 +884,8 @@ async function initiateRazorpayPayment() {
         razorpay.open();
         
     } catch (error) {
-        console.error('Razorpay error:', error);
-        alert('Payment initiation failed. Please try again.');
+        console.error('Payment error:', error);
+        alert('Payment initiation failed');
     }
 }
 
@@ -1014,6 +1036,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     console.log("✅ Initialization complete");
+    // Setup input restrictions (real-time)
+    setupInputRestrictions();
 });
 
 // ==================== WHATSAPP FUNCTION ====================

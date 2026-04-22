@@ -371,6 +371,7 @@
             }
         }
     </style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
     <script>
@@ -1247,11 +1248,6 @@ function payAtVenue() {
     // Refresh rooms display if on rooms page
     if (typeof loadRooms === 'function') loadRooms();
     if (typeof loadAvailability === 'function') loadAvailability();
-}
-
-function initiateRazorpayPayment() {
-    const total = document.getElementById('summaryTotal2')?.innerText || document.getElementById('summaryTotal')?.innerText;
-    alert(`🔧 Razorpay integration coming soon!\n\nTotal Amount: ₹${total}\n\nYou will be redirected to payment gateway.`);
 }
 
 // Real-time input filters

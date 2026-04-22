@@ -6,808 +6,360 @@
     <title>Room Service Menu - Swami Holiday Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: #f5f1ea;
-            color: #4a4a48;
-            padding: 20px;
-        }
+        body { font-family: 'Quicksand', sans-serif; background: #f5f1ea; color: #4a4a48; padding: 20px; }
         .container { max-width: 800px; margin: 0 auto; }
-        .header {
-            background: linear-gradient(135deg, #0a4d4c, #1e7a76);
-            color: white;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .header { background: linear-gradient(135deg, #0a4d4c, #1e7a76); color: white; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 30px; }
         .header h1 { font-size: 1.8rem; margin-bottom: 10px; }
-        .room-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-        }
-        .price-note {
-            background: rgba(255,255,255,0.15);
-            padding: 8px 15px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-            display: inline-block;
-        }
-        .section-title {
-            color: #0a4d4c;
-            margin: 25px 0 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #ff8a7a;
-            display: inline-block;
-        }
-        .free-badge {
-            background: #4caf50;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            margin-left: 10px;
-        }
-        .paid-badge {
-            background: #ff8a7a;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            margin-left: 10px;
-        }
+        .room-badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 50px; font-size: 0.9rem; }
+        .section-title { color: #0a4d4c; margin: 25px 0 15px; padding-bottom: 10px; border-bottom: 3px solid #ff8a7a; display: inline-block; }
+        .free-badge { background: #4caf50; color: white; padding: 2px 10px; border-radius: 50px; font-size: 0.7rem; margin-left: 10px; }
+        .paid-badge { background: #ff8a7a; color: white; padding: 2px 10px; border-radius: 50px; font-size: 0.7rem; margin-left: 10px; }
         .food-grid { display: grid; gap: 15px; margin-bottom: 30px; }
-        .food-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #f5e6d3;
-        }
-        .food-card:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .food-card { background: white; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #f5e6d3; }
         .food-info h4 { color: #0a4d4c; margin-bottom: 5px; }
         .food-info p { font-size: 0.8rem; color: #8b8a88; }
-        .food-price { font-weight: 700; font-size: 1.2rem; }
-        .food-price.free { color: #4caf50; }
-        .food-price.paid { color: #ff8a7a; }
-        .order-btn {
-            background: #ff8a7a;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
+        .order-btn { background: #ff8a7a; color: white; border: none; padding: 8px 20px; border-radius: 50px; cursor: pointer; font-weight: 600; }
         .order-btn.added { background: #4caf50; }
         .quantity-control { display: flex; align-items: center; gap: 10px; }
-        .qty-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: none;
-            background: #ff8a7a;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .custom-section {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            border: 2px dashed #ff8a7a;
-        }
-        .custom-section textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #f5e6d3;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-family: inherit;
-        }
-        .room-input {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f5f1ea;
-            border-radius: 12px;
-        }
-        .room-input input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #f5e6d3;
-            border-radius: 8px;
-            font-size: 1rem;
-            text-align: center;
-        }
-        .room-input input:read-only {
-            background: #e0dbd1;
-            cursor: not-allowed;
-        }
-        /* Email Input Field */
-        .email-input {
-            margin: 20px 0;
-            padding: 15px;
-            background: #f5f1ea;
-            border-radius: 12px;
-        }
-        .email-input input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #f5e6d3;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        .payment-summary {
-            background: #0a4d4c;
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0;
-            text-align: center;
-        }
+        .qty-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: #ff8a7a; color: white; cursor: pointer; font-weight: bold; }
+        .custom-section { background: white; border-radius: 12px; padding: 20px; margin-top: 20px; border: 2px dashed #ff8a7a; }
+        .custom-section textarea { width: 100%; padding: 12px; border: 2px solid #f5e6d3; border-radius: 8px; font-family: inherit; }
+        .input-group { margin: 20px 0; padding: 15px; background: #f5f1ea; border-radius: 12px; }
+        .input-group input { width: 100%; padding: 12px; border: 2px solid #f5e6d3; border-radius: 8px; font-size: 1rem; }
+        .payment-summary { background: #0a4d4c; color: white; padding: 20px; border-radius: 12px; margin: 20px 0; text-align: center; }
         .total-amount { font-size: 2rem; font-weight: 700; color: #ff8a7a; }
-        .pay-btn {
-            width: 100%;
-            padding: 18px;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            background: #ff8a7a;
-            color: white;
-        }
-        .pay-btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
-        
-        /* Admin Panel Styles */
-        .admin-panel {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-top: 30px;
-            border: 2px solid #ff8a7a;
-            display: none;
-            position: relative;
-        }
-        .close-admin {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: #f44336;
-            color: white;
-            border: none;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .close-admin:hover { background: #d32f2f; }
-        .admin-panel h3 {
-            color: #0a4d4c;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .admin-item-group {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr auto;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: center;
-            background: #f5f1ea;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .admin-item-group input {
-            padding: 8px;
-            border: 2px solid #f5e6d3;
-            border-radius: 6px;
-            width: 100%;
-        }
-        .btn-add {
-            background: #4caf50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-        .btn-save {
-            background: #ff8a7a;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        .btn-danger {
-            background: #f44336;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .admin-note {
-            background: #e3f2fd;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 0.85rem;
-            color: #1565c0;
-        }
-        
-        /* Orders List - INSIDE ADMIN PANEL */
-        .orders-list {
-            background: #f5f1ea;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 20px;
-            border: 1px solid #e0dbd1;
-        }
-        .orders-list h4 {
-            color: #0a4d4c;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .order-item {
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #ff8a7a;
-        }
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 0.85rem;
-        }
-        .order-details {
-            font-size: 0.8rem;
-            color: #4a4a48;
-        }
-        .order-status {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 50px;
-            font-size: 0.65rem;
-            background: #ff9800;
-            color: white;
-        }
-        .order-status.completed {
-            background: #4caf50;
-        }
-        .btn-small {
-            background: #2196f3;
-            color: white;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.7rem;
-            margin-left: 10px;
-        }
-        @media (max-width: 768px) {
-            .food-card { flex-direction: column; text-align: center; gap: 10px; }
-            .admin-item-group { grid-template-columns: 1fr; }
-        }
+        .pay-btn { width: 100%; padding: 18px; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: 700; cursor: pointer; background: #ff8a7a; color: white; }
+        .error-text { color: #f44336; font-size: 0.7rem; margin-top: 5px; display: block; }
+        .input-error { border-color: #f44336 !important; }
+        .admin-panel { background: white; border-radius: 16px; padding: 20px; margin-top: 30px; border: 2px solid #ff8a7a; display: none; position: relative; }
+        .close-admin { position: absolute; top: 15px; right: 20px; background: #f44336; color: white; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+        @media (max-width: 768px) { .food-card { flex-direction: column; text-align: center; gap: 10px; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-utensils"></i> Room Service Menu</h1>
-            <p>Order food directly to your room</p>
-            <div class="room-badge" id="roomDisplay">Select Room</div>
-            <div class="price-note"><i class="fas fa-tag"></i> Pay at counter after enjoying your meal</div>
-        </div>
-        
-        <!-- FREE Items (Included in Room Price) -->
-        <h2 class="section-title"><i class="fas fa-gift"></i> Included in Package <span class="free-badge">FREE</span></h2>
-        <div class="food-grid" id="freeFoodGrid"></div>
-        
-        <!-- PAID Items - Specialties (Not included in room package) -->
-        <h2 class="section-title"><i class="fas fa-fire"></i> Chef's Specials <span class="paid-badge">Extra Charge</span></h2>
-        <div class="food-grid" id="paidFoodGrid"></div>
-        
-        <!-- Custom Order -->
-        <div class="custom-section">
-            <h3><i class="fas fa-pen"></i> Custom Order</h3>
-            <textarea id="customOrder" rows="2" placeholder="Tell us what you'd like to order... (e.g., Butter Chicken, Pizza, Special Thali)"></textarea>
-            <small><i class="fas fa-info-circle"></i> Custom orders will be charged extra (minimum ₹200)</small>
-        </div>
-        
-        <!-- Room Number -->
-        <div class="room-input">
-            <label><i class="fas fa-door-open"></i> Room Number *</label>
-            <input type="text" id="roomNumber" placeholder="Enter your room number" required>
-            <small style="color: #8b8a88; display: block; margin-top: 5px;">Auto-filled from QR code</small>
-        </div>
-        
-        <!-- Email Address (For Confirmation) -->
-        <div class="email-input">
-            <label><i class="fas fa-envelope"></i> Your Email Address *</label>
-            <input type="email" id="customerEmail" placeholder="you@example.com" required>
-            <small style="color: #8b8a88; display: block; margin-top: 5px;">We'll send order confirmation to this email</small>
-        </div>
-        
-        <!-- Name -->
-        <div class="email-input">
-            <label><i class="fas fa-user"></i> Your Name *</label>
-            <input type="text" id="customerName" placeholder="Enter your name" required>
-        </div>
-        
-        <!-- Order Summary -->
-        <div class="payment-summary">
-            <h3>Order Summary</h3>
-            <p>Free Items: <span id="freeCount">0</span></p>
-            <p>Paid Items: <span id="paidCount">0</span></p>
-            <p>Paid Items Total: ₹<span id="paidTotal">0</span></p>
-            <p>Custom Order: <span id="customStatus">No</span> <span id="customPrice">(+₹0)</span></p>
-            <div class="total-amount">Total: ₹<span id="totalAmount">0</span></div>
-            <small>💰 Pay at counter after enjoying your meal</small>
-        </div>
-        
-        <!-- Place Order Button -->
-        <button class="pay-btn" onclick="placeOrder()">
-            <i class="fas fa-shopping-cart"></i> Place Order (Pay at Counter)
-        </button>
-        
-        <!-- Admin Panel (HIDDEN - Press A+D+M+I+N to access) -->
-        <div class="admin-panel" id="adminPanel">
-            <button class="close-admin" onclick="closeAdminPanel()">✕</button>
-            <h3><i class="fas fa-user-shield"></i> Admin Dashboard</h3>
-            
-            <!-- Menu Management Section -->
-            <div style="margin-bottom: 25px;">
-                <h4><i class="fas fa-edit"></i> Manage Menu Items</h4>
-                <div class="admin-note">
-                    <i class="fas fa-info-circle"></i> Add, edit, or delete paid menu items.
-                </div>
-                <div id="paidItemsAdminList"></div>
-                <button class="btn-add" onclick="addPaidItem()">+ Add New Item</button>
-                <button class="btn-save" onclick="savePaidItems()">Save Changes</button>
-            </div>
-            
-            <!-- Orders List Section (ONLY visible to admin) -->
-            <div class="orders-list">
-                <h4><i class="fas fa-clipboard-list"></i> Pending Orders</h4>
-                <div id="pendingOrders"></div>
-                <h4 style="margin-top: 15px;"><i class="fas fa-check-circle"></i> Completed Orders</h4>
-                <div id="completedOrders"></div>
-            </div>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-utensils"></i> Room Service Menu</h1>
+        <p>Order food directly to your room</p>
+        <div class="room-badge" id="roomDisplay">Select Room</div>
     </div>
+    
+    <h2 class="section-title"><i class="fas fa-gift"></i> Included in Package <span class="free-badge">FREE</span></h2>
+    <div class="food-grid" id="freeFoodGrid"></div>
+    
+    <h2 class="section-title"><i class="fas fa-fire"></i> Chef's Specials <span class="paid-badge">Extra Charge</span></h2>
+    <div class="food-grid" id="paidFoodGrid"></div>
+    
+    <div class="custom-section">
+        <h3><i class="fas fa-pen"></i> Custom Order</h3>
+        <textarea id="customOrder" rows="2" placeholder="Tell us what you'd like to order..."></textarea>
+        <small>Custom orders will be charged extra (minimum ₹200)</small>
+    </div>
+    
+    <div class="input-group">
+        <label><i class="fas fa-door-open"></i> Room Number *</label>
+        <input type="text" id="roomNumber" placeholder="Enter your room number">
+        <div class="error-text" id="roomError"></div>
+    </div>
+    
+    <div class="input-group">
+        <label><i class="fas fa-user"></i> Your Name *</label>
+        <input type="text" id="customerName" placeholder="Enter your name">
+        <div class="error-text" id="nameError"></div>
+    </div>
+    
+    <div class="input-group">
+        <label><i class="fas fa-envelope"></i> Your Email *</label>
+        <input type="email" id="customerEmail" placeholder="you@example.com">
+        <div class="error-text" id="emailError"></div>
+    </div>
+    
+    <div class="input-group">
+        <label><i class="fas fa-phone"></i> Phone Number (Optional)</label>
+        <input type="tel" id="customerPhone" placeholder="10 digit mobile number" maxlength="10">
+        <div class="error-text" id="phoneError"></div>
+    </div>
+    
+    <div class="payment-summary">
+        <h3>Order Summary</h3>
+        <p>Free Items: <span id="freeCount">0</span></p>
+        <p>Paid Items: <span id="paidCount">0</span></p>
+        <p>Paid Items Total: ₹<span id="paidTotal">0</span></p>
+        <p>Custom Order: <span id="customStatus">No</span> <span id="customPrice"></span></p>
+        <div class="total-amount">Total: ₹<span id="totalAmount">0</span></div>
+        <small>💰 Pay at counter after enjoying your meal</small>
+    </div>
+    
+    <button class="pay-btn" onclick="placeOrder()">Place Order (Pay at Counter)</button>
+    
+    <div class="admin-panel" id="adminPanel">
+        <button class="close-admin" onclick="closeAdminPanel()">✕</button>
+        <h3>Admin Dashboard</h3>
+        <div id="paidItemsAdminList"></div>
+        <button class="btn-add" onclick="addPaidItem()">+ Add New Item</button>
+        <button class="btn-save" onclick="savePaidItems()">Save Changes</button>
+        <div class="orders-list"><h4>Pending Orders</h4><div id="pendingOrders"></div></div>
+    </div>
+</div>
 
-    <script>
-        // ============ EMAILJS CONFIGURATION ============
-        // REPLACE THESE WITH YOUR ACTUAL EMAILJS CREDENTIALS
-        const EMAILJS_PUBLIC_KEY = "zelEUBjt8NTV7YMVY";        // From EmailJS → Integration
-        const EMAILJS_SERVICE_ID = "service_us5kijb";     // From EmailJS → Email Services
-        const EMAILJS_TEMPLATE_ID = "template_idss8nd";   // Your MAIN template ID
-        const ADMIN_EMAIL = "khushinmasurkar28@gmail.com";  // Admin email to receive notifications
+<script>
+    // ============ EMAILJS CONFIGURATION ============
+    const EMAILJS_PUBLIC_KEY = "zelEUBjt8NTV7YMVY";
+    const EMAILJS_SERVICE_ID = "service_us5kijb";
+    const EMAILJS_TEMPLATE_ID = "template_idss8nd";
+    const ADMIN_EMAIL = "khushinmasurkar28@gmail.com";
+    
+    // ============ API CONFIGURATION ============
+    const API_BASE_URL = 'http://localhost:5000/api';
+    
+    // ============ GLOBAL VARIABLES ============
+    let selectedFree = [];
+    let selectedPaid = [];
+    let freeItemsData = [];
+    let paidItemsData = [];
+    
+    // ============ INITIALIZE EMAILJS ============
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    
+    // ============ LOAD FOOD ITEMS FROM DATABASE ============
+    async function loadFoodItemsFromDB() {
+    console.log("Fetching food items from API...");
+    
+    try {
+        const response = await fetch('http://localhost:5000/api/food-items');
+        const data = await response.json();
         
-        // Initialize EmailJS
-        emailjs.init(EMAILJS_PUBLIC_KEY);
-        
-        // ============ SEND EMAIL NOTIFICATIONS ============
-        async function sendEmailNotifications(order, customerEmail, customerName) {
-            try {
-                // Send to Admin (Main Template)
-                const adminResult = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                    admin_email: ADMIN_EMAIL,
-                    customer_email: customerEmail,
-                    customer_name: customerName,
-                    room: order.room,
-                    freeItems: order.freeItems.join(', ') || 'None',
-                    paidItems: order.paidItems.join(', ') || 'None',
-                    customOrder: order.customOrder,
-                    total: order.total,
-                    time: order.time
-                });
-                
-                console.log("✅ Admin email sent:", adminResult);
-                
-                // Auto-reply will be sent automatically by EmailJS
-                // (if you linked the auto-reply template in EmailJS dashboard)
-                
-                return true;
-            } catch (error) {
-                console.error("❌ Email failed:", error);
-                return false;
-            }
-        }
-        
-        // ============ FREE ITEMS (Included in Package) ============
-        const freeItemsData = [
-            { name: 'Veg Thali', description: 'Rice, dal, sabzi, roti, salad, sweet' },
-            { name: 'Dal Rice', description: 'Comfort food with ghee and papad' },
-            { name: 'Matar Paneer', description: 'Cottage cheese in rich tomato gravy' },
-            { name: 'Dry Sabzi', description: 'Seasonal vegetable stir-fry' },
-            { name: 'Sweet Salad', description: 'Fresh fruits with honey and nuts' },
-            { name: 'Fish Curry Rice', description: 'Fresh catch with coastal spices' },
-            { name: 'Chicken Thali', description: 'Chicken curry, rice, roti, salad' },
-            { name: 'Sol Kadhi', description: 'Kokam and coconut drink' }
-        ];
-        
-        // ============ PAID ITEMS (Admin Editable) ============
-        let paidItemsData = [];
-        
-        // Load paid items from localStorage
-        function loadPaidItems() {
-            const saved = localStorage.getItem('paidMenuItems');
-            if (saved) {
-                paidItemsData = JSON.parse(saved);
-            } else {
-                paidItemsData = [
-                    { name: 'Prawns Koliwada', description: 'Crispy spiced prawns - Koli style', price: 320 },
-                    { name: 'Chicken 65', description: 'Spicy deep-fried chicken', price: 280 },
-                    { name: 'Paneer Chilli', description: 'Indo-Chinese style spicy paneer', price: 260 },
-                    { name: 'Chicken Tawa Fry', description: 'Pan-roasted chicken with spices', price: 300 },
-                    { name: 'Chicken Cutlet', description: 'Crispy chicken patty with herbs', price: 220 }
-                ];
-                localStorage.setItem('paidMenuItems', JSON.stringify(paidItemsData));
-            }
-        }
-        
-        // Save paid items to localStorage
-        function savePaidItems() {
-            const items = [];
-            const groups = document.querySelectorAll('#paidItemsAdminList .admin-item-group');
-            groups.forEach((group, i) => {
-                const name = group.querySelectorAll('input')[0]?.value;
-                const desc = group.querySelectorAll('input')[1]?.value;
-                const price = group.querySelectorAll('input')[2]?.value;
-                if (name && price) {
-                    items.push({ name, description: desc || 'Delicious dish', price: parseInt(price) });
+        if (data.success) {
+            // Clear existing arrays
+            freeItemsData = [];
+            paidItemsData = [];
+            
+            const allVeg = data.veg || [];
+            const allNonVeg = data.nonVeg || [];
+            const allItems = [...allVeg, ...allNonVeg];
+            
+            // Use a Set to track unique names and prevent duplicates
+            const uniqueNames = new Set();
+            const uniqueItems = [];
+            
+            for (const item of allItems) {
+                if (!uniqueNames.has(item.name)) {
+                    uniqueNames.add(item.name);
+                    uniqueItems.push(item);
                 }
-            });
-            paidItemsData = items;
-            localStorage.setItem('paidMenuItems', JSON.stringify(paidItemsData));
-            alert('✅ Paid items saved successfully!');
-            renderPaidFood();
-            renderAdminPaidList();
-        }
-        
-        // Add new paid item
-        function addPaidItem() {
-            paidItemsData.push({ name: 'New Item', description: 'Description', price: 200 });
-            renderAdminPaidList();
-        }
-        
-        // Remove paid item
-        function removePaidItem(index) {
-            if (confirm('Delete this item?')) {
-                paidItemsData.splice(index, 1);
-                renderAdminPaidList();
-            }
-        }
-        
-        // Render admin list for editing
-        function renderAdminPaidList() {
-            const container = document.getElementById('paidItemsAdminList');
-            let html = '';
-            paidItemsData.forEach((item, i) => {
-                html += `
-                    <div class="admin-item-group">
-                        <input type="text" value="${item.name.replace(/"/g, '&quot;')}" placeholder="Item name" id="itemName${i}">
-                        <input type="text" value="${item.description.replace(/"/g, '&quot;')}" placeholder="Description" id="itemDesc${i}">
-                        <input type="number" value="${item.price}" placeholder="Price" id="itemPrice${i}">
-                        <button class="btn-danger" onclick="removePaidItem(${i})">Delete</button>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-        
-        // ============ DISPLAY ORDERS FOR ADMIN ============
-        function displayOrders() {
-            const orders = JSON.parse(localStorage.getItem('foodOrders')) || [];
-            const pendingOrders = orders.filter(o => o.status !== 'completed');
-            const completedOrders = orders.filter(o => o.status === 'completed');
-            
-            const pendingContainer = document.getElementById('pendingOrders');
-            const completedContainer = document.getElementById('completedOrders');
-            
-            if (pendingOrders.length === 0) {
-                pendingContainer.innerHTML = '<p style="text-align:center; padding:15px; color:#8b8a88;">No pending orders</p>';
-            } else {
-                pendingContainer.innerHTML = pendingOrders.map((order, index) => `
-                    <div class="order-item">
-                        <div class="order-header">
-                            <span>🛏️ Room ${order.room}</span>
-                            <span>⏰ ${order.time}</span>
-                        </div>
-                        <div class="order-details">
-                            <strong>Free:</strong> ${order.freeItems.join(', ') || 'None'}<br>
-                            <strong>Paid:</strong> ${order.paidItems.join(', ') || 'None'}<br>
-                            <strong>Custom:</strong> ${order.customOrder}<br>
-                            <strong>Total:</strong> ₹${order.total}
-                        </div>
-                        <div style="margin-top: 8px;">
-                            <span class="order-status">Pending</span>
-                            <button class="btn-small" onclick="markOrderCompleted(${index})">Complete</button>
-                        </div>
-                    </div>
-                `).join('');
             }
             
-            if (completedOrders.length === 0) {
-                completedContainer.innerHTML = '<p style="text-align:center; padding:15px; color:#8b8a88;">No completed orders</p>';
-            } else {
-                completedContainer.innerHTML = completedOrders.map((order) => `
-                    <div class="order-item" style="border-left-color: #4caf50;">
-                        <div class="order-header">
-                            <span>🛏️ Room ${order.room}</span>
-                            <span>⏰ ${order.time}</span>
-                        </div>
-                        <div class="order-details">
-                            <strong>Free:</strong> ${order.freeItems.join(', ') || 'None'}<br>
-                            <strong>Paid:</strong> ${order.paidItems.join(', ') || 'None'}<br>
-                            <strong>Total:</strong> ₹${order.total}
-                        </div>
-                        <div style="margin-top: 8px;">
-                            <span class="order-status completed">Completed</span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-        
-        function markOrderCompleted(index) {
-            const orders = JSON.parse(localStorage.getItem('foodOrders')) || [];
-            if (orders[index]) {
-                orders[index].status = 'completed';
-                localStorage.setItem('foodOrders', JSON.stringify(orders));
-                displayOrders();
-                alert('✅ Order marked as completed!');
-            }
-        }
-        
-        let selectedFree = [];
-        let selectedPaid = [];
-        
-        function renderFreeFood() {
-            const container = document.getElementById('freeFoodGrid');
-            container.innerHTML = freeItemsData.map((item, index) => `
-                <div class="food-card">
-                    <div class="food-info">
-                        <h4>${item.name} <span class="free-badge">FREE</span></h4>
-                        <p>${item.description}</p>
-                    </div>
-                    <button class="order-btn" onclick="toggleFree(${index}, '${item.name}')" id="freeBtn${index}">
-                        <i class="fas fa-plus"></i> Add
-                    </button>
-                </div>
-            `).join('');
-        }
-        
-        function renderPaidFood() {
-            const container = document.getElementById('paidFoodGrid');
-            if (paidItemsData.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:20px;">No premium items available.</p>';
-                return;
-            }
-            container.innerHTML = paidItemsData.map((item, index) => `
-                <div class="food-card">
-                    <div class="food-info">
-                        <h4>${item.name} <span class="paid-badge">₹${item.price}</span></h4>
-                        <p>${item.description}</p>
-                    </div>
-                    <div class="quantity-control">
-                        <button class="qty-btn" onclick="updatePaid(${index}, -1)">-</button>
-                        <span id="paidQty${index}" style="min-width: 30px; text-align: center;">0</span>
-                        <button class="qty-btn" onclick="updatePaid(${index}, 1)">+</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-        
-        function toggleFree(index, name) {
-            const existing = selectedFree.find(i => i.index === index);
-            const btn = document.getElementById(`freeBtn${index}`);
+            freeItemsData = uniqueItems.filter(item => item.price === 0);
+            paidItemsData = uniqueItems.filter(item => item.price > 0);
             
-            if (existing) {
-                selectedFree = selectedFree.filter(i => i.index !== index);
-                btn.innerHTML = '<i class="fas fa-plus"></i> Add';
-                btn.classList.remove('added');
-            } else {
-                selectedFree.push({ index, name });
-                btn.innerHTML = '<i class="fas fa-check"></i> Added';
-                btn.classList.add('added');
-            }
-            updateSummary();
-        }
-        
-        function updatePaid(index, change) {
-            const item = paidItemsData[index];
-            const existing = selectedPaid.find(i => i.index === index);
-            const qtySpan = document.getElementById(`paidQty${index}`);
-            
-            if (existing) {
-                const newQty = existing.qty + change;
-                if (newQty <= 0) {
-                    selectedPaid = selectedPaid.filter(i => i.index !== index);
-                    qtySpan.textContent = '0';
-                } else {
-                    existing.qty = newQty;
-                    qtySpan.textContent = newQty;
-                }
-            } else if (change > 0) {
-                selectedPaid.push({ index, name: item.name, price: item.price, qty: 1 });
-                qtySpan.textContent = '1';
-            }
-            updateSummary();
-        }
-        
-        function updateSummary() {
-            const freeCount = selectedFree.length;
-            const paidCount = selectedPaid.reduce((sum, i) => sum + i.qty, 0);
-            const paidTotal = selectedPaid.reduce((sum, i) => sum + (i.price * i.qty), 0);
-            const hasCustom = document.getElementById('customOrder').value.trim() !== '';
-            const customPrice = hasCustom ? 200 : 0;
-            
-            document.getElementById('freeCount').textContent = freeCount;
-            document.getElementById('paidCount').textContent = paidCount;
-            document.getElementById('paidTotal').textContent = paidTotal;
-            document.getElementById('customStatus').textContent = hasCustom ? 'Yes' : 'No';
-            document.getElementById('customPrice').innerHTML = hasCustom ? '(+₹200)' : '';
-            document.getElementById('totalAmount').textContent = paidTotal + customPrice;
-        }
-        
-        async function placeOrder() {
-            const roomNum = document.getElementById('roomNumber').value;
-            const customerEmail = document.getElementById('customerEmail').value;
-            const customerName = document.getElementById('customerName').value;
-            
-            if (!roomNum) {
-                alert('Please enter your room number');
-                return;
-            }
-            if (!customerEmail) {
-                alert('Please enter your email address');
-                return;
-            }
-            if (!customerEmail.includes('@')) {
-                alert('Please enter a valid email address');
-                return;
-            }
-            if (!customerName) {
-                alert('Please enter your name');
-                return;
-            }
-            
-            const customOrder = document.getElementById('customOrder').value;
-            const paidTotal = selectedPaid.reduce((sum, i) => sum + (i.price * i.qty), 0);
-            const totalAmount = paidTotal + (customOrder.trim() !== '' ? 200 : 0);
-            
-            if (selectedFree.length === 0 && selectedPaid.length === 0 && !customOrder.trim()) {
-                alert('Please select at least one item');
-                return;
-            }
-            
-            const order = {
-                room: roomNum,
-                freeItems: selectedFree.map(i => i.name),
-                paidItems: selectedPaid.map(i => `${i.name} x${i.qty} (₹${i.price * i.qty})`),
-                paidTotal: paidTotal,
-                customOrder: customOrder || 'None',
-                customPrice: customOrder.trim() !== '' ? 200 : 0,
-                total: totalAmount,
-                time: new Date().toLocaleString(),
-                status: 'pending'
-            };
-            
-            // Save order to localStorage
-            let orders = JSON.parse(localStorage.getItem('foodOrders')) || [];
-            orders.unshift(order);
-            localStorage.setItem('foodOrders', JSON.stringify(orders));
-            
-            // Show loading
-            const placeBtn = document.querySelector('.pay-btn');
-            const originalText = placeBtn.innerHTML;
-            placeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending Order...';
-            placeBtn.disabled = true;
-            
-            // Send Email Notifications
-            const emailSent = await sendEmailNotifications(order, customerEmail, customerName);
-            
-           // WhatsApp notification removed - using email only
-            
-            // Reset button
-            placeBtn.innerHTML = originalText;
-            placeBtn.disabled = false;
-            
-            if (emailSent) {
-                alert(`✅ Order Placed!\n\nRoom: ${roomNum}\nTotal: ₹${totalAmount}\n\n📧 Confirmation sent to: ${customerEmail}\n🍽️ Food will be delivered to your room.\n💰 Pay at counter.`);
-            } else {
-                alert(`✅ Order Placed!\n\nRoom: ${roomNum}\nTotal: ₹${totalAmount}\n\n⚠️ Email confirmation failed, but we received your order.\n🍽️ Food will be delivered to your room.\n💰 Pay at counter.`);
-            }
-            
-            // Reset form
-            selectedFree = [];
-            selectedPaid = [];
-            document.getElementById('customOrder').value = '';
             renderFreeFood();
             renderPaidFood();
-            updateSummary();
-            
-            // Update orders display if admin panel is open
-            if (document.getElementById('adminPanel').style.display === 'block') {
-                displayOrders();
-            }
         }
-        
-        // ============ SECRET ADMIN ACCESS - Press A+D+M+I+N ============
-        let pressedKeys = '';
-        const secretCode = 'admin';
-        
-        document.addEventListener('keydown', function(e) {
-            pressedKeys += e.key.toLowerCase();
-            if (pressedKeys.length > 10) {
-                pressedKeys = pressedKeys.slice(-10);
-            }
-            if (pressedKeys.includes(secretCode)) {
-                const adminPanel = document.getElementById('adminPanel');
-                if (adminPanel.style.display === 'none' || adminPanel.style.display === '') {
-                    adminPanel.style.display = 'block';
-                    renderAdminPaidList();
-                    displayOrders();
-                    alert('🔓 Admin Panel Activated!');
-                }
-                pressedKeys = '';
-            }
-        });
-        
-        // Close admin panel
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').style.display = 'none';
-        }
-        
-        // Get room from URL (for QR code)
-        const urlParams = new URLSearchParams(window.location.search);
-        let roomFromUrl = urlParams.get('room');
-        
-        if (roomFromUrl) {
-            document.getElementById('roomNumber').value = roomFromUrl;
-            document.getElementById('roomNumber').readOnly = true;
-            document.getElementById('roomDisplay').innerHTML = `Room: ${roomFromUrl}`;
-        }
-        
-        document.getElementById('customOrder').addEventListener('input', updateSummary);
-        
-        // Initialize
-        loadPaidItems();
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+    
+    // Fallback function (kept as backup)
+    function useFallbackData() {
+        console.log("Using fallback data");
+        freeItemsData = [
+            { name: 'Veg Thali', description: 'Rice, dal, sabzi, roti, salad, sweet', price: 0, is_free: true, image_url: '/images/vegthali.jpg' },
+            { name: 'Dal Rice', description: 'Comfort food with ghee and papad', price: 0, is_free: true, image_url: '/images/dal rice.jpg' },
+            { name: 'Matar Paneer', description: 'Cottage cheese in rich tomato gravy', price: 0, is_free: true, image_url: '/images/Matar-Paneer-1.jpg' },
+            { name: 'Dry Sabzi', description: 'Seasonal vegetable stir-fry', price: 0, is_free: true, image_url: '/images/dry sabzi.jpg' },
+            { name: 'Sweet Salad', description: 'Fresh fruits with honey and nuts', price: 0, is_free: true, image_url: '/images/Dahi-Salad-Recipe.jpg' }
+        ];
+        paidItemsData = [
+            { name: 'Prawns Koliwada', description: 'Crispy spiced prawns', price: 320, image_url: '' },
+            { name: 'Chicken 65', description: 'Spicy deep-fried chicken', price: 280, image_url: '' },
+            { name: 'Paneer Chilli', description: 'Indo-Chinese style', price: 260, image_url: '' }
+        ];
         renderFreeFood();
         renderPaidFood();
+    }
+    
+    // ============ RENDER FUNCTIONS ============
+    function renderFreeFood() {
+        const container = document.getElementById('freeFoodGrid');
+        if (!container) {
+            console.error("freeFoodGrid not found");
+            return;
+        }
         
-        console.log("✅ QR Menu Ready - Press A+D+M+I+N for admin access");
-        console.log("⚠️ Update EMAILJS credentials in the script before using!");
-    </script>
+        console.log("Rendering free items:", freeItemsData.length);
+        
+        if (freeItemsData.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:20px;">No free items available</p>';
+            return;
+        }
+        
+        container.innerHTML = freeItemsData.map((item, idx) => {
+            let imageUrl = item.image_url || '';
+            if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
+                imageUrl = '/images/' + imageUrl;
+            }
+            
+            return `
+                <div class="food-card">
+                    <div class="food-info">
+                        <h4>${escapeHtml(item.name)} <span class="free-badge">FREE</span></h4>
+                        <p>${escapeHtml(item.description || 'Delicious meal included in your package')}</p>
+                    </div>
+                    <button class="order-btn" onclick="toggleFree(${idx}, '${escapeHtml(item.name)}')" id="freeBtn${idx}">+ Add</button>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    function renderPaidFood() {
+        const container = document.getElementById('paidFoodGrid');
+        if (!container) {
+            console.error("paidFoodGrid not found");
+            return;
+        }
+        
+        console.log("Rendering paid items:", paidItemsData.length);
+        
+        if (paidItemsData.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding:20px;">No premium items available</p>';
+            return;
+        }
+        
+        container.innerHTML = paidItemsData.map((item, idx) => {
+            let imageUrl = item.image_url || '';
+            if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
+                imageUrl = '/images/' + imageUrl;
+            }
+            
+            return `
+                <div class="food-card">
+                    <div class="food-info">
+                        <h4>${escapeHtml(item.name)} <span class="paid-badge">₹${item.price}</span></h4>
+                        <p>${escapeHtml(item.description || 'Delicious dish')}</p>
+                    </div>
+                    <div class="quantity-control">
+                        <button class="qty-btn" onclick="updatePaid(${idx}, -1)">-</button>
+                        <span id="paidQty${idx}">0</span>
+                        <button class="qty-btn" onclick="updatePaid(${idx}, 1)">+</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    // ============ ORDER FUNCTIONS ============
+    function toggleFree(idx, name) {
+        const existing = selectedFree.find(i => i.index === idx);
+        const btn = document.getElementById(`freeBtn${idx}`);
+        
+        if (existing) {
+            selectedFree = selectedFree.filter(i => i.index !== idx);
+            if (btn) {
+                btn.innerHTML = '+ Add';
+                btn.classList.remove('added');
+            }
+        } else {
+            selectedFree.push({ index: idx, name });
+            if (btn) {
+                btn.innerHTML = '✓ Added';
+                btn.classList.add('added');
+            }
+        }
+        updateSummary();
+    }
+    
+    function updatePaid(idx, change) {
+        const item = paidItemsData[idx];
+        const existing = selectedPaid.find(i => i.index === idx);
+        const qtySpan = document.getElementById(`paidQty${idx}`);
+        
+        if (existing) {
+            const newQty = existing.qty + change;
+            if (newQty <= 0) {
+                selectedPaid = selectedPaid.filter(i => i.index !== idx);
+                if (qtySpan) qtySpan.textContent = '0';
+            } else {
+                existing.qty = newQty;
+                if (qtySpan) qtySpan.textContent = newQty;
+            }
+        } else if (change > 0) {
+            selectedPaid.push({ index: idx, name: item.name, price: item.price, qty: 1 });
+            if (qtySpan) qtySpan.textContent = '1';
+        }
+        updateSummary();
+    }
+    
+    function updateSummary() {
+        const freeCount = selectedFree.length;
+        const paidCount = selectedPaid.reduce((sum, i) => sum + i.qty, 0);
+        const paidTotal = selectedPaid.reduce((sum, i) => sum + (i.price * i.qty), 0);
+        const hasCustom = document.getElementById('customOrder').value.trim() !== '';
+        const customPrice = hasCustom ? 200 : 0;
+        
+        document.getElementById('freeCount').textContent = freeCount;
+        document.getElementById('paidCount').textContent = paidCount;
+        document.getElementById('paidTotal').textContent = paidTotal;
+        document.getElementById('customStatus').textContent = hasCustom ? 'Yes' : 'No';
+        document.getElementById('customPrice').innerHTML = hasCustom ? '(+₹200)' : '';
+        document.getElementById('totalAmount').textContent = paidTotal + customPrice;
+    }
+    
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // ============ INITIALIZATION ============
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("DOM loaded, initializing...");
+        
+        // Load food items from database
+        loadFoodItemsFromDB();
+        
+        // Set up event listeners
+        const customOrder = document.getElementById('customOrder');
+        if (customOrder) {
+            customOrder.addEventListener('input', updateSummary);
+        }
+        
+        // QR code room auto-fill
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('room')) {
+            const roomInput = document.getElementById('roomNumber');
+            const roomDisplay = document.getElementById('roomDisplay');
+            if (roomInput) roomInput.value = urlParams.get('room');
+            if (roomDisplay) roomDisplay.innerHTML = `Room: ${urlParams.get('room')}`;
+        }
+        
+        // Real-time input restrictions
+        const roomInput = document.getElementById('roomNumber');
+        const nameInput = document.getElementById('customerName');
+        const phoneInput = document.getElementById('customerPhone');
+        
+        if (roomInput) {
+            roomInput.addEventListener('input', function() { 
+                this.value = this.value.replace(/[^0-9]/g, ''); 
+            });
+        }
+        if (nameInput) {
+            nameInput.addEventListener('input', function() { 
+                this.value = this.value.replace(/[^A-Za-z\s]/g, ''); 
+            });
+        }
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function() { 
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10); 
+            });
+        }
+        
+        console.log("Initialization complete");
+    });
+</script>
 </body>
 </html>

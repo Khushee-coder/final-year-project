@@ -9,6 +9,8 @@ dotenv.config();
 const roomRoutes = require('./src/routes/roomRoutes');
 const bookingRoutes = require('./src/routes/bookingRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
+const foodOrderRoutes = require('./src/routes/foodOrderRoutes');  // ADD THIS LINE
+const foodItemRoutes = require('./src/routes/foodItemRoutes');
 
 const app = express();
 
@@ -21,6 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/rooms', roomRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/food-orders', foodOrderRoutes);  // ADD THIS LINE
+app.use('/api/food-items', foodItemRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

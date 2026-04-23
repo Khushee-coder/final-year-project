@@ -6,13 +6,11 @@ const API_BASE_URL = 'http://localhost:5000/api';
 
 // ==================== INITIALIZE DATABASE (LOCALSTORAGE) ====================
 function initializeDatabase() {
-    // Initialize Prices
     if (!localStorage.getItem('prices')) {
         localStorage.setItem('prices', JSON.stringify({ ac: 2500 }));
         localStorage.setItem('acPrice', '2500');
     }
     
-    // Initialize Rooms (for admin display only - actual booking uses backend)
     if (!localStorage.getItem('rooms')) {
         const defaultRooms = [
             { number: '101', type: 'ac', status: 'available', guest: null, checkIn: null, checkOut: null },
@@ -23,41 +21,36 @@ function initializeDatabase() {
         localStorage.setItem('rooms', JSON.stringify(defaultRooms));
     }
     
-    // Initialize Bookings (local backup)
     if (!localStorage.getItem('bookings')) {
         localStorage.setItem('bookings', JSON.stringify([]));
     }
     
-    // Initialize Enquiries
     if (!localStorage.getItem('enquiries')) {
         localStorage.setItem('enquiries', JSON.stringify([]));
     }
     
-    // Initialize Veg Food
-if (!localStorage.getItem('vegFoodItems')) {
-    const defaultVeg = [
-        { name: 'Veg Thali', price: 0, image: 'vegthali.jpg' },
-        { name: 'Dal Rice', price: 0, image: 'dal rice.jpg' },
-        { name: 'Matar Paneer', price: 0, image: 'Matar-Paneer-1.jpg' },
-        { name: 'Dry Sabzi', price: 0, image: 'dry sabzi.jpg' },
-        { name: 'Sweet Salad', price: 0, image: 'Dahi-Salad-Recipe.jpg' }
-    ];
-    localStorage.setItem('vegFoodItems', JSON.stringify(defaultVeg));
-}
-
-// Initialize Non-Veg Food
-if (!localStorage.getItem('nonVegFoodItems')) {
-    const defaultNonVeg = [
-        { name: 'Fish Curry Rice', price: 0, image: 'fish curry.jpg' },
-        { name: 'Chicken Thali', price: 0, image: 'chicken_thali_featured.jpg' },
-        { name: 'Prawns Masala', price: 0, image: 'Prawn-Masala-450x450.jpeg' },
-        { name: 'Sol Kadhi', price: 0, image: 'sol kadhi.jpg' },
-        { name: 'Kokani Special', price: 0, image: 'kokani.jpg' }
-    ];
-    localStorage.setItem('nonVegFoodItems', JSON.stringify(defaultNonVeg));
-}
+    if (!localStorage.getItem('vegFoodItems')) {
+        const defaultVeg = [
+            { name: 'Veg Thali', price: 0, image: 'vegthali.jpg' },
+            { name: 'Dal Rice', price: 0, image: 'dal rice.jpg' },
+            { name: 'Matar Paneer', price: 0, image: 'Matar-Paneer-1.jpg' },
+            { name: 'Dry Sabzi', price: 0, image: 'dry sabzi.jpg' },
+            { name: 'Sweet Salad', price: 0, image: 'Dahi-Salad-Recipe.jpg' }
+        ];
+        localStorage.setItem('vegFoodItems', JSON.stringify(defaultVeg));
+    }
     
-    // Initialize Facilities
+    if (!localStorage.getItem('nonVegFoodItems')) {
+        const defaultNonVeg = [
+            { name: 'Fish Curry Rice', price: 0, image: 'fish curry.jpg' },
+            { name: 'Chicken Thali', price: 0, image: 'chicken_thali_featured.jpg' },
+            { name: 'Prawns Masala', price: 0, image: 'Prawn-Masala-450x450.jpeg' },
+            { name: 'Sol Kadhi', price: 0, image: 'sol kadhi.jpg' },
+            { name: 'Kokani Special', price: 0, image: 'kokani.jpg' }
+        ];
+        localStorage.setItem('nonVegFoodItems', JSON.stringify(defaultNonVeg));
+    }
+    
     if (!localStorage.getItem('facilities')) {
         const defaultFacilities = [
             { name: 'Swimming Pool', icon: 'swimming-pool' },
@@ -70,7 +63,6 @@ if (!localStorage.getItem('nonVegFoodItems')) {
         localStorage.setItem('facilities', JSON.stringify(defaultFacilities));
     }
     
-    // Initialize Nearby Places
     if (!localStorage.getItem('nearbyPlaces')) {
         const defaultNearby = [
             { name: 'Sasawane Beach', distance: '2 min walk', icon: 'umbrella-beach', desc: 'Beautiful beach just 150 meters away' },
@@ -84,7 +76,6 @@ if (!localStorage.getItem('nonVegFoodItems')) {
         localStorage.setItem('nearbyPlaces', JSON.stringify(defaultNearby));
     }
     
-    // Initialize Games
     if (!localStorage.getItem('games')) {
         const defaultGames = [
             { name: 'Carrom', icon: 'chess-board', players: '2-4 Players' },
@@ -97,13 +88,15 @@ if (!localStorage.getItem('nonVegFoodItems')) {
     console.log("✅ Database initialized");
 }
 
-// ==================== UPDATE ROOM PRICES (LocalStorage) ====================
+// ==================== UPDATE ROOM PRICES ====================
 function updateAllRoomPrices() {
-    const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
-    const acPrice = prices.ac;
+    let acPrice = localStorage.getItem('acPrice');
     
-    // Also save as simple key for other pages
-    localStorage.setItem('acPrice', acPrice);
+    if (!acPrice) {
+        const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
+        acPrice = prices.ac;
+        localStorage.setItem('acPrice', acPrice);
+    }
     
     const homePrice = document.getElementById('homeAcPrice');
     if (homePrice) homePrice.innerHTML = `₹${acPrice} <span>/person</span>`;
@@ -114,13 +107,11 @@ function updateAllRoomPrices() {
     const statPrice = document.getElementById('statPrice');
     if (statPrice) statPrice.textContent = `₹${(acPrice/1000).toFixed(1)}k`;
     
-    // Update room prices on rooms page
     const roomPrices = document.querySelectorAll('.room-price');
     roomPrices.forEach(priceElement => {
         priceElement.innerHTML = `₹${acPrice} <span>/person</span>`;
     });
     
-    // Update modal room type options
     const modalRoomType = document.getElementById('modalRoomType');
     if (modalRoomType) {
         modalRoomType.innerHTML = `
@@ -132,45 +123,9 @@ function updateAllRoomPrices() {
     console.log("Prices updated to: ₹" + acPrice);
 }
 
-// ==================== LOAD FUNCTIONS (LocalStorage) ====================
+// ==================== LOAD FUNCTIONS ====================
 
-function loadRoomAvailability() {
-    const rooms = JSON.parse(localStorage.getItem('rooms')) || [];
-    const container = document.getElementById('availabilityGrid');
-    if (!container) return;
-    
-    let html = '';
-    rooms.forEach(room => {
-        const isAvailable = room.status === 'available';
-        const statusColor = isAvailable ? '#4caf50' : '#f44336';
-        const statusText = isAvailable ? '✓ Available' : '✗ Occupied';
-        
-        html += `
-            <div class="availability-card">
-                <div class="room-num">Room ${room.number}</div>
-                <div class="room-type">AC Room</div>
-                <div class="status" style="color: ${statusColor}; font-weight: 600;">
-                    ${statusText}
-                </div>
-                ${room.guest ? `<div style="font-size: 0.8rem; margin-top: 5px;">Guest: ${room.guest}</div>` : ''}
-            </div>
-        `;
-    });
-    container.innerHTML = html;
-}
-
-function loadFacilities() {
-    const facilities = JSON.parse(localStorage.getItem('facilities')) || [];
-    const container = document.getElementById('propertyAmenities');
-    if (!container) return;
-    
-    container.innerHTML = facilities.map(f => `
-        <div class="facility-card">
-            <i class="fas fa-${f.icon}"></i>
-            <h3>${f.name}</h3>
-        </div>
-    `).join('');
-}
+// ==================== LOAD FOOD ITEMS FROM DATABASE ====================
 
 async function loadFoodItems() {
     console.log("Loading food items from database...");
@@ -183,10 +138,29 @@ async function loadFoodItems() {
             const allVeg = data.veg || [];
             const allNonVeg = data.nonVeg || [];
             
-            // Display veg items (free items - price = 0)
+            // Remove duplicates by name
+            const uniqueVeg = [];
+            const seenVeg = new Set();
+            for (const item of allVeg) {
+                if (!seenVeg.has(item.name)) {
+                    seenVeg.add(item.name);
+                    uniqueVeg.push(item);
+                }
+            }
+            
+            const uniqueNonVeg = [];
+            const seenNonVeg = new Set();
+            for (const item of allNonVeg) {
+                if (!seenNonVeg.has(item.name)) {
+                    seenNonVeg.add(item.name);
+                    uniqueNonVeg.push(item);
+                }
+            }
+            
+            // Display veg items (price = 0 are free)
             const vegContainer = document.getElementById('vegFoodGrid');
             if (vegContainer) {
-                const freeVeg = allVeg.filter(item => item.price === 0);
+                const freeVeg = uniqueVeg.filter(item => item.price === 0);
                 if (freeVeg.length === 0) {
                     vegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No vegetarian items added yet.</p>';
                 } else {
@@ -212,10 +186,10 @@ async function loadFoodItems() {
                 }
             }
             
-            // Display non-veg items
+            // Display non-veg items (price = 0 are free)
             const nonVegContainer = document.getElementById('nonVegFoodGrid');
             if (nonVegContainer) {
-                const freeNonVeg = allNonVeg.filter(item => item.price === 0);
+                const freeNonVeg = uniqueNonVeg.filter(item => item.price === 0);
                 if (freeNonVeg.length === 0) {
                     nonVegContainer.innerHTML = '<p style="text-align:center; padding:20px;">No non-vegetarian items added yet.</p>';
                 } else {
@@ -242,14 +216,17 @@ async function loadFoodItems() {
             }
         }
     } catch (error) {
-        console.error('Error loading food items from database:', error);
-        // Fallback to localStorage
+        console.error('Error loading food items:', error);
         loadFoodItemsFromLocal();
     }
 }
 
+// ==================== FALLBACK TO LOCALSTORAGE ====================
+
 function loadFoodItemsFromLocal() {
-    // Load Veg Items from localStorage
+    console.log("Loading food items from localStorage (fallback)...");
+    
+    // Load Veg Items
     const vegItems = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
     const vegContainer = document.getElementById('vegFoodGrid');
     
@@ -263,7 +240,7 @@ function loadFoodItemsFromLocal() {
                     imageUrl = 'images/' + imageUrl;
                 }
                 if (!imageUrl || imageUrl === '') {
-                    imageUrl = 'https://placehold.co/300x200?text=Food+Image';
+                    imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
                 }
                 return `
                     <div class="food-card">
@@ -279,7 +256,7 @@ function loadFoodItemsFromLocal() {
         }
     }
     
-    // Load Non-Veg Items from localStorage
+    // Load Non-Veg Items
     const nonVegItems = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
     const nonVegContainer = document.getElementById('nonVegFoodGrid');
     
@@ -293,7 +270,7 @@ function loadFoodItemsFromLocal() {
                     imageUrl = 'images/' + imageUrl;
                 }
                 if (!imageUrl || imageUrl === '') {
-                    imageUrl = 'https://placehold.co/300x200?text=Food+Image';
+                    imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
                 }
                 return `
                     <div class="food-card">
@@ -309,6 +286,8 @@ function loadFoodItemsFromLocal() {
         }
     }
 }
+
+// ==================== HELPER FUNCTION ====================
 
 function escapeHtml(text) {
     if (!text) return '';
@@ -352,48 +331,41 @@ function loadNearbyPlaces() {
     `).join('');
 }
 
-function loadRooms() {
+function loadRoomAvailability() {
     const rooms = JSON.parse(localStorage.getItem('rooms')) || [];
-    console.log("Loading rooms:", rooms);  // Add this to debug
-    const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
+    const container = document.getElementById('availabilityGrid');
+    if (!container) return;
     
-    if (rooms.length === 0) {
-        roomsGrid.innerHTML = '<p style="text-align:center;">No rooms available</p>';
-        return;
-    }
-    
-    roomsGrid.innerHTML = rooms.map(room => {
+    let html = '';
+    rooms.forEach(room => {
         const isAvailable = room.status === 'available';
-        return `
-            <div class="room-card">
-                <div class="room-image" style="background: linear-gradient(135deg, #0a4d4c, #1e7a76); display: flex; align-items: center; justify-content: center; height: 200px;">
-                    <i class="fas fa-snowflake" style="font-size: 3rem; color: white;"></i>
+        const statusColor = isAvailable ? '#4caf50' : '#f44336';
+        const statusText = isAvailable ? '✓ Available' : '✗ Occupied';
+        html += `
+            <div class="availability-card">
+                <div class="room-num">Room ${room.number}</div>
+                <div class="room-type">AC Room</div>
+                <div class="status" style="color: ${statusColor}; font-weight: 600;">
+                    ${statusText}
                 </div>
-                <div class="room-content">
-                    <div class="room-header">
-                        <h3 class="room-title">AC Room - ${room.number}</h3>
-                        <div class="room-price">₹${prices.ac} <span>/person</span></div>
-                    </div>
-                    <ul class="room-features">
-                        <li><i class="fas fa-check"></i> Air Conditioned</li>
-                        <li><i class="fas fa-check"></i> Flat Screen TV</li>
-                        <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
-                        <li><i class="fas fa-check"></i> Free WiFi</li>
-                        <li><i class="fas fa-paw"></i> Pet Friendly</li>
-                        <li><i class="fas fa-utensils"></i> Meals Included</li>
-                    </ul>
-                    <div class="room-footer">
-                        <span class="room-status ${room.status}">
-                            <i class="fas fa-circle"></i> ${room.status === 'available' ? 'Available' : 'Occupied'}
-                        </span>
-                        <button class="btn btn-accent" onclick="openBookingModal()" ${!isAvailable ? 'disabled' : ''}>
-                            <i class="fas fa-calendar-check"></i> Book Now
-                        </button>
-                    </div>
-                </div>
+                ${room.guest ? `<div style="font-size: 0.8rem; margin-top: 5px;">Guest: ${room.guest}</div>` : ''}
             </div>
         `;
-    }).join('');
+    });
+    container.innerHTML = html;
+}
+
+function loadFacilities() {
+    const facilities = JSON.parse(localStorage.getItem('facilities')) || [];
+    const container = document.getElementById('propertyAmenities');
+    if (!container) return;
+    
+    container.innerHTML = facilities.map(f => `
+        <div class="facility-card">
+            <i class="fas fa-${f.icon}"></i>
+            <h3>${f.name}</h3>
+        </div>
+    `).join('');
 }
 
 // ==================== BOOKING MODAL FUNCTIONS ====================
@@ -412,7 +384,6 @@ function openBookingModal(roomType = 'ac') {
         return;
     }
     
-    // Reset to step 1
     const step2 = document.getElementById('step2');
     const step1 = document.getElementById('step1');
     const step2Progress = document.getElementById('step2Progress');
@@ -423,7 +394,6 @@ function openBookingModal(roomType = 'ac') {
     if (step2Progress) step2Progress.classList.remove('active');
     if (step1Progress) step1Progress.classList.add('active');
     
-    // Set minimum date to today
     const today = new Date().toISOString().split('T')[0];
     const checkInInput = document.getElementById('modalCheckIn');
     const checkOutInput = document.getElementById('modalCheckOut');
@@ -437,7 +407,6 @@ function openBookingModal(roomType = 'ac') {
         checkOutInput.value = '';
     }
     
-    // Clear form fields
     const guestName = document.getElementById('guestName');
     const guestPhone = document.getElementById('guestPhone');
     const guestEmail = document.getElementById('guestEmail');
@@ -448,12 +417,10 @@ function openBookingModal(roomType = 'ac') {
     if (guestEmail) guestEmail.value = '';
     if (specialRequests) specialRequests.value = '';
     
-    // Clear error messages
     document.querySelectorAll('.error-message').forEach(el => {
         if (el) el.innerHTML = '';
     });
     
-    // Update summary
     updateSummary();
 }
 
@@ -463,7 +430,6 @@ function closeBookingModal() {
         modal.style.display = 'none';
     }
     
-    // Reset to step 1 (with null checks)
     const step2 = document.getElementById('step2');
     const step1 = document.getElementById('step1');
     const step2Progress = document.getElementById('step2Progress');
@@ -474,17 +440,14 @@ function closeBookingModal() {
     if (step2Progress) step2Progress.classList.remove('active');
     if (step1Progress) step1Progress.classList.add('active');
     
-    // Clear form (with null check)
     const bookingForm = document.getElementById('bookingForm');
     if (bookingForm) bookingForm.reset();
     
-    // Clear error messages
     const errorMessages = document.querySelectorAll('.error-message');
     errorMessages.forEach(el => {
         if (el) el.innerHTML = '';
     });
     
-    // Clear UPI section if exists
     const upiSection = document.getElementById('upiSection');
     if (upiSection) upiSection.style.display = 'none';
 }
@@ -507,7 +470,6 @@ function updateSummary() {
     
     const total = pricePerPerson * guests * nights * numRooms;
     
-    // Update step 1 summary
     const summaryRoom = document.getElementById('summaryRoom');
     const summaryRooms = document.getElementById('summaryRooms');
     const summaryGuests = document.getElementById('summaryGuests');
@@ -528,21 +490,18 @@ function updateSummary() {
 function validateAndGoToPayment() {
     console.log("Validating form...");
     
-    // Get all error message elements
     const checkInError = document.getElementById('checkInError');
     const checkOutError = document.getElementById('checkOutError');
     const guestNameError = document.getElementById('guestNameError');
     const guestPhoneError = document.getElementById('guestPhoneError');
     const guestEmailError = document.getElementById('guestEmailError');
     
-    // Clear all previous error messages
     if (checkInError) checkInError.innerHTML = '';
     if (checkOutError) checkOutError.innerHTML = '';
     if (guestNameError) guestNameError.innerHTML = '';
     if (guestPhoneError) guestPhoneError.innerHTML = '';
     if (guestEmailError) guestEmailError.innerHTML = '';
     
-    // Get values
     const checkIn = document.getElementById('modalCheckIn')?.value || '';
     const checkOut = document.getElementById('modalCheckOut')?.value || '';
     const guestName = document.getElementById('guestName')?.value?.trim() || '';
@@ -551,7 +510,6 @@ function validateAndGoToPayment() {
     
     let isValid = true;
     
-    // Validate Check-in Date
     if (!checkIn) {
         if (checkInError) checkInError.innerHTML = 'Please select check-in date';
         isValid = false;
@@ -565,7 +523,6 @@ function validateAndGoToPayment() {
         }
     }
     
-    // Validate Check-out Date (must be after check-in)
     if (!checkOut) {
         if (checkOutError) checkOutError.innerHTML = 'Please select check-out date';
         isValid = false;
@@ -581,7 +538,6 @@ function validateAndGoToPayment() {
         }
     }
     
-    // Validate Name (letters and spaces only)
     if (!guestName) {
         if (guestNameError) guestNameError.innerHTML = 'Please enter your full name';
         isValid = false;
@@ -593,7 +549,6 @@ function validateAndGoToPayment() {
         isValid = false;
     }
     
-    // Validate Phone (must start with 6,7,8,9 and be 10 digits)
     if (!guestPhone) {
         if (guestPhoneError) guestPhoneError.innerHTML = 'Please enter phone number';
         isValid = false;
@@ -602,7 +557,6 @@ function validateAndGoToPayment() {
         isValid = false;
     }
     
-    // Validate Email (accepts any valid email format)
     if (!guestEmail) {
         if (guestEmailError) guestEmailError.innerHTML = 'Please enter email address';
         isValid = false;
@@ -616,12 +570,10 @@ function validateAndGoToPayment() {
     
     console.log("Validation result:", isValid);
     
-    // If valid, proceed to payment
     if (isValid) {
         console.log("Form valid, proceeding to payment...");
         goToPayment();
     } else {
-        // Scroll to first error
         const firstError = document.querySelector('.error-message:not(:empty)');
         if (firstError) {
             firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -630,7 +582,6 @@ function validateAndGoToPayment() {
 }
 
 function goToPayment() {
-    // Copy values from step 1 to step 2
     const summaryRoom = document.getElementById('summaryRoom');
     const summaryRooms = document.getElementById('summaryRooms');
     const summaryGuests = document.getElementById('summaryGuests');
@@ -652,7 +603,6 @@ function goToPayment() {
     if (summaryNights2 && summaryNights) summaryNights2.innerText = summaryNights.innerText;
     if (summaryTotal2 && summaryTotal) summaryTotal2.innerText = summaryTotal.innerText;
     
-    // Hide step 1, show step 2
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const step1Progress = document.getElementById('step1Progress');
@@ -665,7 +615,6 @@ function goToPayment() {
 }
 
 function goBackToDetails() {
-    // Hide step 2, show step 1
     const step2 = document.getElementById('step2');
     const step1 = document.getElementById('step1');
     const step2Progress = document.getElementById('step2Progress');
@@ -679,7 +628,6 @@ function goBackToDetails() {
 
 // ==================== PAYMENT FUNCTIONS ====================
 
-// Helper function to get booking data from form
 function getBookingDataFromForm() {
     return {
         id: 'SHH' + Date.now(),
@@ -697,7 +645,6 @@ function getBookingDataFromForm() {
     };
 }
 
-// Save booking to localStorage and update room status
 function saveBookingToLocalStorage(bookingData, paymentMethod) {
     const booking = {
         id: bookingData.id,
@@ -720,7 +667,6 @@ function saveBookingToLocalStorage(bookingData, paymentMethod) {
     bookings.push(booking);
     localStorage.setItem('bookings', JSON.stringify(bookings));
     
-    // Update room status to occupied
     let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
     let bookedCount = 0;
     let numRoomsToBook = parseInt(bookingData.numRooms);
@@ -737,7 +683,6 @@ function saveBookingToLocalStorage(bookingData, paymentMethod) {
     }
     localStorage.setItem('rooms', JSON.stringify(rooms));
     
-    // Refresh the rooms display
     if (typeof loadRooms === 'function') {
         loadRooms();
     }
@@ -746,10 +691,8 @@ function saveBookingToLocalStorage(bookingData, paymentMethod) {
     }
 }
 
-// Send to backend API and update room status
 async function sendBookingToBackend(bookingData, paymentMethod) {
     try {
-        // First, find an available room ID
         let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
         let availableRoom = rooms.find(r => r.status === 'available');
         let roomId = availableRoom ? parseInt(availableRoom.number) - 100 : 1;
@@ -775,77 +718,10 @@ async function sendBookingToBackend(bookingData, paymentMethod) {
     }
 }
 
-// Pay at Venue
-function payAtVenue() {
-    console.log("payAtVenue called");
-    
-    const numRooms = parseInt(document.getElementById('modalNumRooms')?.value || '1');
-    const guestName = document.getElementById('guestName')?.value;
-    const guestPhone = document.getElementById('guestPhone')?.value;
-    const guestEmail = document.getElementById('guestEmail')?.value;
-    const checkIn = document.getElementById('modalCheckIn')?.value;
-    const checkOut = document.getElementById('modalCheckOut')?.value;
-    const total = document.getElementById('summaryTotal')?.innerText;
-    
-    // Validate
-    if (!guestName || !guestPhone || !guestEmail || !checkIn || !checkOut) {
-        alert('Please fill all fields');
-        return;
-    }
-    
-    // Get current rooms
-    let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
-    console.log("Before update:", rooms);
-    
-    // Update room status
-    let bookedCount = 0;
-    for (let i = 0; i < rooms.length && bookedCount < numRooms; i++) {
-        if (rooms[i].status === 'available') {
-            rooms[i].status = 'occupied';
-            rooms[i].guest = guestName;
-            rooms[i].checkIn = checkIn;
-            rooms[i].checkOut = checkOut;
-            bookedCount++;
-            console.log(`Room ${rooms[i].number} booked`);
-        }
-    }
-    
-    // Save back to localStorage
-    localStorage.setItem('rooms', JSON.stringify(rooms));
-    console.log("After update:", JSON.parse(localStorage.getItem('rooms')));
-    
-    // Save booking
-    const bookingData = {
-        id: 'SHH' + Date.now(),
-        numRooms: numRooms,
-        guestName: guestName,
-        guestPhone: guestPhone,
-        guestEmail: guestEmail,
-        checkIn: checkIn,
-        checkOut: checkOut,
-        total: total,
-        bookingDate: new Date().toISOString()
-    };
-    
-    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-    bookings.push(bookingData);
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-    
-    alert(`✅ Booking Confirmed!\n\nRoom(s) booked: ${bookedCount}\nTotal: ₹${total}\nPay at check-in.`);
-    
-    closeBookingModal();
-    
-    // Refresh the display
-    loadRooms();
-    loadAvailability();
-}
-
-// Razorpay Payment
 async function initiateRazorpayPayment() {
     const totalAmount = document.getElementById('summaryTotal2')?.innerText || document.getElementById('summaryTotal')?.innerText;
     const bookingData = getBookingDataFromForm();
     
-    // Validate
     if (!bookingData.checkIn || !bookingData.checkOut) {
         alert('Please select check-in and check-out dates');
         return;
@@ -856,12 +732,11 @@ async function initiateRazorpayPayment() {
     }
     
     try {
-        // STEP 1: Create booking first
         const bookingResponse = await fetch(`${API_BASE_URL}/bookings/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                room_id: 1,  // Change this to actual room_id
+                room_id: 1,
                 guest_name: bookingData.guestName,
                 guest_phone: bookingData.guestPhone,
                 guest_email: bookingData.guestEmail,
@@ -881,7 +756,6 @@ async function initiateRazorpayPayment() {
         
         const bookingId = bookingResult.booking_id;
         
-        // STEP 2: Create Razorpay order using the actual booking_id
         const orderResponse = await fetch(`${API_BASE_URL}/payments/create-order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -895,7 +769,6 @@ async function initiateRazorpayPayment() {
             return;
         }
         
-        // STEP 3: Open Razorpay checkout
         const options = {
             key: order.key_id,
             amount: order.amount,
@@ -910,7 +783,6 @@ async function initiateRazorpayPayment() {
             },
             theme: { color: '#ff8a7a' },
             handler: async (response) => {
-                // STEP 4: Verify payment
                 const verifyResponse = await fetch(`${API_BASE_URL}/payments/verify`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -944,7 +816,6 @@ async function initiateRazorpayPayment() {
 // ==================== REAL-TIME INPUT VALIDATION ====================
 
 function setupInputValidations() {
-    // Name field: Only letters and spaces
     const nameInput = document.getElementById('guestName');
     if (nameInput) {
         nameInput.addEventListener('input', function(e) {
@@ -954,14 +825,11 @@ function setupInputValidations() {
         });
     }
     
-    // Phone field: Only numbers, max 10 digits, starts with 6-9
     const phoneInput = document.getElementById('guestPhone');
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
-            // Allow only numbers
             this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
             
-            // Check first digit
             if (this.value.length > 0 && !/^[6-9]/.test(this.value[0])) {
                 const errorEl = document.getElementById('guestPhoneError');
                 if (errorEl) errorEl.innerHTML = 'Mobile number must start with 6,7,8 or 9';
@@ -972,7 +840,6 @@ function setupInputValidations() {
         });
     }
     
-    // Email field: Real-time validation
     const emailInput = document.getElementById('guestEmail');
     if (emailInput) {
         emailInput.addEventListener('input', function(e) {
@@ -988,7 +855,6 @@ function setupInputValidations() {
         });
     }
     
-    // Check-in date: Prevent past dates and set min for check-out
     const checkInDate = document.getElementById('modalCheckIn');
     const checkOutDate = document.getElementById('modalCheckOut');
     
@@ -997,7 +863,6 @@ function setupInputValidations() {
             const errorEl = document.getElementById('checkInError');
             if (errorEl) errorEl.innerHTML = '';
             
-            // Set check-out minimum date to day after check-in
             if (checkOutDate && this.value) {
                 const nextDay = new Date(this.value);
                 nextDay.setDate(nextDay.getDate() + 1);
@@ -1016,7 +881,7 @@ function setupInputValidations() {
     }
 }
 
-// ==================== ADMIN FUNCTIONS (LocalStorage) ====================
+// ==================== ADMIN FUNCTIONS ====================
 
 function loadPrices() {
     const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
@@ -1025,23 +890,48 @@ function loadPrices() {
     localStorage.setItem('acPrice', prices.ac);
 }
 
-function savePrices() {
-    const acPriceInput = document.getElementById('acPrice');
-    if (!acPriceInput) return;
-    
-    const priceValue = parseInt(acPriceInput.value);
-    if (isNaN(priceValue)) {
-        alert('Please enter a valid price');
-        return;
+async function loadPricesFromBackend() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/settings`);
+        const data = await response.json();
+        if (data.success && data.settings && data.settings.ac_price) {
+            const backendPrice = data.settings.ac_price;
+            const localPrice = localStorage.getItem('acPrice');
+            
+            // If backend has different price, update localStorage
+            if (localPrice != backendPrice && backendPrice > 0) {
+                localStorage.setItem('prices', JSON.stringify({ ac: backendPrice }));
+                localStorage.setItem('acPrice', backendPrice);
+                updateAllRoomPrices();
+                console.log('Prices synced from backend:', backendPrice);
+            }
+        }
+    } catch (error) {
+        console.log('Backend not available, using localStorage only');
+    }
+}
+
+async function updateRoomStatus(roomId, status, guestName) {
+    let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
+    const room = rooms.find(r => r.id === roomId || r.number == roomId);
+    if (room) {
+        room.status = status;
+        room.guest = guestName;
+        localStorage.setItem('rooms', JSON.stringify(rooms));
     }
     
-    localStorage.setItem('prices', JSON.stringify({ ac: priceValue }));
-    localStorage.setItem('acPrice', priceValue);
-    localStorage.setItem('roomPrice', priceValue);
+    try {
+        await fetch(`${API_BASE_URL}/rooms/${roomId}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: status, guest: guestName })
+        });
+    } catch (error) {
+        console.error('Failed to sync room status to backend');
+    }
     
-    alert(`Price saved: ₹${priceValue} per person`);
-    updateAllRoomPrices();
-    if (typeof loadRooms === 'function') loadRooms();
+    loadRooms();
+    loadRoomAvailability();
 }
 
 // ==================== INITIALIZATION ====================
@@ -1050,7 +940,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("Initializing Swami Holiday Home...");
     
     initializeDatabase();
-    updateAllRoomPrices();
     loadRoomAvailability();
     loadFacilities();
     loadFoodItems();
@@ -1058,17 +947,19 @@ document.addEventListener('DOMContentLoaded', function() {
     loadNearbyPlaces();
     loadRooms();
     loadPrices();
+    updateAllRoomPrices();
+    loadPricesFromBackend().catch(() => {
+        console.log('Backend sync skipped, using localStorage price');
+    });
     
     setupInputValidations();
-
-    // Set min date for check-in
+    
     const today = new Date().toISOString().split('T')[0];
     const checkInInput = document.getElementById('modalCheckIn');
     const checkOutInput = document.getElementById('modalCheckOut');
     if (checkInInput) checkInInput.min = today;
     if (checkOutInput) checkOutInput.min = today;
     
-    // Add event listeners
     const roomType = document.getElementById('modalRoomType');
     const numRooms = document.getElementById('modalNumRooms');
     const guests = document.getElementById('modalGuests');
@@ -1081,15 +972,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if (checkIn) checkIn.addEventListener('change', updateSummary);
     if (checkOut) checkOut.addEventListener('change', updateSummary);
     
-    // Facebook link
     const facebookLink = document.getElementById('facebookLink');
     if (facebookLink) {
         facebookLink.href = 'https://www.facebook.com/search/top?q=Swami%20Holiday%20Home%20Alibag';
     }
     
     console.log("✅ Initialization complete");
-    // Setup input restrictions (real-time)
     setupInputRestrictions();
+    // ==================== MISSING FUNCTIONS ====================
+
+function setupInputRestrictions() {
+    const nameInput = document.getElementById('guestName');
+    const phoneInput = document.getElementById('guestPhone');
+    
+    if (nameInput) {
+        nameInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^A-Za-z\s]/g, '');
+        });
+    }
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+    }
+}
+
+function loadRoomAvailability() {
+    const rooms = JSON.parse(localStorage.getItem('rooms')) || [];
+    const container = document.getElementById('availabilityGrid');
+    if (!container) return;
+    
+    container.innerHTML = rooms.map(room => `
+        <div class="availability-card">
+            <div class="room-num">Room ${room.number}</div>
+            <div class="room-type">AC Room</div>
+            <div class="status" style="color: ${room.status === 'available' ? '#4caf50' : '#f44336'}">
+                ${room.status === 'available' ? '✓ Available' : '✗ Occupied'}
+            </div>
+        </div>
+    `).join('');
+}
+
+function loadFacilities() {
+    const facilities = JSON.parse(localStorage.getItem('facilities')) || [];
+    const container = document.getElementById('propertyAmenities');
+    if (!container) return;
+    
+    container.innerHTML = facilities.map(f => `
+        <div class="facility-card">
+            <i class="fas fa-${f.icon}"></i>
+            <h3>${f.name}</h3>
+        </div>
+    `).join('');
+}
 });
 
 // ==================== WHATSAPP FUNCTION ====================
@@ -1196,7 +1131,6 @@ function closeModal() {
     if (modal) modal.style.display = 'none';
 }
 
-// Close modal on outside click
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('attractionModal');
     if (modal) {
@@ -1248,3 +1182,148 @@ document.addEventListener('DOMContentLoaded', function() {
     
     setInterval(nextSlide, 5000);
 });
+
+// ==================== ROOMS PAGE FUNCTIONS ====================
+
+async function fetchRoomsFromBackend() {
+    try {
+        const checkIn = document.getElementById('modalCheckIn')?.value;
+        const checkOut = document.getElementById('modalCheckOut')?.value;
+        let url = `${API_BASE_URL}/rooms`;
+        if (checkIn && checkOut) {
+            url += `?check_in=${checkIn}&check_out=${checkOut}`;
+        }
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.success) {
+            return data.rooms;
+        } else {
+            throw new Error(data.message || 'Failed to fetch rooms');
+        }
+    } catch (error) {
+        console.error('Error fetching rooms:', error);
+        return [
+            { id: 1, room_number: '101', room_type: 'ac', current_status: 'available', base_price: 2500, capacity: 2 },
+            { id: 2, room_number: '102', room_type: 'ac', current_status: 'available', base_price: 2500, capacity: 2 },
+            { id: 3, room_number: '103', room_type: 'ac', current_status: 'available', base_price: 2500, capacity: 2 },
+            { id: 4, room_number: '104', room_type: 'pet', current_status: 'available', base_price: 2500, capacity: 2 }
+        ];
+    }
+}
+
+async function loadRooms() {
+    const container = document.getElementById('roomsGrid');
+    if (!container) return;
+    
+    container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading rooms...</div>';
+    
+    try {
+        const rooms = await fetchRoomsFromBackend();
+        const pricePerPerson = parseInt(localStorage.getItem('acPrice')) || 2500;
+        
+        if (rooms.length === 0) {
+            container.innerHTML = '<div class="loading-spinner">No rooms available</div>';
+            return;
+        }
+        
+        const roomImages = {
+            1: 'images/r1.jpeg', 2: 'images/r2.jpeg', 
+            3: 'images/r1.jpeg', 4: 'images/r2.jpeg',
+            'default': 'images/room-default.jpg'
+        };
+        
+        container.innerHTML = rooms.map(room => `
+            <div class="room-card" data-room-id="${room.id}">
+                <div class="room-image">
+                    <img src="${roomImages[room.id] || roomImages.default}" 
+                         alt="Room ${room.room_number}"
+                         onerror="this.src='https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=500'">
+                </div>
+                <div class="room-content">
+                    <div class="room-header">
+                        <h3 class="room-title">AC Room - ${room.room_number}</h3>
+                        <div class="room-price">₹${room.base_price || pricePerPerson} <span>/person</span></div>
+                    </div>
+                    <ul class="room-features">
+                        <li><i class="fas fa-check"></i> Air Conditioned</li>
+                        <li><i class="fas fa-check"></i> Flat Screen TV</li>
+                        <li><i class="fas fa-check"></i> 24/7 Hot Water</li>
+                        <li><i class="fas fa-check"></i> Free WiFi</li>
+                        <li><i class="fas ${room.room_type === 'pet' ? 'fa-paw' : 'fa-check'}"></i> ${room.room_type === 'pet' ? 'Pet Friendly' : 'Pet Allowed'}</li>
+                        <li><i class="fas fa-utensils"></i> Meals Included</li>
+                    </ul>
+                    <div class="room-footer">
+                        <span class="room-status ${room.current_status === 'available' ? 'available' : (room.current_status === 'maintenance' ? 'maintenance' : 'booked')}">
+                            <i class="fas fa-circle"></i> ${room.current_status === 'available' ? 'Available' : (room.current_status === 'maintenance' ? 'Under Maintenance' : 'Booked')}
+                        </span>
+                        <button class="btn-accent" onclick="openBookingModalForRoom(${room.id}, '${room.room_number}')" 
+                            ${room.current_status !== 'available' ? 'disabled' : ''}>
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading rooms:', error);
+        container.innerHTML = '<div class="loading-spinner" style="color:red;">Error loading rooms. Please refresh.</div>';
+    }
+}
+
+async function loadAvailability() {
+    const container = document.getElementById('availabilityGrid');
+    if (!container) return;
+    
+    container.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+    
+    try {
+        const rooms = await fetchRoomsFromBackend();
+        
+        container.innerHTML = rooms.map(room => `
+            <div class="availability-card">
+                <div class="room-num">Room ${room.room_number}</div>
+                <div class="room-type">${room.room_type === 'ac' ? 'AC Room' : 'Pet Friendly'}</div>
+                <div class="status" style="color: ${room.current_status === 'available' ? '#4caf50' : (room.current_status === 'maintenance' ? '#ff9800' : '#f44336')}">
+                    ${room.current_status === 'available' ? '✓ Available' : (room.current_status === 'maintenance' ? '🔧 Maintenance' : '✗ Booked')}
+                </div>
+            </div>
+        `).join('');
+    } catch (error) {
+        console.error('Error loading availability:', error);
+        container.innerHTML = '<div class="loading-spinner">Error loading availability</div>';
+    }
+}
+
+function openBookingModalForRoom(roomId, roomNumber) {
+    selectedRoomId = roomId;
+    selectedRoomNumber = roomNumber;
+    openBookingModal();
+}
+
+function setupDateRestrictions() {
+    const checkIn = document.getElementById('modalCheckIn');
+    const checkOut = document.getElementById('modalCheckOut');
+    
+    if (!checkIn || !checkOut) return;
+    
+    const today = new Date().toISOString().split('T')[0];
+    checkIn.min = today;
+    
+    checkIn.addEventListener('change', function() {
+        if (this.value) {
+            const minCheckOut = new Date(this.value);
+            minCheckOut.setDate(minCheckOut.getDate() + 1);
+            checkOut.min = minCheckOut.toISOString().split('T')[0];
+            checkOut.disabled = false;
+            if (checkOut.value && new Date(checkOut.value) <= new Date(this.value)) {
+                checkOut.value = '';
+            }
+        } else {
+            checkOut.disabled = true;
+            checkOut.value = '';
+        }
+        updateSummary();
+    });
+    
+    checkOut.disabled = true;
+}

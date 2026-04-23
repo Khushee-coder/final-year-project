@@ -5,15 +5,17 @@ const checkAvailability = async (req, res) => {
     const { room_id, check_in, check_out } = req.body;
     
     try {
+        // Check if room exists and not in maintenance
         const [room] = await db.query(
-            `SELECT * FROM rooms WHERE id = ? AND status != 'maintenance'`,
+            `SELECT status FROM rooms WHERE id = ?`,
             [room_id]
         );
         
-        if (room.length === 0) {
-            return res.json({ success: true, available: false, message: 'Room not available' });
+        if (room.length === 0 || room[0].status === 'maintenance') {
+            return res.json({ success: true, available: false });
         }
         
+        // Check for overlapping bookings (including same dates)
         const [overlaps] = await db.query(
             `SELECT id FROM bookings 
              WHERE room_id = ? 
@@ -23,11 +25,10 @@ const checkAvailability = async (req, res) => {
             [room_id, check_out, check_in]
         );
         
-        const available = overlaps.length === 0;
-        res.json({ success: true, available });
+        res.json({ success: true, available: overlaps.length === 0 });
         
     } catch (error) {
-        console.error(error);
+        console.error('Availability check error:', error);
         res.status(500).json({ success: false, message: 'Server error' });
     }
 };

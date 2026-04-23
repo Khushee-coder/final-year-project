@@ -9,7 +9,7 @@ dotenv.config();
 const roomRoutes = require('./src/routes/roomRoutes');
 const bookingRoutes = require('./src/routes/bookingRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
-const foodOrderRoutes = require('./src/routes/foodOrderRoutes');  // ADD THIS LINE
+const foodOrderRoutes = require('./src/routes/foodOrderRoutes');
 const foodItemRoutes = require('./src/routes/foodItemRoutes');
 
 const app = express();
@@ -19,11 +19,35 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ============ SETTINGS ROUTES (MOVE THESE HERE - BEFORE OTHER ROUTES) ============
+app.get('/api/settings', async (req, res) => {
+    try {
+        const db = require('./src/config/database');
+        const [settings] = await db.query(`SELECT * FROM settings WHERE id = 1`);
+        res.json({ success: true, settings: settings[0] || { ac_price: 2500 } });
+    } catch (error) {
+        res.json({ success: true, settings: { ac_price: 2500 } });
+    }
+});
+
+app.put('/api/settings/prices', async (req, res) => {
+    const { ac } = req.body;
+    try {
+        const db = require('./src/config/database');
+        await db.query(`INSERT INTO settings (id, ac_price) VALUES (1, ?) ON DUPLICATE KEY UPDATE ac_price = ?`, [ac, ac]);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error saving price:', error);
+        res.status(500).json({ success: false });
+    }
+});
+// ============ END OF SETTINGS ROUTES ============
+
 // Routes
 app.use('/api/rooms', roomRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/payments', paymentRoutes);
-app.use('/api/food-orders', foodOrderRoutes);  // ADD THIS LINE
+app.use('/api/food-orders', foodOrderRoutes);
 app.use('/api/food-items', foodItemRoutes);
 
 // Health check endpoint

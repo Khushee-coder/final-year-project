@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
     <style>
         * {
             margin: 0;
@@ -77,7 +76,7 @@
         }
         .admin-stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -143,6 +142,109 @@
             background: #0a4d4c;
             color: white;
         }
+        .btn-danger {
+            background: #f44336;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-refresh {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+        .btn-save {
+            background: #ff8a7a;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .price-input {
+            padding: 10px;
+            width: 250px;
+            border: 2px solid #f5e6d3;
+            border-radius: 8px;
+        }
+        .navbar {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border-radius: 12px;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .logo-icon i {
+            font-size: 1.5rem;
+            color: #ff8a7a;
+        }
+        .logo-text h1 {
+            font-size: 1.2rem;
+            color: #0a4d4c;
+        }
+        .logo-text p {
+            font-size: 0.7rem;
+            color: #8b8a88;
+        }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #4a4a48;
+            font-weight: 600;
+        }
+        .nav-link:hover {
+            color: #ff8a7a;
+        }
+        footer {
+            background: #0a4d4c;
+            color: white;
+            padding: 30px 20px 20px;
+            margin-top: 30px;
+            border-radius: 12px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
         .admin-item-group {
             display: grid;
             grid-template-columns: 2fr 2fr 1fr 60px auto;
@@ -169,32 +271,6 @@
             margin-bottom: 20px;
             display: inline-block;
         }
-        .btn-save {
-            background: #ff8a7a;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .btn-danger {
-            background: #f44336;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn-refresh {
-            background: #2196f3;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
         .image-preview {
             width: 50px;
             height: 50px;
@@ -215,29 +291,9 @@
             border-left: 4px solid #2196f3;
             font-size: 0.9rem;
         }
-        .price-input {
-            padding: 10px;
-            width: 250px;
-            border: 2px solid #f5e6d3;
-            border-radius: 8px;
-        }
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-        .status-available {
-            background: #4caf50;
-            color: white;
-        }
-        .status-occupied {
-            background: #f44336;
-            color: white;
-        }
         @media (max-width: 768px) {
             .admin-stats {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr;
             }
             .admin-item-group {
                 grid-template-columns: 1fr;
@@ -245,10 +301,8 @@
             .data-table {
                 font-size: 0.8rem;
             }
-        }
-        @media (max-width: 480px) {
-            .admin-stats {
-                grid-template-columns: 1fr;
+            .admin-tabs {
+                flex-direction: column;
             }
         }
     </style>
@@ -282,29 +336,23 @@
             </div>
 
             <div class="admin-stats">
-                <div class="stat-card"><i class="fas fa-bed"></i><h3 id="availableRooms">0</h3><p>Available Rooms</p></div>
                 <div class="stat-card"><i class="fas fa-rupee-sign"></i><h3 id="totalRevenue">₹0</h3><p>Total Revenue</p></div>
                 <div class="stat-card"><i class="fas fa-calendar-check"></i><h3 id="totalBookings">0</h3><p>Total Bookings</p></div>
-                <div class="stat-card"><i class="fas fa-envelope"></i><h3 id="totalEnquiries">0</h3><p>Enquiries</p></div>
             </div>
 
             <div class="admin-tabs">
-                <button class="admin-tab" onclick="switchAdminTab('bookings', event)">📋 Bookings</button>
-                <button class="admin-tab" onclick="switchAdminTab('enquiries', event)">📧 Enquiries</button>
-                <button class="admin-tab" onclick="switchAdminTab('rooms', event)">🛏️ Rooms</button>
-                <button class="admin-tab" onclick="switchAdminTab('prices', event)">💰 Prices</button>
-                <button class="admin-tab" onclick="switchAdminTab('vegfood', event)">🥬 Veg Food</button>
-                <button class="admin-tab" onclick="switchAdminTab('nonvegfood', event)">🍗 Non-Veg Food</button>
-                <button class="admin-tab" onclick="switchAdminTab('facilities', event)">🏊 Facilities</button>
-                <button class="admin-tab" onclick="switchAdminTab('nearby', event)">📍 Nearby</button>
-                <button class="admin-tab" onclick="switchAdminTab('games', event)">🎮 Games</button>
-                <button class="admin-tab" onclick="switchAdminTab('foodorders', event)">🍽️ Food Orders</button>
-            </div>
+    <button class="admin-tab" onclick="switchAdminTab('bookings', event)">📋 Bookings</button>
+    <button class="admin-tab" onclick="switchAdminTab('prices', event)">💰 Prices</button>
+    <button class="admin-tab" onclick="switchAdminTab('vegfood', event)">🥬 Veg Food</button>
+    <button class="admin-tab" onclick="switchAdminTab('nonvegfood', event)">🍗 Non-Veg Food</button>
+    <button class="admin-tab" onclick="switchAdminTab('foodorders', event)">🍽️ Food Orders</button>
+    <button class="admin-tab" onclick="window.location.href='reports.html'">📊 Reports</button>
+</div>
 
             <!-- Bookings Tab -->
             <div class="tab-content" id="bookingsTab">
                 <h3>All Bookings</h3>
-                <button class="btn-refresh" onclick="loadBookings()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                <button class="btn-refresh" onclick="loadBookingsFromDB()"><i class="fas fa-sync-alt"></i> Refresh</button>
                 <div style="overflow-x: auto;">
                     <table class="data-table">
                         <thead>
@@ -312,7 +360,7 @@
                                 <th>Booking ID</th>
                                 <th>Guest</th>
                                 <th>Phone</th>
-                                <th>Rooms</th>
+                                <th>Room</th>
                                 <th>Check-in</th>
                                 <th>Check-out</th>
                                 <th>Amount</th>
@@ -324,41 +372,15 @@
                 </div>
             </div>
 
-            <!-- Enquiries Tab -->
-            <div class="tab-content" id="enquiriesTab">
-                <h3>Customer Enquiries</h3>
-                <div id="enquiriesList"></div>
-            </div>
-
-            <!-- Rooms Tab -->
-            <div class="tab-content" id="roomsTab">
-                <h3>Room Status</h3>
-                <button class="btn-refresh" onclick="loadRooms()"><i class="fas fa-sync-alt"></i> Refresh</button>
-                <div style="overflow-x: auto;">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Room</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Guest</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="roomsTable"></tbody>
-                    </table>
-                </div>
-            </div>
-
             <!-- Prices Tab -->
             <div class="tab-content" id="pricesTab">
                 <h3>Manage Prices</h3>
                 <div style="max-width: 400px;">
                     <div style="margin-bottom: 20px;">
-                        <label>AC Room Price (per person)</label>
+                        <label>AC Room Price (per person per night)</label>
                         <input type="number" id="acPrice" class="price-input" value="2500">
                     </div>
-                    <button onclick="savePrices()" class="btn-save">Save Prices</button>
+                    <button onclick="savePricesToDB()" class="btn-save">Save Prices</button>
                 </div>
             </div>
 
@@ -372,8 +394,8 @@
                     3. Paste the URL in the "Image URL" field below
                 </div>
                 <div id="vegFoodItemsList"></div>
-                <button class="btn-add" onclick="addVegItem()">+ Add New Veg Item</button>
-                <button class="btn-save" onclick="saveVegFood()">Save Changes</button>
+                <button class="btn-add" onclick="addVegItemToDB()">+ Add New Veg Item</button>
+                <button class="btn-save" onclick="saveVegFoodToDB()">Save Changes</button>
             </div>
 
             <!-- Non-Veg Food Tab -->
@@ -386,32 +408,8 @@
                     3. Paste the URL in the "Image URL" field below
                 </div>
                 <div id="nonVegFoodItemsList"></div>
-                <button class="btn-add" onclick="addNonVegItem()">+ Add New Non-Veg Item</button>
-                <button class="btn-save" onclick="saveNonVegFood()">Save Changes</button>
-            </div>
-
-            <!-- Facilities Tab -->
-            <div class="tab-content" id="facilitiesTab">
-                <h3>Facilities & Amenities</h3>
-                <div id="facilitiesList"></div>
-                <button class="btn-add" onclick="addFacility()">+ Add Facility</button>
-                <button class="btn-save" onclick="saveFacilities()">Save Changes</button>
-            </div>
-
-            <!-- Nearby Tab -->
-            <div class="tab-content" id="nearbyTab">
-                <h3>Nearby Places</h3>
-                <div id="nearbyList"></div>
-                <button class="btn-add" onclick="addNearbyPlace()">+ Add Place</button>
-                <button class="btn-save" onclick="saveNearbyPlaces()">Save Changes</button>
-            </div>
-
-            <!-- Games Tab -->
-            <div class="tab-content" id="gamesTab">
-                <h3>Indoor Games</h3>
-                <div id="gamesList"></div>
-                <button class="btn-add" onclick="addGame()">+ Add Game</button>
-                <button class="btn-save" onclick="saveGames()">Save Changes</button>
+                <button class="btn-add" onclick="addNonVegItemToDB()">+ Add New Non-Veg Item</button>
+                <button class="btn-save" onclick="saveNonVegFoodToDB()">Save Changes</button>
             </div>
 
             <!-- Food Orders Tab -->
@@ -439,7 +437,7 @@
                     </table>
                 </div>
                 <div style="margin-top: 20px; padding: 15px; background: #f5f1ea; border-radius: 8px;">
-                    <strong>💰 Total Revenue: ₹<span id="foodTotalRevenue">0</span></strong>
+                    <strong>💰 Food Revenue: ₹<span id="foodTotalRevenue">0</span></strong>
                 </div>
             </div>
         </div>
@@ -488,649 +486,445 @@
         if (tab === 'foodorders') loadFoodOrders();
     }
 
-    async function loadAllAdminData() {
-        loadBookings();
-        loadEnquiries();
-        loadRooms();
-        loadPrices();
-        loadVegFood();
-        loadNonVegFood();
-        loadFacilities();
-        loadNearbyPlaces();
-        loadGames();
-        loadFoodOrders();
+    async function loadRevenue() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/bookings/revenue`);
+            const data = await response.json();
+            document.getElementById('totalRevenue').textContent = `₹${data.total || 0}`;
+        } catch (error) {
+            console.error('Error loading revenue:', error);
+        }
     }
 
-    // ================ BOOKINGS ================
-    function loadBookings() {
-        const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+    async function loadBookingsFromDB() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/bookings`);
+        const data = await response.json();
+        const bookings = data.bookings || [];
+        
         document.getElementById('totalBookings').textContent = bookings.length;
-        let totalRevenue = 0;
+        
         let html = '';
         bookings.forEach(b => {
-            totalRevenue += b.total || 0;
-            html += `<tr>
-                <td style="font-size:0.8rem;">${b.id}</td>
-                <td>${b.guestName}</td>
-                <td>${b.guestPhone}</td>
-                <td>${b.roomNumbers || b.numRooms || '1'}</td>
-                <td>${b.checkIn}</td>
-                <td>${b.checkOut}</td>
-                <td style="color:#ff8a7a; font-weight:bold;">₹${b.total}</td>
-                <td><button class="btn-danger" onclick="deleteBooking('${b.id}')">Delete</button></td>
-            </tr>`;
+            const isActive = b.status === 'confirmed';
+            const isCancelled = b.status === 'cancelled';
+            
+            html += '<tr>';
+            html += '<td style="font-size:0.8rem;">' + (b.booking_id || '') + '</td>';
+            html += '<td>' + (b.guest_name || '') + '</td>';
+            html += '<td>' + (b.guest_phone || '') + '</td>';
+            html += '<td>Room ' + (b.room_number || b.room_id || '') + '</td>';
+            html += '<td>' + new Date(b.check_in).toLocaleDateString() + '</td>';
+            html += '<td>' + new Date(b.check_out).toLocaleDateString() + '</td>';
+            html += '<td style="color:#ff8a7a; font-weight:bold;">₹' + (b.total_amount || 0) + '</td>';
+            html += '<td>';
+            
+            if (isActive) {
+    if (b.payment_status === 'paid') {
+        html += '<button class="btn-danger" onclick="checkoutBooking(\'' + b.booking_id + '\', ' + b.total_amount + ', \'paid\')" style="background:#f44336; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer;">Checkout</button>';
+    } else {
+        html += '<button class="btn-success" onclick="checkoutAndAddRevenue(\'' + b.booking_id + '\', ' + b.total_amount + ')" style="background:#4caf50; color:white; border:none; padding:6px 12px; border-radius:5px; margin-right:5px; cursor:pointer;">💰 Complete & Add Revenue</button>';
+        html += '<button class="btn-danger" onclick="cancelBooking(\'' + b.booking_id + '\')" style="background:#f44336; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer;">Cancel</button>';
+    }
+} else {
+    if (b.status === 'cancelled') {
+        if (b.payment_status === 'paid' && b.payment_method === 'razorpay') {
+            html += '<span style="color:#ff9800;">Refunded</span>';
+        } else {
+            html += '<span style="color:#888;">Cancelled</span>';
+        }
+    } else if (b.status === 'completed') {
+        html += '<span style="color:#4caf50;">Completed</span>';
+    } else if (b.status === 'pending') {
+        html += '<span style="color:#ff9800;">Pending</span>';
+    } else {
+        html += '<span style="color:#4caf50;">Completed</span>';
+    }
+}
+            
+            html += '</td>';
+            html += '</tr>';
         });
-        document.getElementById('bookingsTable').innerHTML = html || '<tr><td colspan="8">No bookings yet</td Jain';
-        document.getElementById('totalRevenue').textContent = `₹${totalRevenue}`;
+        
+        document.getElementById('bookingsTable').innerHTML = html || '<tr><td colspan="8">No bookings yet</td></tr>';
+        await loadRevenue();
+        
+    } catch (error) {
+        console.error('Error loading bookings:', error);
+        document.getElementById('bookingsTable').innerHTML = '<tr><td colspan="8">Error loading bookings</td></tr>';
     }
+}
 
-    function deleteBooking(id) {
-        let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-        bookings = bookings.filter(b => b.id !== id);
-        localStorage.setItem('bookings', JSON.stringify(bookings));
-        loadBookings();
-        loadRooms();
+    async function checkoutBooking(bookingId, amount, paymentStatus) {
+    let message = 'Checkout this booking?';
+    
+    // If Pay at Venue (payment_status = 'pending'), also add revenue
+    if (paymentStatus === 'pending') {
+        message = 'Checkout this Pay at Venue booking?\n\nThis will:\n1. Mark payment as PAID\n2. Add ₹' + amount + ' to revenue\n3. Complete the checkout';
     }
+    
+    if (!confirm(message)) return;
+    
+    try {
+        // For Pay at Venue, first mark payment as paid
+        if (paymentStatus === 'pending') {
+            const paidResponse = await fetch(`${API_BASE_URL}/bookings/mark-paid`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ booking_id: bookingId })
+            });
+            
+            if (!paidResponse.ok) {
+                alert('Failed to mark payment as paid');
+                return;
+            }
+        }
+        
+        // Then checkout
+        const response = await fetch(`${API_BASE_URL}/bookings/checkout`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ booking_id: bookingId })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('✅ Booking checked out successfully! Revenue updated.');
+            await loadBookingsFromDB();
+        } else {
+            alert('Checkout failed: ' + (result.message || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Checkout failed: ' + error.message);
+    }
+}
 
-    // ================ ENQUIRIES ================
-    function loadEnquiries() {
-        const enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
-        document.getElementById('totalEnquiries').textContent = enquiries.length;
-        const container = document.getElementById('enquiriesList');
-        if (enquiries.length === 0) {
-            container.innerHTML = '<div style="text-align:center;padding:40px;">No enquiries yet</div>';
+async function checkoutAndAddRevenue(bookingId, amount) {
+    if (!confirm('💰 PAY AT VENUE BOOKING 💰\n\nClick OK to:\n1. Mark payment as RECEIVED\n2. Add ₹' + amount + ' to REVENUE\n3. Complete CHECKOUT')) return;
+    
+    try {
+        // FIRST: Mark as paid - This should update payment_status to 'paid'
+        const paidResponse = await fetch(`${API_BASE_URL}/bookings/mark-paid`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ booking_id: bookingId })
+        });
+        
+        const paidResult = await paidResponse.json();
+        console.log('Mark paid response:', paidResult);
+        
+        if (!paidResponse.ok) {
+            alert('Failed to mark payment as received: ' + paidResult.message);
             return;
         }
-        let html = '';
-        enquiries.forEach(e => {
-            html += `<div style="background:#f5f1ea;padding:15px;margin-bottom:10px;border-radius:8px;">
-                <strong>${e.name}</strong> (${e.email})<br>
-                <strong>Subject:</strong> ${e.subject}<br>
-                <strong>Message:</strong> ${e.message}<br>
-                <small>${new Date(e.date).toLocaleString()}</small><br>
-                <button class="btn-danger" onclick="deleteEnquiry('${e.id}')" style="margin-top:10px;">Delete</button>
-            </div>`;
+        
+        // SECOND: Checkout - This updates status to 'cancelled'
+        const response = await fetch(`${API_BASE_URL}/bookings/checkout`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ booking_id: bookingId })
         });
-        container.innerHTML = html;
-    }
-
-    function deleteEnquiry(id) {
-        let enquiries = JSON.parse(localStorage.getItem('enquiries')) || [];
-        enquiries = enquiries.filter(e => e.id !== id);
-        localStorage.setItem('enquiries', JSON.stringify(enquiries));
-        loadEnquiries();
-    }
-
-    // ================ ROOMS ================
-    function loadRooms() {
-        const rooms = JSON.parse(localStorage.getItem('rooms')) || [
-            { number: '101', type: 'AC', status: 'available', guest: null },
-            { number: '102', type: 'AC', status: 'available', guest: null },
-            { number: '103', type: 'AC', status: 'available', guest: null },
-            { number: '104', type: 'AC', status: 'available', guest: null }
-        ];
-        let available = rooms.filter(r => r.status === 'available').length;
-        document.getElementById('availableRooms').textContent = available;
-        let html = '';
-        rooms.forEach(r => {
-            html += `<tr>
-                <td>${r.number}</td>
-                <td>AC Room</td>^(
-                <td style="color:${r.status === 'available' ? '#4caf50' : '#f44336'}; font-weight:bold;">${r.status === 'available' ? 'Available' : 'Occupied'}</td>
-                <td>${r.guest || '-'}</td>
-                <td>${r.status === 'occupied' ? `<button class="btn-danger" onclick="checkOutRoom('${r.number}')">Check Out</button>` : '-'}</td>
-            </tr>`;
-        });
-        document.getElementById('roomsTable').innerHTML = html;
-    }
-
-    function checkOutRoom(roomNumber) {
-        let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
-        const roomIndex = rooms.findIndex(r => r.number === roomNumber);
-        if (roomIndex !== -1 && rooms[roomIndex].status === 'occupied') {
-            rooms[roomIndex].status = 'available';
-            rooms[roomIndex].guest = null;
-            localStorage.setItem('rooms', JSON.stringify(rooms));
-            loadRooms();
-            alert(`✅ Room ${roomNumber} checked out successfully.`);
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert('✅ Payment received! Revenue updated. Booking completed.');
+            await loadBookingsFromDB();
         } else {
-            alert(`Room ${roomNumber} is already available.`);
+            alert('Checkout failed: ' + (result.message || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error processing payment');
+    }
+}
+
+    async function cancelBooking(bookingId) {
+        if (!confirm('⚠️ Cancel this booking?\n\n- If paid, refund will be processed\n- Room will become available\n- This action cannot be undone!')) return;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/bookings/cancel`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ booking_id: bookingId })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                alert(result.message || '✅ Booking cancelled successfully!');
+                await loadBookingsFromDB();
+            } else {
+                alert('Cancellation failed: ' + result.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error cancelling booking');
         }
     }
 
-    // ================ PRICES ================
-    function loadPrices() {
-        const prices = JSON.parse(localStorage.getItem('prices')) || { ac: 2500 };
-        document.getElementById('acPrice').value = prices.ac;
-        localStorage.setItem('acPrice', prices.ac);
+    async function loadPricesFromDB() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/settings`);
+            const data = await response.json();
+            const price = data.settings?.ac_price || 2500;
+            document.getElementById('acPrice').value = price;
+        } catch (error) {
+            console.error('Error loading prices:', error);
+        }
     }
 
-    function savePrices() {
+    async function savePricesToDB() {
         const priceValue = parseInt(document.getElementById('acPrice').value);
         if (isNaN(priceValue)) {
             alert('Please enter a valid price');
             return;
         }
-        localStorage.setItem('prices', JSON.stringify({ ac: priceValue }));
-        localStorage.setItem('acPrice', priceValue);
-        alert(`✅ Price saved: ₹${priceValue} per person`);
-    }
-
-    // ================ VEG FOOD ================
-    function loadVegFood() {
-    fetch(`${API_BASE_URL}/food-items`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.veg) {
-                // Show ALL veg items (both free AND paid)
-                displayVegItemsForAdmin(data.veg);
-            } else {
-                const localItems = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
-                displayVegItemsForAdmin(localItems);
-            }
-        })
-        .catch(() => {
-            const localItems = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
-            displayVegItemsForAdmin(localItems);
-        });
-}
-
-function displayVegItemsForAdmin(items) {
-    if (!items || items.length === 0) {
-        document.getElementById('vegFoodItemsList').innerHTML = '<p>No items yet. Click "Add New Veg Item" to add.</p>';
-        return;
-    }
-    
-    let html = '';
-    items.forEach((item, i) => {
-        const itemId = item.id || i;
-        const imageUrl = item.image_url || item.image || '';
-        const itemName = item.name || '';
-        const itemPrice = item.price || 0;
-        const priceDisplay = itemPrice === 0 ? 'FREE (Included)' : `₹${itemPrice} (Chef Special)`;
         
-        html += `<div class="admin-item-group" data-id="${itemId}">
-            <input type="text" id="vegName${i}" value="${itemName}" placeholder="Food name">
-            <input type="text" id="vegImage${i}" value="${imageUrl}" placeholder="Image URL">
-            <input type="number" id="vegPrice${i}" value="${itemPrice}" placeholder="Price (0=free)">
-            <div class="image-preview">
-                <img src="${imageUrl || 'https://placehold.co/50'}" onerror="this.src='https://placehold.co/50'">
-            </div>
-            <button class="btn-danger" onclick="removeVegItem(${i})">Delete</button>
-        </div>`;
-    });
-    
-    document.getElementById('vegFoodItemsList').innerHTML = html;
-}
-
-async function deleteFoodItem(id, type) {
-    if (!confirm('Delete this item?')) return;
-    try {
-        await fetch(`${API_BASE_URL}/food-items/${id}`, { method: 'DELETE' });
-        alert('Item deleted from database!');
-        if (type === 'veg') {
-            loadVegFood();
-        } else {
-            loadNonVegFood();
-        }
-    } catch (error) {
-        alert('Delete failed');
-    }
-}
-    async function addVegItem() {
-    const name = prompt('Enter food name:');
-    if (!name) return;
-    
-    const imageUrl = prompt('Enter image URL (direct link to image, e.g., https://example.com/food.jpg):');
-    const price = parseInt(prompt('Enter price (0 for free):', '0')) || 0;
-    
-    try {
-        const response = await fetch(`${API_BASE_URL}/food-items`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: name,
-                type: 'veg',
-                price: price,
-                image_url: imageUrl || '',
-                is_free: price === 0,
-                description: ''
-            })
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-            alert('✅ Item added to database!');
-        } else {
-            alert('❌ Failed: ' + result.message);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Error adding item');
-    }
-    
-    loadVegFood();
-}
-
-    async function removeVegItem(index) {
-    if (!confirm('Delete this item?')) return;
-    
-    // Get current items from database
-    try {
-        const response = await fetch(`${API_BASE_URL}/food-items`);
-        const data = await response.json();
-        const vegItems = data.veg || [];
-        const itemToDelete = vegItems[index];
-        
-        if (itemToDelete && itemToDelete.id) {
-            await fetch(`${API_BASE_URL}/food-items/${itemToDelete.id}`, {
-                method: 'DELETE'
-            });
-            alert('Item deleted from database!');
-        }
-    } catch (error) {
-        // Fallback to localStorage
-        let items = JSON.parse(localStorage.getItem('vegFoodItems')) || [];
-        items.splice(index, 1);
-        localStorage.setItem('vegFoodItems', JSON.stringify(items));
-        alert('Item deleted from localStorage');
-    }
-    
-    loadVegFood(); // Refresh display
-}
-
-    async function saveVegFood() {
-    const groups = document.querySelectorAll('#vegFoodItemsList .admin-item-group');
-    const items = [];
-    
-    // Collect all items from admin panel with their IDs
-    for (const group of groups) {
-        const id = group.getAttribute('data-id');
-        const name = group.querySelector('input[type="text"]')?.value;
-        const image = group.querySelectorAll('input[type="text"]')[1]?.value;
-        const price = group.querySelector('input[type="number"]')?.value;
-        
-        if (name) {
-            items.push({ 
-                id: id && !isNaN(parseInt(id)) ? parseInt(id) : null,
-                name, 
-                image_url: image || '', 
-                price: parseInt(price) || 0 
-            });
-        }
-    }
-    
-    if (items.length === 0) {
-        alert('No items to save');
-        return;
-    }
-    
-    let savedCount = 0;
-    let errorCount = 0;
-    
-    for (const item of items) {
         try {
-            let url = `${API_BASE_URL}/food-items`;
-            let method = 'POST';
+            const response = await fetch(`${API_BASE_URL}/settings/prices`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ac: priceValue })
+            });
             
-            // If item has an ID, UPDATE instead of INSERT
-            if (item.id) {
-                url = `${API_BASE_URL}/food-items/${item.id}`;
-                method = 'PUT';
+            if (response.ok) {
+                alert(`✅ Price saved: ₹${priceValue} per person`);
+                localStorage.setItem('acPriceCache', priceValue);
+            } else {
+                alert('Failed to save price');
             }
-            
-            const response = await fetch(url, {
-                method: method,
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Failed to save price');
+        }
+    }
+
+    async function loadVegFoodFromDB() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/food-items`);
+            const data = await response.json();
+            const items = data.veg || [];
+            displayVegItems(items);
+        } catch (error) {
+            console.error('Error loading veg food:', error);
+            document.getElementById('vegFoodItemsList').innerHTML = '<p>Error loading from database</p>';
+        }
+    }
+
+    function displayVegItems(items) {
+        if (!items || items.length === 0) {
+            document.getElementById('vegFoodItemsList').innerHTML = '<p>No items yet. Click "Add New Veg Item" to add.</p>';
+            return;
+        }
+        
+        let html = '';
+        items.forEach((item, i) => {
+            html += `<div class="admin-item-group" data-id="${item.id}">
+                <input type="text" id="vegName${i}" value="${item.name}" placeholder="Food name">
+                <input type="text" id="vegImage${i}" value="${item.image_url || ''}" placeholder="Image URL">
+                <input type="number" id="vegPrice${i}" value="${item.price || 0}" placeholder="Price (0=free)">
+                <div class="image-preview">
+                    <img src="${item.image_url || 'https://placehold.co/50'}" onerror="this.src='https://placehold.co/50'">
+                </div>
+                <button class="btn-danger" onclick="deleteFoodItemFromDB(${item.id}, 'veg')">Delete</button>
+            </div>`;
+        });
+        document.getElementById('vegFoodItemsList').innerHTML = html;
+    }
+
+    async function addVegItemToDB() {
+        const name = prompt('Enter food name:');
+        if (!name) return;
+        const imageUrl = prompt('Enter image URL:');
+        const price = parseInt(prompt('Enter price (0 for free):', '0')) || 0;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/food-items`, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: item.name,
+                    name: name,
                     type: 'veg',
-                    price: item.price,
-                    image_url: item.image_url,
-                    is_free: item.price === 0,
-                    description: ''
+                    price: price,
+                    image_url: imageUrl || '',
+                    is_free: price === 0
                 })
             });
-            
-            if (response.ok) {
-                savedCount++;
-                console.log('Saved:', item.name);
+            const result = await response.json();
+            if (result.success) {
+                alert('✅ Item added!');
+                loadVegFoodFromDB();
             } else {
-                errorCount++;
-                console.error('Failed:', item.name, await response.text());
+                alert('Failed: ' + result.message);
             }
         } catch (error) {
-            errorCount++;
-            console.error('Error saving:', item.name, error);
+            alert('Error adding item');
         }
     }
-    
-    localStorage.setItem('vegFoodItems', JSON.stringify(items.map(i => ({ name: i.name, price: i.price, image: i.image_url }))));
-    
-    if (savedCount > 0) {
-        alert(`✅ ${savedCount} veg items saved to database! ${errorCount > 0 ? `⚠️ ${errorCount} failed.` : ''}`);
-    } else {
-        alert('⚠️ No items saved to database. Check backend connection.');
-    }
-    
-    loadVegFood();
-}
 
-    // ================ NON-VEG FOOD ================
-    function loadNonVegFood() {
-    fetch(`${API_BASE_URL}/food-items`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.success && data.nonVeg) {
-                // Show ALL non-veg items (both free AND paid)
-                displayNonVegItemsForAdmin(data.nonVeg);
-            } else {
-                const localItems = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
-                displayNonVegItemsForAdmin(localItems);
-            }
-        })
-        .catch(() => {
-            const localItems = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
-            displayNonVegItemsForAdmin(localItems);
-        });
-}
-
-function displayNonVegItemsForAdmin(items) {
-    if (!items || items.length === 0) {
-        document.getElementById('nonVegFoodItemsList').innerHTML = '<p>No items yet. Click "Add New Non-Veg Item" to add.</p>';
-        return;
-    }
-    
-    let html = '';
-    items.forEach((item, i) => {
-        const itemId = item.id || i;
-        const imageUrl = item.image_url || item.image || '';
-        const itemName = item.name || '';
-        const itemPrice = item.price || 0;
-        const priceDisplay = itemPrice === 0 ? 'FREE (Included)' : `₹${itemPrice} (Chef Special)`;
-        
-        html += `<div class="admin-item-group" data-id="${itemId}">
-            <input type="text" id="nonvegName${i}" value="${itemName}" placeholder="Food name">
-            <input type="text" id="nonvegImage${i}" value="${imageUrl}" placeholder="Image URL">
-            <input type="number" id="nonvegPrice${i}" value="${itemPrice}" placeholder="Price (0=free)">
-            <div class="image-preview">
-                <img src="${imageUrl || 'https://placehold.co/50'}" onerror="this.src='https://placehold.co/50'">
-            </div>
-            <button class="btn-danger" onclick="removeNonVegItem(${i})">Delete</button>
-        </div>`;
-    });
-    
-    document.getElementById('nonVegFoodItemsList').innerHTML = html;
-}
-
-    async function addNonVegItem() {
-    const name = prompt('Enter food name:');
-    if (!name) return;
-    
-    const imageUrl = prompt('Enter image URL (direct link to image, e.g., https://example.com/food.jpg):');
-    const price = parseInt(prompt('Enter price (0 for free):', '0')) || 0;
-    
-    try {
-        const response = await fetch(`${API_BASE_URL}/food-items`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                name: name,
-                type: 'nonveg',
-                price: price,
-                image_url: imageUrl || '',
-                is_free: price === 0,
-                description: ''
-            })
-        });
-        
-        const result = await response.json();
-        if (result.success) {
-            alert('✅ Non-veg item added to database!');
-        } else {
-            alert('❌ Failed: ' + result.message);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('❌ Error adding item');
-    }
-    
-    loadNonVegFood();
-}
-
-    async function removeNonVegItem(index) {
-    if (!confirm('Delete this item?')) return;
-    
-    // Get current items from database
-    try {
-        const response = await fetch(`${API_BASE_URL}/food-items`);
-        const data = await response.json();
-        const nonVegItems = data.nonVeg || [];
-        const itemToDelete = nonVegItems[index];
-        
-        if (itemToDelete && itemToDelete.id) {
-            await fetch(`${API_BASE_URL}/food-items/${itemToDelete.id}`, {
-                method: 'DELETE'
-            });
-            alert('Item deleted from database!');
-        }
-    } catch (error) {
-        // Fallback to localStorage
-        let items = JSON.parse(localStorage.getItem('nonVegFoodItems')) || [];
-        items.splice(index, 1);
-        localStorage.setItem('nonVegFoodItems', JSON.stringify(items));
-        alert('Item deleted from localStorage');
-    }
-    
-    loadNonVegFood(); // Refresh display
-}
-
-    async function saveNonVegFood() {
-    const groups = document.querySelectorAll('#nonVegFoodItemsList .admin-item-group');
-    const items = [];
-    
-    for (const group of groups) {
-        const id = group.getAttribute('data-id');
-        const name = group.querySelector('input[type="text"]')?.value;
-        const image = group.querySelectorAll('input[type="text"]')[1]?.value;
-        const price = group.querySelector('input[type="number"]')?.value;
-        
-        if (name) {
-            items.push({ 
-                id: id && !isNaN(parseInt(id)) ? parseInt(id) : null,
-                name, 
-                image_url: image || '', 
-                price: parseInt(price) || 0 
-            });
-        }
-    }
-    
-    if (items.length === 0) {
-        alert('No items to save');
-        return;
-    }
-    
-    let savedCount = 0;
-    let errorCount = 0;
-    
-    for (const item of items) {
+    async function deleteFoodItemFromDB(id, type) {
+        if (!confirm('Delete this item?')) return;
         try {
-            let url = `${API_BASE_URL}/food-items`;
-            let method = 'POST';
+            await fetch(`${API_BASE_URL}/food-items/${id}`, { method: 'DELETE' });
+            alert('Item deleted!');
+            if (type === 'veg') loadVegFoodFromDB();
+            else loadNonVegFoodFromDB();
+        } catch (error) {
+            alert('Delete failed');
+        }
+    }
+
+    async function saveVegFoodToDB() {
+        const groups = document.querySelectorAll('#vegFoodItemsList .admin-item-group');
+        let savedCount = 0;
+        
+        for (const group of groups) {
+            const id = group.getAttribute('data-id');
+            const name = group.querySelector('input[type="text"]')?.value;
+            const image = group.querySelectorAll('input[type="text"]')[1]?.value;
+            const price = group.querySelector('input[type="number"]')?.value;
             
-            if (item.id) {
-                url = `${API_BASE_URL}/food-items/${item.id}`;
-                method = 'PUT';
+            if (name) {
+                try {
+                    let url = `${API_BASE_URL}/food-items`;
+                    let method = 'POST';
+                    
+                    if (id && !isNaN(parseInt(id))) {
+                        url = `${API_BASE_URL}/food-items/${id}`;
+                        method = 'PUT';
+                    }
+                    
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: name,
+                            type: 'veg',
+                            price: parseInt(price) || 0,
+                            image_url: image || '',
+                            is_free: (parseInt(price) || 0) === 0
+                        })
+                    });
+                    
+                    if (response.ok) savedCount++;
+                } catch (error) {
+                    console.error('Error saving veg item:', error);
+                }
             }
-            
-            const response = await fetch(url, {
-                method: method,
+        }
+        
+        alert(`✅ ${savedCount} veg items saved to database!`);
+        await loadVegFoodFromDB();
+    }
+
+    async function loadNonVegFoodFromDB() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/food-items`);
+            const data = await response.json();
+            const items = data.nonVeg || [];
+            displayNonVegItems(items);
+        } catch (error) {
+            console.error('Error loading non-veg food:', error);
+        }
+    }
+
+    function displayNonVegItems(items) {
+        if (!items || items.length === 0) {
+            document.getElementById('nonVegFoodItemsList').innerHTML = '<p>No items yet. Click "Add New Non-Veg Item" to add.</p>';
+            return;
+        }
+        
+        let html = '';
+        items.forEach((item, i) => {
+            html += `<div class="admin-item-group" data-id="${item.id}">
+                <input type="text" id="nonvegName${i}" value="${item.name}" placeholder="Food name">
+                <input type="text" id="nonvegImage${i}" value="${item.image_url || ''}" placeholder="Image URL">
+                <input type="number" id="nonvegPrice${i}" value="${item.price || 0}" placeholder="Price (0=free)">
+                <div class="image-preview">
+                    <img src="${item.image_url || 'https://placehold.co/50'}" onerror="this.src='https://placehold.co/50'">
+                </div>
+                <button class="btn-danger" onclick="deleteFoodItemFromDB(${item.id}, 'nonveg')">Delete</button>
+            </div>`;
+        });
+        document.getElementById('nonVegFoodItemsList').innerHTML = html;
+    }
+
+    async function addNonVegItemToDB() {
+        const name = prompt('Enter food name:');
+        if (!name) return;
+        const imageUrl = prompt('Enter image URL:');
+        const price = parseInt(prompt('Enter price (0 for free):', '0')) || 0;
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/food-items`, {
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: item.name,
+                    name: name,
                     type: 'nonveg',
-                    price: item.price,
-                    image_url: item.image_url,
-                    is_free: item.price === 0,
-                    description: ''
+                    price: price,
+                    image_url: imageUrl || '',
+                    is_free: price === 0
                 })
             });
-            
-            if (response.ok) {
-                savedCount++;
-                console.log('Saved:', item.name);
+            const result = await response.json();
+            if (result.success) {
+                alert('✅ Item added!');
+                loadNonVegFoodFromDB();
             } else {
-                errorCount++;
-                console.error('Failed:', item.name);
+                alert('Failed: ' + result.message);
             }
         } catch (error) {
-            errorCount++;
-            console.error('Error saving:', item.name, error);
+            alert('Error adding item');
         }
     }
-    
-    localStorage.setItem('nonVegFoodItems', JSON.stringify(items.map(i => ({ name: i.name, price: i.price, image: i.image_url }))));
-    
-    if (savedCount > 0) {
-        alert(`✅ ${savedCount} non-veg items saved to database! ${errorCount > 0 ? `⚠️ ${errorCount} failed.` : ''}`);
-    } else {
-        alert('⚠️ No items saved to database. Check backend connection.');
-    }
-    
-    loadNonVegFood();
-}
 
-    // ================ FACILITIES ================
-    function loadFacilities() {
-        const items = JSON.parse(localStorage.getItem('facilities')) || [];
-        let html = '<button class="btn-add" onclick="addFacility()">+ Add Facility</button>';
-        items.forEach((item, i) => {
-            html += `<div class="admin-item-group" style="grid-template-columns: 2fr 1fr auto;">
-                <input type="text" id="facName${i}" value="${item.name}" placeholder="Facility name">
-                <input type="text" id="facIcon${i}" value="${item.icon}" placeholder="Icon name">
-                <button class="btn-danger" onclick="removeFacility(${i})">Delete</button>
-            </div>`;
-        });
-        html += '<button class="btn-save" onclick="saveFacilities()">Save Changes</button>';
-        document.getElementById('facilitiesList').innerHTML = html;
-    }
-
-    function addFacility() {
-        const items = JSON.parse(localStorage.getItem('facilities')) || [];
-        items.push({ name: 'New Facility', icon: 'plus-circle' });
-        localStorage.setItem('facilities', JSON.stringify(items));
-        loadFacilities();
-    }
-
-    function removeFacility(index) {
-        let items = JSON.parse(localStorage.getItem('facilities')) || [];
-        items.splice(index, 1);
-        localStorage.setItem('facilities', JSON.stringify(items));
-        loadFacilities();
-    }
-
-    function saveFacilities() {
-        const items = [];
-        const groups = document.querySelectorAll('#facilitiesList .admin-item-group');
-        groups.forEach((group, i) => {
+    async function saveNonVegFoodToDB() {
+        const groups = document.querySelectorAll('#nonVegFoodItemsList .admin-item-group');
+        let savedCount = 0;
+        
+        for (const group of groups) {
+            const id = group.getAttribute('data-id');
             const name = group.querySelector('input[type="text"]')?.value;
-            const icon = group.querySelectorAll('input[type="text"]')[1]?.value;
-            if (name) items.push({ name, icon });
-        });
-        localStorage.setItem('facilities', JSON.stringify(items));
-        alert('Facilities saved!');
-        loadFacilities();
+            const image = group.querySelectorAll('input[type="text"]')[1]?.value;
+            const price = group.querySelector('input[type="number"]')?.value;
+            
+            if (name) {
+                try {
+                    let url = `${API_BASE_URL}/food-items`;
+                    let method = 'POST';
+                    
+                    if (id && !isNaN(parseInt(id))) {
+                        url = `${API_BASE_URL}/food-items/${id}`;
+                        method = 'PUT';
+                    }
+                    
+                    const response = await fetch(url, {
+                        method: method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: name,
+                            type: 'nonveg',
+                            price: parseInt(price) || 0,
+                            image_url: image || '',
+                            is_free: (parseInt(price) || 0) === 0
+                        })
+                    });
+                    
+                    if (response.ok) savedCount++;
+                } catch (error) {
+                    console.error('Error saving non-veg item:', error);
+                }
+            }
+        }
+        
+        alert(`✅ ${savedCount} non-veg items saved to database!`);
+        await loadNonVegFoodFromDB();
     }
 
-    // ================ NEARBY PLACES ================
-    function loadNearbyPlaces() {
-        const items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
-        let html = '<button class="btn-add" onclick="addNearbyPlace()">+ Add Place</button>';
-        items.forEach((item, i) => {
-            html += `<div class="admin-item-group" style="grid-template-columns: 2fr 1fr 2fr auto;">
-                <input type="text" id="placeName${i}" value="${item.name}" placeholder="Name">
-                <input type="text" id="placeDist${i}" value="${item.distance}" placeholder="Distance">
-                <input type="text" id="placeIcon${i}" value="${item.icon}" placeholder="Icon">
-                <button class="btn-danger" onclick="removeNearbyPlace(${i})">Delete</button>
-            </div>`;
-        });
-        html += '<button class="btn-save" onclick="saveNearbyPlaces()">Save Changes</button>';
-        document.getElementById('nearbyList').innerHTML = html;
-    }
-
-    function addNearbyPlace() {
-        const items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
-        items.push({ name: 'New Place', distance: '10 min', icon: 'map-marker-alt', desc: '' });
-        localStorage.setItem('nearbyPlaces', JSON.stringify(items));
-        loadNearbyPlaces();
-    }
-
-    function removeNearbyPlace(index) {
-        let items = JSON.parse(localStorage.getItem('nearbyPlaces')) || [];
-        items.splice(index, 1);
-        localStorage.setItem('nearbyPlaces', JSON.stringify(items));
-        loadNearbyPlaces();
-    }
-
-    function saveNearbyPlaces() {
-        const items = [];
-        const groups = document.querySelectorAll('#nearbyList .admin-item-group');
-        groups.forEach((group, i) => {
-            const name = group.querySelector('input[type="text"]')?.value;
-            const dist = group.querySelectorAll('input[type="text"]')[1]?.value;
-            const icon = group.querySelectorAll('input[type="text"]')[2]?.value;
-            if (name) items.push({ name, distance: dist, icon, desc: '' });
-        });
-        localStorage.setItem('nearbyPlaces', JSON.stringify(items));
-        alert('Nearby places saved!');
-        loadNearbyPlaces();
-    }
-
-    // ================ GAMES ================
-    function loadGames() {
-        const items = JSON.parse(localStorage.getItem('games')) || [];
-        let html = '<button class="btn-add" onclick="addGame()">+ Add Game</button>';
-        items.forEach((item, i) => {
-            html += `<div class="admin-item-group" style="grid-template-columns: 2fr 1fr 1fr auto;">
-                <input type="text" id="gameName${i}" value="${item.name}" placeholder="Game name">
-                <input type="text" id="gameIcon${i}" value="${item.icon}" placeholder="Icon">
-                <input type="text" id="gamePlayers${i}" value="${item.players}" placeholder="Players">
-                <button class="btn-danger" onclick="removeGame(${i})">Delete</button>
-            </div>`;
-        });
-        html += '<button class="btn-save" onclick="saveGames()">Save Changes</button>';
-        document.getElementById('gamesList').innerHTML = html;
-    }
-
-    function addGame() {
-        const items = JSON.parse(localStorage.getItem('games')) || [];
-        items.push({ name: 'New Game', icon: 'gamepad', players: '2' });
-        localStorage.setItem('games', JSON.stringify(items));
-        loadGames();
-    }
-
-    function removeGame(index) {
-        let items = JSON.parse(localStorage.getItem('games')) || [];
-        items.splice(index, 1);
-        localStorage.setItem('games', JSON.stringify(items));
-        loadGames();
-    }
-
-    function saveGames() {
-        const items = [];
-        const groups = document.querySelectorAll('#gamesList .admin-item-group');
-        groups.forEach((group, i) => {
-            const name = group.querySelector('input[type="text"]')?.value;
-            const icon = group.querySelectorAll('input[type="text"]')[1]?.value;
-            const players = group.querySelectorAll('input[type="text"]')[2]?.value;
-            if (name) items.push({ name, icon, players });
-        });
-        localStorage.setItem('games', JSON.stringify(items));
-        alert('Games saved!');
-        loadGames();
-    }
-
-    // ================ FOOD ORDERS ================
     async function loadFoodOrders() {
         try {
             const response = await fetch(`${API_BASE_URL}/food-orders`);
@@ -1139,14 +933,14 @@ function displayNonVegItemsForAdmin(items) {
                 displayFoodOrders(data.orders);
             }
         } catch (error) {
-            document.getElementById('foodOrdersTable').innerHTML = '<tr><td colspan="7">Backend not running</td养';
+            document.getElementById('foodOrdersTable').innerHTML = '<tr><td colspan="7">Backend not running</td></tr>';
         }
     }
 
     function displayFoodOrders(orders) {
         const tbody = document.getElementById('foodOrdersTable');
         if (!orders || orders.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7">No orders yet</td养';
+            tbody.innerHTML = '<tr><td colspan="7">No orders yet</td></tr>';
             document.getElementById('foodTotalRevenue').textContent = '0';
             return;
         }
@@ -1154,21 +948,28 @@ function displayNonVegItemsForAdmin(items) {
         let html = '';
         orders.forEach(order => {
             total += order.total_amount;
-            html += `<tr>
-                <td>${order.order_id}</td>
-                <td>${order.room_number}</td>
-                <td>${order.customer_name}</td>
-                <td>${order.customer_phone || '-'}</td>
-                <td>${order.free_items || ''} ${order.paid_items || ''}</td>
-                <td>₹${order.total_amount}</td>
-                <td>${new Date(order.order_time).toLocaleString()}</td>
-            </tr>`;
+            html += '<tr>';
+            html += '<td>' + order.order_id + '</td>';
+            html += '<td>' + order.room_number + '</td>';
+            html += '<td>' + order.customer_name + '</td>';
+            html += '<td>' + (order.customer_phone || '-') + '</td>';
+            html += '<td>' + (order.free_items || '') + ' ' + (order.paid_items || '') + '</td>';
+            html += '<td>₹' + order.total_amount + '</td>';
+            html += '<td>' + new Date(order.order_time).toLocaleString() + '</td>';
+            html += '</tr>';
         });
         tbody.innerHTML = html;
         document.getElementById('foodTotalRevenue').textContent = total;
     }
 
-    // Check login status on page load
+    async function loadAllAdminData() {
+        await loadBookingsFromDB();
+        await loadPricesFromDB();
+        await loadVegFoodFromDB();
+        await loadNonVegFoodFromDB();
+        await loadFoodOrders();
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         if (sessionStorage.getItem('adminLoggedIn') === 'true') {
             document.getElementById('adminLoginContainer').style.display = 'none';

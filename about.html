@@ -319,6 +319,7 @@
                 <li><a href="facilities.html" class="nav-link">Facilities</a></li>
                 <li><a href="nearby.html" class="nav-link">Nearby</a></li>
                 <li><a href="contact.html" class="nav-link">Contact</a></li>
+                <li><a href="my-bookings.html" class="nav-link">📅 My Bookings</a></li>
                 <li><a href="javascript:void(0)" onclick="logout()" class="nav-link">🚪 Logout</a></li>
             </ul>
             <button class="hamburger" onclick="document.querySelector('.nav-menu').classList.toggle('active')">
@@ -531,199 +532,162 @@
     <script src="js/script.js"></script>
     <!-- Booking Modal -->
 <div class="booking-modal" id="bookingModal">
-        <div class="booking-modal-content">
-            <div class="booking-modal-header">
-                <h3><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
-                <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+    <div class="booking-modal-content">
+        <div class="booking-modal-header">
+            <h3><i class="fas fa-calendar-check"></i> Book Your Stay</h3>
+            <button class="modal-close" onclick="closeBookingModal()">&times;</button>
+        </div>
+        <div class="booking-modal-body">
+            <div class="booking-progress">
+                <div class="progress-step active" id="step1Progress">
+                    <i class="fas fa-calendar-alt"></i> Room & Details
+                </div>
+                <div class="progress-step" id="step2Progress">
+                    <i class="fas fa-credit-card"></i> Payment
+                </div>
             </div>
-            <div class="booking-modal-body">
-                <div class="booking-progress">
-                    <div class="progress-step active" id="step1Progress">
-                        <i class="fas fa-calendar-alt"></i> Room & Details
+            
+            <div id="step1">
+                <div class="info-box" style="background: #e8f5e9; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #4caf50;">
+                    <i class="fas fa-clock"></i> 
+                    <strong>Check-in:</strong> 12:00 PM &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <strong>Check-out:</strong> 11:00 AM
+                    <br>
+                    <small style="color: #666;">Early check-in or late check-out available on request</small>
+                </div>
+                
+                <!-- ROOM SELECTION DROPDOWN - CHANGED -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-bed"></i> Select Room</label>
+                        <select id="roomSelect">
+                            <option value="">-- Select Room --</option>
+                        </select>
+                        <div class="error-message" id="roomError"></div>
                     </div>
-                    <div class="progress-step" id="step2Progress">
-                        <i class="fas fa-credit-card"></i> Payment
+                    <div class="form-group">
+                        <label><i class="fas fa-user-friends"></i> Guests</label>
+                        <select id="modalGuests">
+                            <option value="1">1 Guest</option>
+                            <option value="2" selected>2 Guests</option>
+                            <option value="3">3 Guests</option>
+                            <option value="4">4 Guests</option>
+                        </select>
                     </div>
                 </div>
                 
-                <div id="step1">
-                    <div class="info-box" style="background: #e8f5e9; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #4caf50;">
-    <i class="fas fa-clock"></i> 
-    <strong>Check-in:</strong> 12:00 PM &nbsp;&nbsp;|&nbsp;&nbsp;
-    <strong>Check-out:</strong> 11:00 AM
-    <br>
-    <small style="color: #666;">Early check-in or late check-out available on request</small>
-</div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label><i class="fas fa-bed"></i> Room Type</label>
-                            <select id="modalRoomType">
-                                <option value="ac">AC Room - ₹2,500/person</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-door-open"></i> Number of Rooms</label>
-                            <select id="modalNumRooms">
-                                <option value="1">1 Room</option>
-                                <option value="2">2 Rooms</option>
-                                <option value="3">3 Rooms</option>
-                                <option value="4">4 Rooms</option>
-                            </select>
-                        </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-plus"></i> Check-in Date</label>
+                        <input type="date" id="modalCheckIn">
+                        <div class="error-message" id="checkInError"></div>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label><i class="fas fa-user-friends"></i> Guests per Room</label>
-                            <select id="modalGuests">
-                                <option value="1">1 Guest</option>
-                                <option value="2" selected>2 Guests</option>
-                                <option value="3">3 Guests</option>
-                                <option value="4">4 Guests</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-calendar-plus"></i> Check-in Date</label>
-                            <input type="date" id="modalCheckIn">
-                            <div class="error-message" id="checkInError"></div>
-                        </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
+                        <input type="date" id="modalCheckOut">
+                        <div class="error-message" id="checkOutError"></div>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label><i class="fas fa-calendar-minus"></i> Check-out Date</label>
-                            <input type="date" id="modalCheckOut">
-                            <div class="error-message" id="checkOutError"></div>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-user"></i> Full Name</label>
-                            <input type="text" id="guestName" placeholder="Enter your full name">
-                            <div class="error-message" id="guestNameError"></div>
-                        </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="guestName" placeholder="Enter your full name">
+                        <div class="error-message" id="guestNameError"></div>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label><i class="fas fa-phone"></i> Phone Number</label>
-                            <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
-                            <div class="error-message" id="guestPhoneError"></div>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-envelope"></i> Email Address</label>
-                            <input type="email" id="guestEmail" placeholder="your@email.com">
-                            <div class="error-message" id="guestEmailError"></div>
-                        </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Phone Number</label>
+                        <input type="tel" id="guestPhone" placeholder="10 digit mobile number" maxlength="10">
+                        <div class="error-message" id="guestPhoneError"></div>
                     </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label><i class="fas fa-paw"></i> Bringing Pet?</label>
-                            <select id="guestPet">
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label><i class="fas fa-comment"></i> Special Requests</label>
-                            <textarea id="specialRequests" rows="2" placeholder="Any special requirements..."></textarea>
-                        </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Email Address</label>
+                        <input type="email" id="guestEmail" placeholder="your@email.com">
+                        <div class="error-message" id="guestEmailError"></div>
                     </div>
-                    
-                    <div class="booking-summary">
-                        <h4>Booking Summary</h4>
-                        <div class="summary-row">
-                            <span>Room Type:</span>
-                            <span id="summaryRoom">AC Room</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Number of Rooms:</span>
-                            <span id="summaryRooms">1</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Guests:</span>
-                            <span id="summaryGuests">2</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Check-in/out:</span>
-                            <span id="summaryDates">Not selected</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Nights:</span>
-                            <span id="summaryNights">1</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total Amount:</span>
-                            <span>₹<span id="summaryTotal">0</span></span>
-                        </div>
+                </div>
+                
+                <div class="booking-summary">
+                    <h4>Booking Summary</h4>
+                    <div class="summary-row">
+                        <span>Room:</span>
+                        <span id="selectedRoomSpan">Not selected</span>
                     </div>
-                    
-                    <button class="next-btn" onclick="validateAndGoToPayment()" style="width:100%; padding:14px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-size:1rem; font-weight:600; cursor:pointer;">
-                        Continue to Payment <i class="fas fa-arrow-right"></i>
+                    <div class="summary-row">
+                        <span>Guests:</span>
+                        <span id="summaryGuests">2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Check-in/out:</span>
+                        <span id="summaryDates">Not selected</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Nights:</span>
+                        <span id="summaryNights">1</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Amount:</span>
+                        <span>₹<span id="summaryTotal">0</span></span>
+                    </div>
+                </div>
+                
+                <button class="next-btn" onclick="validateAndGoToPayment()" style="width:100%; padding:14px; background:#ff8a7a; color:white; border:none; border-radius:50px; font-size:1rem; font-weight:600; cursor:pointer;">
+                    Continue to Payment <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            
+            <div id="step2" class="step2" style="display: none;">
+                <div class="booking-summary">
+                    <h4>Booking Summary</h4>
+                    <div class="summary-row">
+                        <span>Room:</span>
+                        <span id="summaryRoom2">Not selected</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Guests:</span>
+                        <span id="summaryGuests2">2</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Check-in/out:</span>
+                        <span id="summaryDates2">Not selected</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Nights:</span>
+                        <span id="summaryNights2">1</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total Amount:</span>
+                        <span>₹<span id="summaryTotal2">0</span></span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap;">
+                    <button onclick="initiateRazorpayPayment()" style="flex:1; background:#2196f3; color:white; padding:14px; border:none; border-radius:50px; cursor:pointer; font-weight:600;">
+                        <i class="fas fa-credit-card"></i> Pay with Razorpay
+                    </button>
+                    <button onclick="payAtVenue()" style="flex:1; background:#4caf50; color:white; padding:14px; border:none; border-radius:50px; cursor:pointer; font-weight:600;">
+                        <i class="fas fa-building"></i> Pay at Venue
                     </button>
                 </div>
                 
-                <div id="step2" class="step2" style="display: none;">
-                    <div class="booking-summary">
-                        <h4>Booking Summary</h4>
-                        <div class="summary-row">
-                            <span>Room Type:</span>
-                            <span id="summaryRoom2">AC Room</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Number of Rooms:</span>
-                            <span id="summaryRooms2">1</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Guests:</span>
-                            <span id="summaryGuests2">2</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Check-in/out:</span>
-                            <span id="summaryDates2">Not selected</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Nights:</span>
-                            <span id="summaryNights2">1</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total Amount:</span>
-                            <span>₹<span id="summaryTotal2">0</span></span>
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 15px; margin: 20px 0;">
-                        <button onclick="initiateRazorpayPayment()" style="flex:1; background:#2196f3; color:white; padding:14px; border:none; border-radius:50px; cursor:pointer; font-weight:600;">
-                            <i class="fas fa-credit-card"></i> Pay with Razorpay
-                        </button>
-                        <button onclick="payAtVenue()" style="flex:1; background:#4caf50; color:white; padding:14px; border:none; border-radius:50px; cursor:pointer; font-weight:600;">
-                            <i class="fas fa-building"></i> Pay at Venue
-                        </button>
-                    </div>
-                    
-                    <button class="back-btn" onclick="goBackToDetails()" style="width:100%; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; cursor:pointer;">
-                        <i class="fas fa-arrow-left"></i> Back to Details
-                    </button>
-                </div>
+                <button class="back-btn" onclick="goBackToDetails()" style="width:100%; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; cursor:pointer;">
+                    <i class="fas fa-arrow-left"></i> Back to Details
+                </button>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="floating-container">
-        <button class="floating-btn btn-wa" onclick="openWhatsApp()">
-            <i class="fab fa-whatsapp"></i> WhatsApp
-        </button>
-        <button class="floating-btn btn-book" onclick="openBookingModal()">
-            <i class="fas fa-calendar-check"></i> Book Now
-        </button>
-    </div>
-
-    <!-- Navigation Buttons -->
-<div style="display: flex; gap: 15px; margin-top: 25px;">
-    <button type="button" id="prevBtn" class="prev-btn" onclick="goBackToDetails()" style="display: none; flex:1; padding:12px; background:#8b8a88; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
-        <i class="fas fa-arrow-left"></i> Previous
+<!-- Floating Buttons -->
+<div class="floating-container">
+    <button class="floating-btn btn-wa" onclick="openWhatsApp()">
+        <i class="fab fa-whatsapp"></i> WhatsApp
     </button>
-    <button type="button" id="submitBtn" class="submit-btn" onclick="payAtVenue()" style="display: none; flex:1; padding:12px; background:#4caf50; color:white; border:none; border-radius:50px; font-weight:600; cursor:pointer;">
-        <i class="fas fa-lock"></i> Confirm Booking
+    <button class="floating-btn btn-book" onclick="openBookingModal()">
+        <i class="fas fa-calendar-check"></i> Book Now
     </button>
 </div>
 
@@ -877,7 +841,7 @@
 </div>
 
 <script>
-    const WHATSAPP_NUMBER = "918237141702"; // Admin's WhatsApp number
+    const WHATSAPP_NUMBER = "919146054013"; // Admin's WhatsApp number
     
     function openWhatsApp() {
         const message = "Hello! I have a question about Swami Holiday Home.";

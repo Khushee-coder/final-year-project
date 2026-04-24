@@ -370,9 +370,52 @@ function loadFacilities() {
 
 // ==================== BOOKING MODAL FUNCTIONS ====================
 
-let currentStep = 1;
-let currentUPIAmount = 0;
-let selectedDates = { checkIn: null, checkOut: null };
+// Make API_BASE_URL a global variable
+window.API_BASE_URL = 'http://localhost:5000/api';
+
+let selectedRoomId = null;
+let selectedRoomNumber = null;
+let currentPrice = 2500;
+
+// Load rooms into dropdown
+async function loadRoomsForDropdown() {
+    try {
+        console.log("Loading rooms...");
+        const response = await fetch(`${API_BASE_URL}/rooms`);
+        console.log("Response status:", response.status);
+        
+        if (!response.ok) {
+            console.error("Failed to load rooms:", response.status);
+            return;
+        }
+        
+        const data = await response.json();
+        console.log("Rooms data:", data);
+        const rooms = data.rooms || [];
+        
+        const roomSelect = document.getElementById('roomSelect');
+        if (!roomSelect) {
+            console.error("roomSelect element not found!");
+            return;
+        }
+        
+        roomSelect.innerHTML = '<option value="">-- Select Room --</option>';
+        rooms.forEach(room => {
+            roomSelect.innerHTML += `<option value="${room.id}" data-number="${room.room_number}">Room ${room.room_number}</option>`;
+        });
+        
+        console.log(`Loaded ${rooms.length} rooms`);
+        
+        // Get current price
+        const settingsRes = await fetch(`${API_BASE_URL}/settings`);
+        const settingsData = await settingsRes.json();
+        currentPrice = settingsData.settings?.ac_price || 2500;
+        
+    } catch (error) {
+        console.error('Error loading rooms:', error);
+        alert('Could not load rooms. Please make sure backend is running on port 5000');
+    }
+}
 
 function openBookingModal(roomType = 'ac') {
     console.log("Opening booking modal");
@@ -410,16 +453,20 @@ function openBookingModal(roomType = 'ac') {
     const guestName = document.getElementById('guestName');
     const guestPhone = document.getElementById('guestPhone');
     const guestEmail = document.getElementById('guestEmail');
-    const specialRequests = document.getElementById('specialRequests');
     
     if (guestName) guestName.value = '';
     if (guestPhone) guestPhone.value = '';
     if (guestEmail) guestEmail.value = '';
-    if (specialRequests) specialRequests.value = '';
     
     document.querySelectorAll('.error-message').forEach(el => {
         if (el) el.innerHTML = '';
     });
+    
+    // Reset selected room
+    const roomSelect = document.getElementById('roomSelect');
+    if (roomSelect) roomSelect.value = '';
+    selectedRoomId = null;
+    selectedRoomNumber = null;
     
     updateSummary();
 }
@@ -440,169 +487,162 @@ function closeBookingModal() {
     if (step2Progress) step2Progress.classList.remove('active');
     if (step1Progress) step1Progress.classList.add('active');
     
-    const bookingForm = document.getElementById('bookingForm');
-    if (bookingForm) bookingForm.reset();
-    
     const errorMessages = document.querySelectorAll('.error-message');
     errorMessages.forEach(el => {
         if (el) el.innerHTML = '';
     });
-    
-    const upiSection = document.getElementById('upiSection');
-    if (upiSection) upiSection.style.display = 'none';
 }
 
 function updateSummary() {
-    const roomType = document.getElementById('modalRoomType')?.value;
-    const numRooms = parseInt(document.getElementById('modalNumRooms')?.value || '1');
     const guests = parseInt(document.getElementById('modalGuests')?.value || '2');
     const checkIn = document.getElementById('modalCheckIn')?.value;
     const checkOut = document.getElementById('modalCheckOut')?.value;
     
-    let pricePerPerson = parseInt(localStorage.getItem('acPrice')) || 2500;
-    
     let nights = 1;
     if (checkIn && checkOut) {
-        const start = new Date(checkIn);
-        const end = new Date(checkOut);
-        nights = Math.max(1, Math.ceil((end - start) / (1000 * 60 * 60 * 24)));
+        nights = Math.max(1, Math.ceil((new Date(checkOut) - new Date(checkIn)) / (86400000)));
     }
+    const total = currentPrice * guests * nights;
     
-    const total = pricePerPerson * guests * nights * numRooms;
-    
-    const summaryRoom = document.getElementById('summaryRoom');
-    const summaryRooms = document.getElementById('summaryRooms');
+    const selectedRoomSpan = document.getElementById('selectedRoomSpan');
     const summaryGuests = document.getElementById('summaryGuests');
     const summaryDates = document.getElementById('summaryDates');
     const summaryNights = document.getElementById('summaryNights');
     const summaryTotal = document.getElementById('summaryTotal');
     
-    if (summaryRoom) summaryRoom.textContent = roomType === 'ac' ? 'AC Room' : 'Pet Friendly Room';
-    if (summaryRooms) summaryRooms.textContent = numRooms;
-    if (summaryGuests) summaryGuests.textContent = guests;
-    if (summaryDates) summaryDates.textContent = checkIn && checkOut ? `${checkIn} to ${checkOut}` : 'Not selected';
-    if (summaryNights) summaryNights.textContent = nights;
-    if (summaryTotal) summaryTotal.textContent = total;
+    if (selectedRoomSpan) selectedRoomSpan.innerHTML = selectedRoomNumber ? `Room ${selectedRoomNumber}` : 'Not selected';
+    if (summaryGuests) summaryGuests.innerHTML = guests;
+    if (summaryDates) summaryDates.innerHTML = (checkIn && checkOut) ? `${checkIn} to ${checkOut}` : 'Not selected';
+    if (summaryNights) summaryNights.innerHTML = nights;
+    if (summaryTotal) summaryTotal.innerHTML = total;
 }
 
 // ==================== VALIDATION & NAVIGATION FUNCTIONS ====================
 
-function validateAndGoToPayment() {
-    console.log("Validating form...");
-    
-    const checkInError = document.getElementById('checkInError');
-    const checkOutError = document.getElementById('checkOutError');
-    const guestNameError = document.getElementById('guestNameError');
-    const guestPhoneError = document.getElementById('guestPhoneError');
-    const guestEmailError = document.getElementById('guestEmailError');
-    
-    if (checkInError) checkInError.innerHTML = '';
-    if (checkOutError) checkOutError.innerHTML = '';
-    if (guestNameError) guestNameError.innerHTML = '';
-    if (guestPhoneError) guestPhoneError.innerHTML = '';
-    if (guestEmailError) guestEmailError.innerHTML = '';
-    
-    const checkIn = document.getElementById('modalCheckIn')?.value || '';
-    const checkOut = document.getElementById('modalCheckOut')?.value || '';
-    const guestName = document.getElementById('guestName')?.value?.trim() || '';
-    const guestPhone = document.getElementById('guestPhone')?.value?.trim() || '';
-    const guestEmail = document.getElementById('guestEmail')?.value?.trim() || '';
+// ============ VALIDATE AND PROCEED TO PAYMENT ============
+async function validateAndGoToPayment() {
+    const roomSelect = document.getElementById('roomSelect');
+    const checkIn = document.getElementById('modalCheckIn')?.value;
+    const checkOut = document.getElementById('modalCheckOut')?.value;
+    const guestName = document.getElementById('guestName')?.value?.trim();
+    const guestPhone = document.getElementById('guestPhone')?.value?.trim();
+    const guestEmail = document.getElementById('guestEmail')?.value?.trim();
     
     let isValid = true;
+    document.querySelectorAll('.error-message').forEach(el => el.innerHTML = '');
+    
+    // Get selected room from dropdown
+    if (!roomSelect.value) {
+        document.getElementById('roomError').innerHTML = 'Please select a room';
+        isValid = false;
+    } else {
+        selectedRoomId = parseInt(roomSelect.value);
+        selectedRoomNumber = roomSelect.options[roomSelect.selectedIndex]?.getAttribute('data-number');
+    }
     
     if (!checkIn) {
-        if (checkInError) checkInError.innerHTML = 'Please select check-in date';
+        document.getElementById('checkInError').innerHTML = 'Please select check-in date';
         isValid = false;
-    } else {
-        const checkInDate = new Date(checkIn);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        if (checkInDate < today) {
-            if (checkInError) checkInError.innerHTML = 'Check-in date cannot be in the past';
-            isValid = false;
-        }
     }
-    
     if (!checkOut) {
-        if (checkOutError) checkOutError.innerHTML = 'Please select check-out date';
+        document.getElementById('checkOutError').innerHTML = 'Please select check-out date';
         isValid = false;
-    } else if (checkIn && checkOut) {
-        const checkInDateObj = new Date(checkIn);
-        const checkOutDateObj = new Date(checkOut);
-        checkInDateObj.setHours(0, 0, 0, 0);
-        checkOutDateObj.setHours(0, 0, 0, 0);
-        
-        if (checkOutDateObj <= checkInDateObj) {
-            if (checkOutError) checkOutError.innerHTML = 'Check-out date must be AFTER check-in date';
-            isValid = false;
-        }
     }
-    
+    if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
+        document.getElementById('checkOutError').innerHTML = 'Check-out must be after check-in';
+        isValid = false;
+    }
     if (!guestName) {
-        if (guestNameError) guestNameError.innerHTML = 'Please enter your full name';
+        document.getElementById('guestNameError').innerHTML = 'Please enter your name';
         isValid = false;
-    } else if (guestName.length < 3) {
-        if (guestNameError) guestNameError.innerHTML = 'Name must be at least 3 characters';
+    }
+    if (!guestPhone || !/^[6-9]\d{9}$/.test(guestPhone)) {
+        document.getElementById('guestPhoneError').innerHTML = 'Enter 10-digit number starting with 6,7,8,9';
         isValid = false;
-    } else if (!/^[A-Za-z\s]+$/.test(guestName)) {
-        if (guestNameError) guestNameError.innerHTML = 'Name should only contain letters and spaces';
+    }
+    if (!guestEmail || !guestEmail.includes('@')) {
+        document.getElementById('guestEmailError').innerHTML = 'Enter valid email';
         isValid = false;
     }
     
-    if (!guestPhone) {
-        if (guestPhoneError) guestPhoneError.innerHTML = 'Please enter phone number';
-        isValid = false;
-    } else if (!/^[6-9]\d{9}$/.test(guestPhone)) {
-        if (guestPhoneError) guestPhoneError.innerHTML = 'Mobile number must start with 6,7,8 or 9 and be 10 digits';
-        isValid = false;
-    }
+    if (!isValid) return;
     
-    if (!guestEmail) {
-        if (guestEmailError) guestEmailError.innerHTML = 'Please enter email address';
-        isValid = false;
-    } else {
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(guestEmail)) {
-            if (guestEmailError) guestEmailError.innerHTML = 'Enter a valid email (e.g., name@gmail.com)';
-            isValid = false;
+    // CHECK AVAILABILITY WITH BACKEND
+    try {
+        const availResponse = await fetch(`${API_BASE_URL}/bookings/check-availability`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                room_id: selectedRoomId, 
+                check_in: checkIn, 
+                check_out: checkOut 
+            })
+        });
+        const availability = await availResponse.json();
+        
+        if (!availability.available) {
+            alert(`❌ Room ${selectedRoomNumber} is already booked for ${checkIn} to ${checkOut}. Please select different dates.`);
+            return;
         }
+        
+        // Update summary for payment step
+        document.getElementById('summaryRoom2').innerHTML = `Room ${selectedRoomNumber}`;
+        document.getElementById('summaryGuests2').innerHTML = document.getElementById('summaryGuests').innerHTML;
+        document.getElementById('summaryDates2').innerHTML = document.getElementById('summaryDates').innerHTML;
+        document.getElementById('summaryNights2').innerHTML = document.getElementById('summaryNights').innerHTML;
+        document.getElementById('summaryTotal2').innerHTML = document.getElementById('summaryTotal').innerHTML;
+        
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+        document.getElementById('step1Progress').classList.remove('active');
+        document.getElementById('step2Progress').classList.add('active');
+        
+    } catch (error) {
+        console.error('Availability check failed:', error);
+        alert('Error checking availability. Please try again.');
     }
-    
-    console.log("Validation result:", isValid);
-    
-    if (isValid) {
-        console.log("Form valid, proceeding to payment...");
+}
+
+async function checkAvailabilityAndProceed(roomId, checkIn, checkOut) {
+    try {
+        const availResponse = await fetch(`${API_BASE_URL}/bookings/check-availability`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                room_id: roomId, 
+                check_in: checkIn, 
+                check_out: checkOut 
+            })
+        });
+        const availability = await availResponse.json();
+        
+        if (!availability.available) {
+            alert(`❌ Room ${selectedRoomNumber} is already booked for ${checkIn} to ${checkOut}. Please select different dates.`);
+            return;
+        }
+        
+        // Update summary for payment step
+        const summaryRoom2 = document.getElementById('summaryRoom2');
+        const summaryGuests2 = document.getElementById('summaryGuests2');
+        const summaryDates2 = document.getElementById('summaryDates2');
+        const summaryNights2 = document.getElementById('summaryNights2');
+        const summaryTotal2 = document.getElementById('summaryTotal2');
+        
+        if (summaryRoom2) summaryRoom2.innerHTML = `Room ${selectedRoomNumber}`;
+        if (summaryGuests2) summaryGuests2.innerHTML = document.getElementById('summaryGuests').innerHTML;
+        if (summaryDates2) summaryDates2.innerHTML = document.getElementById('summaryDates').innerHTML;
+        if (summaryNights2) summaryNights2.innerHTML = document.getElementById('summaryNights').innerHTML;
+        if (summaryTotal2) summaryTotal2.innerHTML = document.getElementById('summaryTotal').innerHTML;
+        
         goToPayment();
-    } else {
-        const firstError = document.querySelector('.error-message:not(:empty)');
-        if (firstError) {
-            firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        
+    } catch (error) {
+        console.error('Availability check failed:', error);
+        alert('Error checking availability. Please try again.');
     }
 }
 
 function goToPayment() {
-    const summaryRoom = document.getElementById('summaryRoom');
-    const summaryRooms = document.getElementById('summaryRooms');
-    const summaryGuests = document.getElementById('summaryGuests');
-    const summaryDates = document.getElementById('summaryDates');
-    const summaryNights = document.getElementById('summaryNights');
-    const summaryTotal = document.getElementById('summaryTotal');
-    
-    const summaryRoom2 = document.getElementById('summaryRoom2');
-    const summaryRooms2 = document.getElementById('summaryRooms2');
-    const summaryGuests2 = document.getElementById('summaryGuests2');
-    const summaryDates2 = document.getElementById('summaryDates2');
-    const summaryNights2 = document.getElementById('summaryNights2');
-    const summaryTotal2 = document.getElementById('summaryTotal2');
-    
-    if (summaryRoom2 && summaryRoom) summaryRoom2.innerText = summaryRoom.innerText;
-    if (summaryRooms2 && summaryRooms) summaryRooms2.innerText = summaryRooms.innerText;
-    if (summaryGuests2 && summaryGuests) summaryGuests2.innerText = summaryGuests.innerText;
-    if (summaryDates2 && summaryDates) summaryDates2.innerText = summaryDates.innerText;
-    if (summaryNights2 && summaryNights) summaryNights2.innerText = summaryNights.innerText;
-    if (summaryTotal2 && summaryTotal) summaryTotal2.innerText = summaryTotal.innerText;
-    
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const step1Progress = document.getElementById('step1Progress');
@@ -629,97 +669,26 @@ function goBackToDetails() {
 // ==================== PAYMENT FUNCTIONS ====================
 
 function getBookingDataFromForm() {
+    const guests = parseInt(document.getElementById('modalGuests')?.value || '2');
+    const checkIn = document.getElementById('modalCheckIn')?.value || '';
+    const checkOut = document.getElementById('modalCheckOut')?.value || '';
+    const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (86400000));
+    const total = currentPrice * guests * nights;
+    
     return {
-        id: 'SHH' + Date.now(),
-        roomType: document.getElementById('modalRoomType')?.value || 'ac',
-        numRooms: document.getElementById('modalNumRooms')?.value || '1',
-        guests: document.getElementById('modalGuests')?.value || '2',
-        checkIn: document.getElementById('modalCheckIn')?.value || '',
-        checkOut: document.getElementById('modalCheckOut')?.value || '',
-        guestName: document.getElementById('guestName')?.value || '',
-        guestPhone: document.getElementById('guestPhone')?.value || '',
-        guestEmail: document.getElementById('guestEmail')?.value || '',
-        pet: document.getElementById('guestPet')?.value || 'no',
-        specialRequests: document.getElementById('specialRequests')?.value || '',
-        total: document.getElementById('summaryTotal')?.innerText || '0'
+        room_id: selectedRoomId,
+        room_number: selectedRoomNumber,
+        guests: guests,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        guestName: document.getElementById('guestName')?.value?.trim() || '',
+        guestPhone: document.getElementById('guestPhone')?.value?.trim() || '',
+        guestEmail: document.getElementById('guestEmail')?.value?.trim() || '',
+        total_amount: total
     };
 }
 
-function saveBookingToLocalStorage(bookingData, paymentMethod) {
-    const booking = {
-        id: bookingData.id,
-        roomType: bookingData.roomType,
-        numRooms: parseInt(bookingData.numRooms),
-        guests: bookingData.guests,
-        checkIn: bookingData.checkIn,
-        checkOut: bookingData.checkOut,
-        guestName: bookingData.guestName,
-        guestPhone: bookingData.guestPhone,
-        guestEmail: bookingData.guestEmail,
-        pet: bookingData.pet,
-        specialRequests: bookingData.specialRequests,
-        total: bookingData.total,
-        paymentMethod: paymentMethod,
-        bookingDate: new Date().toISOString()
-    };
-    
-    let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-    bookings.push(booking);
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-    
-    let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
-    let bookedCount = 0;
-    let numRoomsToBook = parseInt(bookingData.numRooms);
-    
-    for (let i = 0; i < rooms.length && bookedCount < numRoomsToBook; i++) {
-        if (rooms[i].status === 'available') {
-            rooms[i].status = 'occupied';
-            rooms[i].guest = bookingData.guestName;
-            rooms[i].checkIn = bookingData.checkIn;
-            rooms[i].checkOut = bookingData.checkOut;
-            bookedCount++;
-            console.log(`Room ${rooms[i].number} booked`);
-        }
-    }
-    localStorage.setItem('rooms', JSON.stringify(rooms));
-    
-    if (typeof loadRooms === 'function') {
-        loadRooms();
-    }
-    if (typeof loadRoomAvailability === 'function') {
-        loadRoomAvailability();
-    }
-}
-
-async function sendBookingToBackend(bookingData, paymentMethod) {
-    try {
-        let rooms = JSON.parse(localStorage.getItem('rooms')) || [];
-        let availableRoom = rooms.find(r => r.status === 'available');
-        let roomId = availableRoom ? parseInt(availableRoom.number) - 100 : 1;
-        
-        const response = await fetch(`${API_BASE_URL}/bookings/create`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                room_id: roomId,
-                guest_name: bookingData.guestName,
-                guest_phone: bookingData.guestPhone,
-                guest_email: bookingData.guestEmail,
-                guests: parseInt(bookingData.guests),
-                check_in: bookingData.checkIn,
-                check_out: bookingData.checkOut,
-                total_amount: parseInt(bookingData.total)
-            })
-        });
-        const result = await response.json();
-        console.log('Backend booking result:', result);
-    } catch (error) {
-        console.error('Backend booking failed:', error);
-    }
-}
-
-async function initiateRazorpayPayment() {
-    const totalAmount = document.getElementById('summaryTotal2')?.innerText || document.getElementById('summaryTotal')?.innerText;
+async function payAtVenue() {
     const bookingData = getBookingDataFromForm();
     
     if (!bookingData.checkIn || !bookingData.checkOut) {
@@ -731,19 +700,76 @@ async function initiateRazorpayPayment() {
         return;
     }
     
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    btn.disabled = true;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/bookings/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                room_id: bookingData.room_id,
+                guest_name: bookingData.guestName,
+                guest_phone: bookingData.guestPhone,
+                guest_email: bookingData.guestEmail,
+                guests: bookingData.guests,
+                check_in: bookingData.checkIn,
+                check_out: bookingData.checkOut,
+                total_amount: bookingData.total_amount,
+                payment_method: 'pay_at_venue'
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            alert(`✅ Booking Confirmed!\n\nBooking ID: ${result.booking_id}\nRoom: ${bookingData.room_number}\nTotal: ₹${bookingData.total_amount}\n\nPay at check-in.`);
+            closeBookingModal();
+        } else {
+            alert('Booking failed: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Network error. Please try again.');
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+}
+
+async function initiateRazorpayPayment() {
+    const bookingData = getBookingDataFromForm();
+    
+    if (!bookingData.checkIn || !bookingData.checkOut) {
+        alert('Please select check-in and check-out dates');
+        return;
+    }
+    if (!bookingData.guestName || !bookingData.guestPhone || !bookingData.guestEmail) {
+        alert('Please fill all guest details');
+        return;
+    }
+    
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    btn.disabled = true;
+    
     try {
         const bookingResponse = await fetch(`${API_BASE_URL}/bookings/create`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                room_id: 1,
+                room_id: bookingData.room_id,
                 guest_name: bookingData.guestName,
                 guest_phone: bookingData.guestPhone,
                 guest_email: bookingData.guestEmail,
-                guests: parseInt(bookingData.guests),
+                guests: bookingData.guests,
                 check_in: bookingData.checkIn,
                 check_out: bookingData.checkOut,
-                total_amount: parseInt(totalAmount)
+                total_amount: bookingData.total_amount,
+                payment_method: 'razorpay'
             })
         });
         
@@ -751,6 +777,8 @@ async function initiateRazorpayPayment() {
         
         if (!bookingResult.success) {
             alert('Failed to create booking: ' + bookingResult.message);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
             return;
         }
         
@@ -759,13 +787,15 @@ async function initiateRazorpayPayment() {
         const orderResponse = await fetch(`${API_BASE_URL}/payments/create-order`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ booking_id: bookingId, amount: totalAmount })
+            body: JSON.stringify({ booking_id: bookingId, amount: bookingData.total_amount })
         });
         
         const order = await orderResponse.json();
         
         if (!order.success) {
-            alert('Failed to create payment order: ' + order.message);
+            alert('Failed to create payment order');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
             return;
         }
         
@@ -796,7 +826,7 @@ async function initiateRazorpayPayment() {
                 const result = await verifyResponse.json();
                 
                 if (result.success) {
-                    alert('✅ Payment Successful! Booking Confirmed!');
+                    alert(`✅ Payment Successful!\n\nBooking ID: ${bookingId}\nRoom: ${bookingData.room_number}`);
                     closeBookingModal();
                 } else {
                     alert('Payment verification failed');
@@ -807,21 +837,40 @@ async function initiateRazorpayPayment() {
         const razorpay = new Razorpay(options);
         razorpay.open();
         
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        
     } catch (error) {
         console.error('Payment error:', error);
-        alert('Payment initiation failed');
+        alert('Payment failed: ' + error.message);
+        btn.innerHTML = originalText;
+        btn.disabled = false;
     }
+}
+
+function openWhatsApp() {
+    window.open('https://wa.me/918237141702?text=Hello%20I%20want%20to%20book%20a%20room', '_blank');
 }
 
 // ==================== REAL-TIME INPUT VALIDATION ====================
 
 function setupInputValidations() {
+    // Room selection change
+    const roomSelect = document.getElementById('roomSelect');
+    if (roomSelect) {
+        roomSelect.addEventListener('change', function() {
+            if (this.value) {
+                selectedRoomId = parseInt(this.value);
+                selectedRoomNumber = this.options[this.selectedIndex]?.getAttribute('data-number');
+                updateSummary();
+            }
+        });
+    }
+    
     const nameInput = document.getElementById('guestName');
     if (nameInput) {
         nameInput.addEventListener('input', function(e) {
             this.value = this.value.replace(/[^A-Za-z\s]/g, '');
-            const errorEl = document.getElementById('guestNameError');
-            if (errorEl) errorEl.innerHTML = '';
         });
     }
     
@@ -829,30 +878,12 @@ function setupInputValidations() {
     if (phoneInput) {
         phoneInput.addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
-            
-            if (this.value.length > 0 && !/^[6-9]/.test(this.value[0])) {
-                const errorEl = document.getElementById('guestPhoneError');
-                if (errorEl) errorEl.innerHTML = 'Mobile number must start with 6,7,8 or 9';
-            } else {
-                const errorEl = document.getElementById('guestPhoneError');
-                if (errorEl) errorEl.innerHTML = '';
-            }
         });
     }
     
-    const emailInput = document.getElementById('guestEmail');
-    if (emailInput) {
-        emailInput.addEventListener('input', function(e) {
-            const email = this.value.trim();
-            const errorEl = document.getElementById('guestEmailError');
-            if (errorEl) {
-                if (email && !/^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email)) {
-                    errorEl.innerHTML = 'Enter a valid email';
-                } else {
-                    errorEl.innerHTML = '';
-                }
-            }
-        });
+    const guestsSelect = document.getElementById('modalGuests');
+    if (guestsSelect) {
+        guestsSelect.addEventListener('change', updateSummary);
     }
     
     const checkInDate = document.getElementById('modalCheckIn');
@@ -860,9 +891,6 @@ function setupInputValidations() {
     
     if (checkInDate) {
         checkInDate.addEventListener('change', function() {
-            const errorEl = document.getElementById('checkInError');
-            if (errorEl) errorEl.innerHTML = '';
-            
             if (checkOutDate && this.value) {
                 const nextDay = new Date(this.value);
                 nextDay.setDate(nextDay.getDate() + 1);
@@ -873,13 +901,21 @@ function setupInputValidations() {
     }
     
     if (checkOutDate) {
-        checkOutDate.addEventListener('change', function() {
-            const errorEl = document.getElementById('checkOutError');
-            if (errorEl) errorEl.innerHTML = '';
-            updateSummary();
-        });
+        checkOutDate.addEventListener('change', updateSummary);
     }
 }
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadRoomsForDropdown();
+    setupInputValidations();
+    
+    const today = new Date().toISOString().split('T')[0];
+    const checkIn = document.getElementById('modalCheckIn');
+    const checkOut = document.getElementById('modalCheckOut');
+    if (checkIn) checkIn.min = today;
+    if (checkOut) checkOut.min = today;
+});
 
 // ==================== ADMIN FUNCTIONS ====================
 

@@ -75,4 +75,31 @@ const updateRoomStatus = async (req, res) => {
     }
 };
 
-module.exports = { getRooms, updateRoomStatus };
+// PUT /api/rooms/:id/force-available - Force set room to available (admin fix)
+const forceRoomAvailable = async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+        // Use 'status' instead of 'booking_status'
+        const [activeBookings] = await db.query(
+            `SELECT id FROM bookings WHERE room_id = ? AND status = 'confirmed' AND check_out > CURDATE()`,
+            [id]
+        );
+        
+        if (activeBookings.length > 0) {
+            await db.query(
+                `UPDATE bookings SET status = 'cancelled' WHERE room_id = ? AND status = 'confirmed'`,
+                [id]
+            );
+        }
+        
+        await db.query(`UPDATE rooms SET status = 'available' WHERE id = ?`, [id]);
+        
+        res.json({ success: true, message: 'Room force set to available' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+};
+
+module.exports = { getRooms, updateRoomStatus, forceRoomAvailable };

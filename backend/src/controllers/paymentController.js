@@ -1,6 +1,7 @@
 const db = require('../config/database');
 const razorpay = require('../config/razorpay');
 const crypto = require('crypto');
+const { sendBookingConfirmation } = require('../config/email');
 
 // POST /api/payments/create-order
 const createOrder = async (req, res) => {
@@ -61,6 +62,29 @@ const verifyPayment = async (req, res) => {
         
         await connection.query(`UPDATE bookings SET status = 'confirmed', payment_status = 'paid' WHERE booking_id = ?`, [booking_id]);
         
+        // After marking payment as paid, send email
+try {
+    const [booking] = await connection.query(
+        `SELECT * FROM bookings WHERE booking_id = ?`,
+        [booking_id]
+    );
+    
+    if (booking.length > 0) {
+        await sendBookingConfirmation({
+            guestEmail: booking[0].guest_email,
+            guestName: booking[0].guest_name,
+            bookingId: booking_id,
+            roomNumber: booking[0].room_id,
+            checkIn: booking[0].check_in,
+            checkOut: booking[0].check_out,
+            guests: booking[0].guests,
+            totalAmount: booking[0].total_amount,
+            paymentMethod: 'Razorpay'
+        });
+    }
+} catch (emailError) {
+    console.error('Email failed:', emailError.message);
+}
         const [booking] = await connection.query(`SELECT room_id FROM bookings WHERE booking_id = ?`, [booking_id]);
         if (booking.length > 0) {
             await connection.query(`UPDATE rooms SET status = 'booked' WHERE id = ?`, [booking[0].room_id]);

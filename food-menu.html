@@ -360,6 +360,170 @@
         
         console.log("Initialization complete");
     });
+    // ============ PLACE ORDER FUNCTION ============
+async function placeOrder() {
+    // Get customer details
+    const roomNumber = document.getElementById('roomNumber')?.value.trim();
+    const customerName = document.getElementById('customerName')?.value.trim();
+    const customerEmail = document.getElementById('customerEmail')?.value.trim();
+    const customerPhone = document.getElementById('customerPhone')?.value.trim();
+    const customOrder = document.getElementById('customOrder')?.value.trim();
+    
+    // Validate required fields
+    let isValid = true;
+    
+    if (!roomNumber) {
+        document.getElementById('roomError').innerText = 'Room number is required';
+        document.getElementById('roomNumber').classList.add('input-error');
+        isValid = false;
+    } else {
+        document.getElementById('roomError').innerText = '';
+        document.getElementById('roomNumber').classList.remove('input-error');
+    }
+    
+    if (!customerName) {
+        document.getElementById('nameError').innerText = 'Name is required';
+        document.getElementById('customerName').classList.add('input-error');
+        isValid = false;
+    } else {
+        document.getElementById('nameError').innerText = '';
+        document.getElementById('customerName').classList.remove('input-error');
+    }
+    
+    if (!customerEmail) {
+        document.getElementById('emailError').innerText = 'Email is required';
+        document.getElementById('customerEmail').classList.add('input-error');
+        isValid = false;
+    } else if (!customerEmail.includes('@')) {
+        document.getElementById('emailError').innerText = 'Enter a valid email';
+        isValid = false;
+    } else {
+        document.getElementById('emailError').innerText = '';
+        document.getElementById('customerEmail').classList.remove('input-error');
+    }
+    
+    if (customerPhone && !/^[6-9]\d{9}$/.test(customerPhone)) {
+        document.getElementById('phoneError').innerText = 'Enter 10-digit number starting with 6-9';
+        isValid = false;
+    } else {
+        document.getElementById('phoneError').innerText = '';
+    }
+    
+    // Check if any items selected
+    const hasFreeItems = selectedFree.length > 0;
+    const hasPaidItems = selectedPaid.length > 0;
+    const hasCustom = customOrder !== '';
+    
+    if (!hasFreeItems && !hasPaidItems && !hasCustom) {
+        alert('Please add at least one item to your order');
+        return;
+    }
+    
+    if (!isValid) return;
+    
+    // Prepare order data
+    const freeItemsList = selectedFree.map(i => freeItemsData[i.index]?.name || i.name);
+    const paidItemsList = selectedPaid.map(i => `${i.name} x${i.qty} (₹${i.price * i.qty})`);
+    const totalAmount = parseInt(document.getElementById('totalAmount').innerText) || 0;
+    
+    const orderData = {
+    room_number: roomNumber,
+    customer_name: customerName,
+    customer_email: customerEmail,
+    customer_phone: customerPhone || null,
+    free_items: freeItemsList.join(', ') || null,
+    paid_items: paidItemsList.join(', ') || null,
+    custom_order: customOrder || null,
+    total_amount: totalAmount
+};
+    
+    // Disable button to prevent double submission
+    const payBtn = document.querySelector('.pay-btn');
+    const originalText = payBtn.innerHTML;
+    payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Placing Order...';
+    payBtn.disabled = true;
+    
+    try {
+        // Send to backend
+        const response = await fetch(`${API_BASE_URL}/food-orders/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+    const orderId = result.order_id || 'ORDER_PLACED';
+    
+    // Send email confirmation
+    await sendOrderConfirmationEmail({
+        ...orderData,
+        order_id: orderId,
+        order_time: new Date().toISOString()
+    });
+    
+    alert(`✅ Order placed successfully!\n\nOrder ID: ${orderId}\nTotal: ₹${totalAmount}\n\nPay at counter when you check out.`);
+            
+            // Reset form
+            selectedFree = [];
+            selectedPaid = [];
+            document.getElementById('customOrder').value = '';
+            document.getElementById('roomNumber').value = '';
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerEmail').value = '';
+            document.getElementById('customerPhone').value = '';
+            
+            // Reset all buttons
+            freeItemsData.forEach((_, idx) => {
+                const btn = document.getElementById(`freeBtn${idx}`);
+                if (btn) {
+                    btn.innerHTML = '+ Add';
+                    btn.classList.remove('added');
+                }
+            });
+            
+            paidItemsData.forEach((_, idx) => {
+                const qtySpan = document.getElementById(`paidQty${idx}`);
+                if (qtySpan) qtySpan.textContent = '0';
+            });
+            
+            updateSummary();
+        } else {
+            alert('Order failed: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Network error. Please try again.');
+    } finally {
+        payBtn.innerHTML = originalText;
+        payBtn.disabled = false;
+    }
+}
+
+// ============ SEND ORDER CONFIRMATION EMAIL ============
+async function sendOrderConfirmationEmail(orderData) {
+    const templateParams = {
+        customer_email: orderData.customer_email,  // Changed from to_email
+        to_name: orderData.customer_name,
+        order_id: orderData.order_id,
+        room_number: orderData.room_number,
+        free_items: orderData.free_items || 'None',
+        paid_items: orderData.paid_items || 'None',
+        custom_order: orderData.custom_order || 'None',
+        total_amount: orderData.total_amount,
+        order_time: orderData.order_time,
+        property_address: "Puro Aali, Sasawane Beach Road, Alibag - 402201",
+        contact_phone: "+91 91460 54013"
+    };
+    
+    try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+        console.log('✅ Email sent to:', orderData.customer_email);
+    } catch (error) {
+        console.error('❌ Email failed:', error);
+    }
+}
 </script>
 </body>
 </html>

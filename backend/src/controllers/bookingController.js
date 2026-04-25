@@ -87,6 +87,23 @@ const createBooking = async (req, res) => {
         // ========== END OF UPDATE ==========
         
         await connection.commit();
+        try {
+    await sendBookingConfirmation({
+        guestEmail: guest_email,
+        guestName: guest_name,
+        bookingId: bookingId,
+        roomNumber: room_id,
+        checkIn: check_in,
+        checkOut: check_out,
+        guests: guests,
+        totalAmount: total_amount,
+        paymentMethod: payment_method === 'pay_at_venue' ? 'Pay at Venue' : 'Razorpay'
+    });
+    console.log('Email sent to:', guest_email);
+} catch (emailError) {
+    console.error('Email failed:', emailError.message);
+    // Don't block booking if email fails
+}
         res.json({ success: true, booking_id: bookingId, total_amount });
         
     } catch (error) {

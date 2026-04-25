@@ -1,16 +1,17 @@
 const db = require('../config/database');
 
-// Create food order
 const createFoodOrder = async (req, res) => {
     const { room_number, customer_name, customer_email, customer_phone, free_items, paid_items, custom_order, total_amount } = req.body;
     
+    // Generate order_id properly (THIS WAS MISSING)
     const order_id = 'FOOD' + Date.now() + Math.floor(Math.random() * 1000);
+    const order_time = new Date().toISOString().slice(0, 19).replace('T', ' ');
     
     try {
         const [result] = await db.query(
-            `INSERT INTO food_orders (order_id, room_number, customer_name, customer_email, customer_phone, free_items, paid_items, custom_order, total_amount, payment_status, order_status)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'at_venue', 'pending')`,
-            [order_id, room_number, customer_name, customer_email, customer_phone, free_items, paid_items, custom_order, total_amount]
+            `INSERT INTO food_orders (order_id, room_number, customer_name, customer_email, customer_phone, free_items, paid_items, custom_order, total_amount, payment_method, order_time, order_status)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'pay_at_counter', ?, 'pending')`,
+            [order_id, room_number, customer_name, customer_email, customer_phone, free_items, paid_items, custom_order, total_amount, order_time]
         );
         
         res.json({ 
@@ -21,7 +22,7 @@ const createFoodOrder = async (req, res) => {
         
     } catch (error) {
         console.error('Error creating food order:', error);
-        res.status(500).json({ success: false, message: 'Failed to place order' });
+        res.status(500).json({ success: false, message: 'Failed to place order: ' + error.message });
     }
 };
 

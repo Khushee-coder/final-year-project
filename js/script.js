@@ -849,7 +849,7 @@ async function initiateRazorpayPayment() {
 }
 
 function openWhatsApp() {
-    window.open('https://wa.me/918237141702?text=Hello%20I%20want%20to%20book%20a%20room', '_blank');
+    window.open('https://wa.me/919146054013?text=Hello%20I%20want%20to%20book%20a%20room', '_blank');
 }
 
 // ==================== REAL-TIME INPUT VALIDATION ====================
@@ -1064,7 +1064,7 @@ function loadFacilities() {
 });
 
 // ==================== WHATSAPP FUNCTION ====================
-const WHATSAPP_NUMBER = "918237141702";
+const WHATSAPP_NUMBER = "919146054013";
 
 function openWhatsApp() {
     const message = "Hello! I have a question about Swami Holiday Home.";

@@ -10,27 +10,23 @@ const getRooms = async (req, res) => {
                 CASE 
                     WHEN r.status = 'maintenance' THEN 'maintenance'
                     WHEN EXISTS (
-                        SELECT 1 FROM bookings b 
-                        WHERE b.room_id = r.id 
-                        AND b.status = 'confirmed'
-                        AND (
-                            (b.check_in <= ? AND b.check_out > ?) OR
-                            (b.check_in < ? AND b.check_out >= ?) OR
-                            (b.check_in >= ? AND b.check_out <= ?)
-                        )
-                    ) THEN 'booked'
+    SELECT 1 FROM bookings b
+    WHERE b.room_id = r.id
+    AND b.status = 'confirmed'
+    AND b.check_in < ?
+    AND b.check_out > ?
+)
+THEN 'booked'
                     ELSE 'available'
                 END as current_status
             FROM rooms r
         `;
         
         const params = [];
-        
-        if (check_in && check_out) {
-            params.push(check_in, check_in, check_out, check_out, check_in, check_out);
-        } else {
-            query = `SELECT *, status as current_status FROM rooms`;
-        }
+
+if (check_in && check_out) {
+    params.push(check_out, check_in);
+}
         
         const [rooms] = await db.query(query, params);
         res.json({ success: true, rooms });

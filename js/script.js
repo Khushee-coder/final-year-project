@@ -168,7 +168,7 @@ async function loadFoodItems() {
                         let imageUrl = item.image_url || '';
 
 if (imageUrl.startsWith('/images/')) {
-    imageUrl = 'images/' + imageUrl.substring(8);
+    imageUrl = imageUrl.substring(1);
 }
 
 if (imageUrl.startsWith('/images/')) {
@@ -205,7 +205,7 @@ if (imageUrl.startsWith('/images/')) {
                         let imageUrl = item.image_url || '';
 
 if (imageUrl.startsWith('/images/')) {
-    imageUrl = 'images/' + imageUrl.substring(8);
+    imageUrl = imageUrl.substring(1);
 }
 
 if (imageUrl.startsWith('/images/')) {

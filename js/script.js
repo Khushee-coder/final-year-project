@@ -166,8 +166,16 @@ async function loadFoodItems() {
                 } else {
                     vegContainer.innerHTML = freeVeg.map(item => {
                         let imageUrl = item.image_url || '';
+
+if (imageUrl.startsWith('/images/')) {
+    imageUrl = 'images/' + imageUrl.substring(8);
+}
+
+if (imageUrl.startsWith('/images/')) {
+    imageUrl = './images/' + imageUrl.replace('/images/', '');
+}
                         if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
-                            imageUrl = '/images/' + imageUrl;
+                            imageUrl = './images/' + imageUrl;
                         }
                         if (!imageUrl) {
                             imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
@@ -195,8 +203,16 @@ async function loadFoodItems() {
                 } else {
                     nonVegContainer.innerHTML = freeNonVeg.map(item => {
                         let imageUrl = item.image_url || '';
+
+if (imageUrl.startsWith('/images/')) {
+    imageUrl = 'images/' + imageUrl.substring(8);
+}
+
+if (imageUrl.startsWith('/images/')) {
+    imageUrl = './images/' + imageUrl.replace('/images/', '');
+}
                         if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
-                            imageUrl = '/images/' + imageUrl;
+                            imageUrl = './images/' + imageUrl;
                         }
                         if (!imageUrl) {
                             imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);

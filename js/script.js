@@ -2,7 +2,7 @@
 // ================ (LocalStorage for Admin + Backend API for Bookings) ================
 
 // ==================== BACKEND API CONFIGURATION ====================
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://swami-holiday-home-backend.onrender.com/api';
 
 // ==================== INITIALIZE DATABASE (LOCALSTORAGE) ====================
 function initializeDatabase() {

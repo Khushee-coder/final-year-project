@@ -38,6 +38,7 @@ if (check_in && check_out) {
         message: error.message
     });
 }
+};
 
 // PUT /api/rooms/:id/status - Update room status (admin)
 const updateRoomStatus = async (req, res) => {
@@ -101,4 +102,3 @@ const forceRoomAvailable = async (req, res) => {
 };
 
 module.exports = { getRooms, updateRoomStatus, forceRoomAvailable };
-}

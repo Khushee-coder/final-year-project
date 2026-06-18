@@ -168,18 +168,14 @@ async function loadFoodItems() {
                         let imageUrl = item.image_url || '';
 
 if (imageUrl.startsWith('/images/')) {
-    imageUrl = imageUrl.substring(1);
+    imageUrl = '.' + imageUrl;
+} else if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = './images/' + imageUrl;
 }
 
-if (imageUrl.startsWith('/images/')) {
-    imageUrl = './images/' + imageUrl.replace('/images/', '');
+if (!imageUrl) {
+    imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
 }
-                        if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
-                            imageUrl = './images/' + imageUrl;
-                        }
-                        if (!imageUrl) {
-                            imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
-                        }
                         return `
                             <div class="food-card">
                                 <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>
@@ -205,18 +201,14 @@ if (imageUrl.startsWith('/images/')) {
                         let imageUrl = item.image_url || '';
 
 if (imageUrl.startsWith('/images/')) {
-    imageUrl = imageUrl.substring(1);
+    imageUrl = '.' + imageUrl;
+} else if (imageUrl && !imageUrl.startsWith('http')) {
+    imageUrl = './images/' + imageUrl;
 }
 
-if (imageUrl.startsWith('/images/')) {
-    imageUrl = './images/' + imageUrl.replace('/images/', '');
+if (!imageUrl) {
+    imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
 }
-                        if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/images/')) {
-                            imageUrl = './images/' + imageUrl;
-                        }
-                        if (!imageUrl) {
-                            imageUrl = 'https://placehold.co/300x200?text=' + encodeURIComponent(item.name);
-                        }
                         return `
                             <div class="food-card">
                                 <div class="food-image" style="background-image: url('${imageUrl}'); background-size: cover; background-position: center; width: 80px; height: 80px; border-radius: 12px;"></div>

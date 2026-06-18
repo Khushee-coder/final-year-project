@@ -131,7 +131,7 @@ async function loadFoodItems() {
     console.log("Loading food items from database...");
     
     try {
-        const response = await fetch('http://localhost:5000/api/food-items');
+        const response = await fetch('https://swami-holiday-home-backend.onrender.com/api/food-items');
         const data = await response.json();
         
         if (data.success) {
@@ -371,7 +371,7 @@ function loadFacilities() {
 // ==================== BOOKING MODAL FUNCTIONS ====================
 
 // Make API_BASE_URL a global variable
-window.API_BASE_URL = 'http://localhost:5000/api';
+window.API_BASE_URL = 'https://swami-holiday-home-backend.onrender.com/api';
 
 let selectedRoomId = null;
 let selectedRoomNumber = null;
@@ -413,7 +413,7 @@ async function loadRoomsForDropdown() {
         
     } catch (error) {
         console.error('Error loading rooms:', error);
-        alert('Could not load rooms. Please make sure backend is running on port 5000');
+        alert('"Unable to connect to the server."');
     }
 }
 

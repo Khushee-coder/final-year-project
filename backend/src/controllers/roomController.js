@@ -32,10 +32,12 @@ if (check_in && check_out) {
         res.json({ success: true, rooms });
         
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ success: false, message: 'Server error' });
-    }
-};
+    console.error("ROOMS ERROR:", error);
+    res.status(500).json({
+        success: false,
+        message: error.message
+    });
+}
 
 // PUT /api/rooms/:id/status - Update room status (admin)
 const updateRoomStatus = async (req, res) => {
@@ -99,3 +101,4 @@ const forceRoomAvailable = async (req, res) => {
 };
 
 module.exports = { getRooms, updateRoomStatus, forceRoomAvailable };
+}

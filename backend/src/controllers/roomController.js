@@ -26,9 +26,11 @@ THEN 'booked'
 
 if (check_in && check_out) {
     params.push(check_out, check_in);
+} else {
+    query = `SELECT *, status as current_status FROM rooms`;
 }
-        
-        const [rooms] = await db.query(query, params);
+
+const [rooms] = await db.query(query, params);
         res.json({ success: true, rooms });
         
     } catch (error) {

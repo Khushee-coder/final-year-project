@@ -1,16 +1,20 @@
 const nodemailer = require('nodemailer');
+const dns = require('dns');
 
-// Create transporter with correct settings for deployment
+// Force IPv4
+dns.setDefaultResultOrder('ipv4first');
+
+// Create transporter
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 587,  // ← Changed from 465 to 587
-    secure: false,  // ← Changed from true to false
+    port: 587,
+    secure: false,
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
     tls: {
-        rejectUnauthorized: false  // ← Add this to avoid SSL issues
+        rejectUnauthorized: false
     }
 });
 
@@ -55,14 +59,6 @@ async function sendBookingConfirmation(bookingData) {
                     <h3 style="color: #0a4d4c; margin: 0 0 10px 0;">📍 Location</h3>
                     <p>Puro Aali, Sasawane Beach Road, Alibag - 402201</p>
                     <p><strong>📞 Contact:</strong> +91 91460 54013</p>
-                </div>
-                
-                <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                    <h3 style="color: #0a4d4c; margin: 0 0 10px 0;">📋 Important Information</h3>
-                    <p>✅ Check-in: 12:00 PM | Check-out: 11:00 AM</p>
-                    <p>✅ Free WiFi & Meals Included</p>
-                    <p>✅ Pet Friendly Property</p>
-                    <p>✅ 150 meters from Sasawane Beach</p>
                 </div>
                 
                 <p>For any queries, please contact us at <strong>+91 91460 54013</strong></p>

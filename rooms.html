@@ -960,7 +960,7 @@ if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
             const result = await response.json();
             
             if (result.success) {
-                alert(`✅ Booking Confirmed!\n\nBooking ID: ${result.booking_id}\nRoom: ${selectedRoomNumber}\nTotal: ₹${total}\n\nPay at check-in.`);
+                alert(`✅ Booking Confirmed!\n\nBooking ID: ${result.booking_id}\nRoom: ${selectedRoomNumber}\nTotal: ₹${total}\n\n📧 A confirmation email has been sent.\n\n💰 Pay at check-in (Cash/Card/UPI)\n\n📍 Swami Holiday Home, Sasawane Beach, Alibag\n📞 +91 91460 54013\n\n⚠️ If you don't see the email, please check your SPAM/JUNK folder.`);
                 closeBookingModal();
                 await loadRooms();
             } else {
@@ -1064,7 +1064,7 @@ if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
                     });
                     const result = await verifyRes.json();
                     if (result.success) {
-                        alert(`✅ Payment Successful!\n\nBooking ID: ${bookingId}\nRoom: ${selectedRoomNumber}`);
+                        alert(`✅ Payment Successful!\n\nBooking ID: ${bookingId}\nRoom: ${selectedRoomNumber}\nTotal: ₹${total}\n\n📧 A confirmation email has been sent.\n\n📍 Swami Holiday Home, Sasawane Beach, Alibag\n📞 +91 91460 54013\n\n⚠️ If you don't see the email, please check your SPAM/JUNK folder.`);
                         closeBookingModal();
                         await loadRooms();
                     } else {

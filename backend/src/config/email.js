@@ -1,17 +1,13 @@
 const nodemailer = require('nodemailer');
-const dns = require('dns');
 
-// Force IPv4
-dns.setDefaultResultOrder('ipv4first');
-
-// Create transporter
+// Create transporter using Brevo SMTP
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: 'smtp-relay.brevo.com',  // ← Use this
     port: 587,
     secure: false,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: 'af9caa001@smtp-brevo.com',  // Your Brevo login email
+        pass: process.env.EMAIL_PASS   // Your Brevo SMTP password
     },
     tls: {
         rejectUnauthorized: false
@@ -73,7 +69,7 @@ async function sendBookingConfirmation(bookingData) {
     `;
 
     const mailOptions = {
-        from: `"Swami Holiday Home" <${process.env.EMAIL_USER}>`,
+        from: `"Swami Holiday Home" <reenamaniyar99@gmail.com>`,
         to: guestEmail,
         subject: `Booking Confirmed - ${bookingId}`,
         html: htmlContent
@@ -84,7 +80,7 @@ async function sendBookingConfirmation(bookingData) {
         console.log(`✅ Email sent to ${guestEmail}`);
         return { success: true };
     } catch (error) {
-        console.error('❌ Email failed:', error);
+        console.error('❌ Email failed:', error.message);
         return { success: false, error: error.message };
     }
 }

@@ -1074,7 +1074,22 @@ function payAtVenue() {
     });
     localStorage.setItem('bookings', JSON.stringify(bookings));
     
-    alert(`✅ Booking Confirmed!\n\nRooms Booked: ${booked}\nGuest: ${guestName}\nCheck-in: ${checkIn}\nCheck-out: ${checkOut}\nTotal: ₹${total}\n\n💰 Pay at check-in (Cash/Card/UPI)`);
+    alert(`✅ Booking Confirmed!
+
+Rooms Booked: ${booked}
+Guest: ${guestName}
+Check-in: ${checkIn}
+Check-out: ${checkOut}
+Total: ₹${total}
+
+📧 A confirmation email has been sent.
+
+💰 Pay at check-in (Cash/Card/UPI)
+
+📍 Swami Holiday Home, Sasawane Beach, Alibag
+📞 +91 91460 54013
+
+⚠️ If you don't see the email, please check your SPAM/JUNK folder.`);
     
     closeBookingModal();
     

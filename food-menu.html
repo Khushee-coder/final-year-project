@@ -503,6 +503,8 @@ async function placeOrder() {
 
 // ============ SEND ORDER CONFIRMATION EMAIL ============
 async function sendOrderConfirmationEmail(orderData) {
+    console.log('📧 Full orderData:', orderData);  // ← ADD THIS
+    
     const templateParams = {
         customer_email: orderData.customer_email,    // ← FIXED
         customer_name: orderData.customer_name,
@@ -517,7 +519,7 @@ async function sendOrderConfirmationEmail(orderData) {
         property_address: "Puro Aali, Sasawane Beach Road, Alibag - 402201",
         contact_phone: "+91 91460 54013"
     };
-    
+    console.log('📧 templateParams:', templateParams);  // ← ADD THIS
     try {
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
         console.log('✅ Email sent to:', orderData.customer_email);

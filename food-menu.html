@@ -429,7 +429,7 @@ async function placeOrder() {
     const orderData = {
     room_number: roomNumber,
     customer_name: customerName,
-    to_email: customerEmail,
+    customer_email: customerEmail,    // ← This must exist,
     customer_phone: customerPhone || null,
     free_items: freeItemsList.join(', ') || null,
     paid_items: paidItemsList.join(', ') || null,
@@ -504,8 +504,9 @@ async function placeOrder() {
 // ============ SEND ORDER CONFIRMATION EMAIL ============
 async function sendOrderConfirmationEmail(orderData) {
     const templateParams = {
-        to_email: orderData.to_email,  // Changed from to_email
+        to_email: orderData.customer_email,    // ← FIXED
         to_name: orderData.customer_name,
+        customer_phone: orderData.customer_phone || 'Not provided',  // ← ADD THIS
         order_id: orderData.order_id,
         room_number: orderData.room_number,
         free_items: orderData.free_items || 'None',

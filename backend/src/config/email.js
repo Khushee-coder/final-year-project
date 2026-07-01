@@ -1,20 +1,12 @@
-const nodemailer = require('nodemailer');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 
-// Create transporter using Brevo SMTP
-const transporter = nodemailer.createTransport({
-    host: 'smtp-relay.brevo.com',  // ← Use this
-    port: 587,
-    secure: false,
-    auth: {
-        user: 'af9caa001@smtp-brevo.com',  // Your Brevo login email
-        pass: process.env.EMAIL_PASS   // Your Brevo SMTP password
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-});
+// Initialize Brevo API
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = process.env.BREVO_API_KEY;
 
-// Function to send booking confirmation email
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
 async function sendBookingConfirmation(bookingData) {
     const { 
         guestEmail, 
@@ -68,17 +60,19 @@ async function sendBookingConfirmation(bookingData) {
         </div>
     `;
 
-    const mailOptions = {
-        from: `"Swami Holiday Home" <reenamaniyar99@gmail.com>`,
-        to: guestEmail,
-        subject: `Booking Confirmed - ${bookingId}`,
-        html: htmlContent
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    sendSmtpEmail.sender = { 
+        name: 'Swami Holiday Home', 
+        email: 'reenamaniyar99@gmail.com'
     };
+    sendSmtpEmail.to = [{ email: guestEmail, name: guestName }];
+    sendSmtpEmail.subject = `Booking Confirmed - ${bookingId}`;
+    sendSmtpEmail.htmlContent = htmlContent;
 
     try {
-        await transporter.sendMail(mailOptions);
+        const response = await apiInstance.sendTransacEmail(sendSmtpEmail);
         console.log(`✅ Email sent to ${guestEmail}`);
-        return { success: true };
+        return { success: true, messageId: response.messageId };
     } catch (error) {
         console.error('❌ Email failed:', error.message);
         return { success: false, error: error.message };

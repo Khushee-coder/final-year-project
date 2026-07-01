@@ -429,7 +429,7 @@ async function placeOrder() {
     const orderData = {
     room_number: roomNumber,
     customer_name: customerName,
-    customer_email: customerEmail,
+    to_email: customerEmail,
     customer_phone: customerPhone || null,
     free_items: freeItemsList.join(', ') || null,
     paid_items: paidItemsList.join(', ') || null,
@@ -504,7 +504,7 @@ async function placeOrder() {
 // ============ SEND ORDER CONFIRMATION EMAIL ============
 async function sendOrderConfirmationEmail(orderData) {
     const templateParams = {
-        customer_email: orderData.customer_email,  // Changed from to_email
+        to_email: orderData.to_email,  // Changed from to_email
         to_name: orderData.customer_name,
         order_id: orderData.order_id,
         room_number: orderData.room_number,
@@ -519,7 +519,7 @@ async function sendOrderConfirmationEmail(orderData) {
     
     try {
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
-        console.log('✅ Email sent to:', orderData.customer_email);
+        console.log('✅ Email sent to:', orderData.to_email);
     } catch (error) {
         console.error('❌ Email failed:', error);
     }

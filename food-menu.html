@@ -426,6 +426,10 @@ async function placeOrder() {
     const paidItemsList = selectedPaid.map(i => `${i.name} x${i.qty} (₹${i.price * i.qty})`);
     const totalAmount = parseInt(document.getElementById('totalAmount').innerText) || 0;
     
+console.log('📧 customerName:', customerName);
+    console.log('📧 customerPhone:', customerPhone);
+    console.log('📧 customerEmail:', customerEmail);
+
     const orderData = {
     room_number: roomNumber,
     customer_name: customerName,
@@ -436,7 +440,7 @@ async function placeOrder() {
     custom_order: customOrder || null,
     total_amount: totalAmount
 };
-    
+    console.log('📧 orderData:', orderData);
     // Disable button to prevent double submission
     const payBtn = document.querySelector('.pay-btn');
     const originalText = payBtn.innerHTML;
